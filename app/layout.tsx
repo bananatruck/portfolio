@@ -14,8 +14,13 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-    title: "Developer Portfolio",
-    description: "A modern hacker / systems developer portfolio.",
+    title: "Kesh",
+    description: "Full stack and AI developer based in Long Beach. Building thoughtful systems and user-focused applications.",
+    icons: {
+        icon: '/favicon.ico',
+        shortcut: '/favicon.ico',
+        apple: '/apple-touch-icon.png',
+    },
 };
 
 export default function RootLayout({
