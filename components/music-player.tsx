@@ -3,12 +3,19 @@
 import { useState, useRef, useEffect } from 'react';
 import { Play, Pause, Music } from 'lucide-react';
 
-// Song library - these are the actual files in public/music
+// Song library - these are the actual MP3 files in public/music
 const SONG_LIBRARY = [
     { file: "04 Fake Plastic Trees.mp3", title: "Fake Plastic Trees", artist: "Radiohead" },
-    { file: "The Strokes - The New Abnormal - 02 - Selfless.mp3", title: "Selfless", artist: "The Strokes" },
-    { file: "The Strokes - The New Abnormal - 07 - Why Are Sundays So Depressing.mp3", title: "Why Are Sundays So Depressing", artist: "The Strokes" },
-    { file: "The Strokes - The New Abnormal - 09 - Ode to the Mets.mp3", title: "Ode to the Mets", artist: "The Strokes" },
+    { file: "10 (10) No Surprises.mp3", title: "No Surprises", artist: "Radiohead" },
+    { file: "06 (06) Karma Police.mp3", title: "Karma Police", artist: "Radiohead" },
+    { file: "01 (01) Airbag.mp3", title: "Airbag", artist: "Radiohead" },
+    { file: "02 Selfless.mp3", title: "Selfless", artist: "The Strokes" },
+    { file: "07 Why Are Sunday's So Depressing.mp3", title: "Why Are Sunday's So Depressing", artist: "The Strokes" },
+    { file: "09 Ode To The Mets.mp3", title: "Ode To The Mets", artist: "The Strokes" },
+    { file: "2 Breathe (In the Air).mp3", title: "Breathe (In the Air)", artist: "Pink Floyd" },
+    { file: "4 Time.mp3", title: "Time", artist: "Pink Floyd" },
+    { file: "Masayoshi Takanaka - Chill Me Out - 1982.mp3", title: "Chill Me Out", artist: "Masayoshi Takanaka" },
+    { file: "01 Space Oddity David Bowie.mp3", title: "Space Oddity", artist: "David Bowie" },
 ];
 
 interface MusicPlayerProps {
