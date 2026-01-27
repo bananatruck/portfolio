@@ -8,7 +8,7 @@ export function Footer() {
         <footer className="w-full py-12 border-t-2 border-black bg-white relative overflow-hidden">
             {/* Decorative manga mountain background */}
             <div
-                className="absolute inset-0 opacity-10 pointer-events-none bg-bottom bg-no-repeat bg-contain"
+                className="absolute inset-0 opacity-10 pointer-events-none bg-bottom bg-no-repeat bg-cover"
                 style={{ backgroundImage: 'url(/manga-mountains.jpg)' }}
             />
             <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
