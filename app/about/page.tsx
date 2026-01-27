@@ -197,6 +197,8 @@ export default function About() {
                                 <span className="flex items-center gap-2"><MapPin className="w-4 h-4" /> Long Beach, CA</span>
                                 <a href="https://medium.com/@wanderingstoicist" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:underline decoration-2 underline-offset-4"><BookOpen className="w-4 h-4" /> Medium</a>
                                 <a href="https://myanimelist.net/profile/Kenshai" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:underline decoration-2 underline-offset-4"><Tv className="w-4 h-4" /> MyAnimeList</a>
+                                <span className="text-black/40 text-xs normal-case font-normal italic">"I use Arch btw"</span>
+                                <a href="https://play.pokemonshowdown.com/users/canihavefivedollars" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:underline decoration-2 underline-offset-4">@canihavefivedollars</a>
                             </div>
                         </div>
                     </div>
