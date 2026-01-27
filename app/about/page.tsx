@@ -184,7 +184,7 @@ export default function About() {
                             <img
                                 src="/garchomp.gif"
                                 alt="Garchomp"
-                                className="w-10 h-10 mb-2"
+                                className="w-10 h-10 mb-2 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
                             />
                         </div>
 
@@ -202,11 +202,45 @@ export default function About() {
                     </div>
                 </motion.div>
 
-                {/* Favorites Section - Manga Grid */}
+                {/* Hobbies Section */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.2 }}
+                    className="mb-16 relative z-10"
+                >
+                    <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-2">
+                        <h2 className="text-2xl font-black font-serif uppercase tracking-widest">
+                            Hobbies
+                        </h2>
+                        <span className="font-mono text-xs font-bold">ACTIVITIES</span>
+                    </div>
+
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {hobbies.map((item, index) => (
+                            <div key={index} className="group relative aspect-square border-2 border-black bg-black overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                                <Image
+                                    src={item.image}
+                                    alt={item.title}
+                                    fill
+                                    priority={index < 2}
+                                    sizes="(max-width: 768px) 50vw, 25vw"
+                                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                    <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
+                                    <span className="text-white/70 text-xs font-mono">{item.description}</span>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </motion.div>
+
+                {/* Cinema Section */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, delay: 0.25 }}
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-2">
@@ -223,7 +257,7 @@ export default function About() {
                                     src={item.image}
                                     alt={item.title}
                                     fill
-                                    priority={index < 2}
+                                    loading="lazy"
                                     sizes="(max-width: 768px) 50vw, 25vw"
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
@@ -240,7 +274,7 @@ export default function About() {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.25 }}
+                    transition={{ duration: 0.5, delay: 0.3 }}
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-2">
@@ -274,7 +308,7 @@ export default function About() {
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.3 }}
+                    transition={{ duration: 0.5, delay: 0.35 }}
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-2">
@@ -286,40 +320,6 @@ export default function About() {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {anime.map((item, index) => (
-                            <div key={index} className="group relative aspect-[2/3] border-2 border-black bg-black overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
-                                <Image
-                                    src={item.image}
-                                    alt={item.title}
-                                    fill
-                                    loading="lazy"
-                                    sizes="(max-width: 768px) 50vw, 25vw"
-                                    className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
-                                />
-                                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                                    <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
-                                    <span className="text-white/70 text-xs font-mono">{item.year}</span>
-                                </div>
-                            </div>
-                        ))}
-                    </div>
-                </motion.div>
-
-                {/* TV Shows Section */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.35 }}
-                    className="mb-16 relative z-10"
-                >
-                    <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-2">
-                        <h2 className="text-2xl font-black font-serif uppercase tracking-widest">
-                            TV Shows
-                        </h2>
-                        <span className="font-mono text-xs font-bold">BINGE_LIST</span>
-                    </div>
-
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {tvShows.map((item, index) => (
                             <div key={index} className="group relative aspect-[2/3] border-2 border-black bg-black overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                                 <Image
                                     src={item.image}
@@ -372,7 +372,7 @@ export default function About() {
                     </div>
                 </motion.div>
 
-                {/* Hobbies Section */}
+                {/* TV Shows Section */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -381,14 +381,14 @@ export default function About() {
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-black pb-2">
                         <h2 className="text-2xl font-black font-serif uppercase tracking-widest">
-                            Hobbies
+                            TV Shows
                         </h2>
-                        <span className="font-mono text-xs font-bold">ACTIVITIES</span>
+                        <span className="font-mono text-xs font-bold">BINGE_LIST</span>
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {hobbies.map((item, index) => (
-                            <div key={index} className="group relative aspect-square border-2 border-black bg-black overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                        {tvShows.map((item, index) => (
+                            <div key={index} className="group relative aspect-[2/3] border-2 border-black bg-black overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                                 <Image
                                     src={item.image}
                                     alt={item.title}
@@ -399,7 +399,7 @@ export default function About() {
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                                     <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
-                                    <span className="text-white/70 text-xs font-mono">{item.description}</span>
+                                    <span className="text-white/70 text-xs font-mono">{item.year}</span>
                                 </div>
                             </div>
                         ))}
