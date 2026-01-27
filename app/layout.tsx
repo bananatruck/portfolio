@@ -17,8 +17,11 @@ export const metadata: Metadata = {
     title: "Kesh",
     description: "Full stack and AI developer based in Long Beach. Building thoughtful systems and user-focused applications.",
     icons: {
-        icon: '/favicon.ico',
-        shortcut: '/favicon.ico',
+        icon: [
+            { url: '/favicon.png', type: 'image/png' },
+            { url: '/favicon.ico', type: 'image/x-icon' },
+        ],
+        shortcut: '/favicon.png',
         apple: '/apple-touch-icon.png',
     },
 };

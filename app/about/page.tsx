@@ -181,9 +181,11 @@ export default function About() {
                     <div className="flex-grow text-center md:text-left">
                         <div className="flex flex-col md:flex-row items-center md:items-end gap-4 mb-4 border-b-2 border-black pb-4">
                             <h1 className="text-5xl font-black font-serif tracking-tighter uppercase">Kesh</h1>
-                            <Badge variant="outline" className="border-2 border-black text-black uppercase tracking-widest font-bold px-2 py-0.5 text-xs mb-2 rounded-none">
-                                Ronin Dev
-                            </Badge>
+                            <img
+                                src="/garchomp.gif"
+                                alt="Garchomp"
+                                className="w-10 h-10 mb-2"
+                            />
                         </div>
 
                         {/* Bio */}
