@@ -17,17 +17,17 @@ export function Header() {
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/40">
-            <nav className="max-w-6xl mx-auto px-6 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
+            <nav className="max-w-6xl mx-auto px-4 sm:px-8 lg:px-12 h-16 flex items-center justify-between">
                 {/* Logo/Name - Links to About */}
                 <Link
                     href="/about"
-                    className="font-mono text-lg font-bold text-black hover:text-black/70 transition-colors group"
+                    className="font-mono text-base sm:text-lg font-bold text-black hover:text-black/70 transition-colors group shrink-0 mr-2"
                 >
                     <span className="text-black font-black tracking-wider border-2 border-black px-2 py-1 bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 transition-all">KESH</span>
                 </Link>
 
                 {/* Terminal-style Navigation */}
-                <div className="flex items-center gap-6 font-mono text-sm">
+                <div className="flex items-center gap-2 sm:gap-6 font-mono text-xs sm:text-sm">
                     {navItems.map((item) => {
                         if (item.isDownload) {
                             return (
@@ -35,7 +35,7 @@ export function Header() {
                                     key={item.href}
                                     href={item.href}
                                     download
-                                    className="relative text-sm font-bold transition-colors text-black hover:underline decoration-2 underline-offset-4 cursor-target flex items-center gap-1 uppercase"
+                                    className="relative font-bold transition-colors text-black hover:underline decoration-2 underline-offset-4 cursor-target flex items-center gap-1 uppercase"
                                 >
                                     {item.name}
                                     <Download className="w-3 h-3" />
@@ -47,7 +47,7 @@ export function Header() {
                                 key={item.href}
                                 href={item.href}
                                 className={cn(
-                                    "relative text-sm font-bold transition-colors hover:underline decoration-2 underline-offset-4 cursor-target uppercase",
+                                    "relative font-bold transition-colors hover:underline decoration-2 underline-offset-4 cursor-target uppercase",
                                     pathname === item.href ? "text-black underline" : "text-black/60"
                                 )}
                             >
