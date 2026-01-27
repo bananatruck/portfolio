@@ -1,0 +1,145 @@
+"use client";
+
+import { useState, useRef, useEffect } from 'react';
+import { Play, Pause, Music } from 'lucide-react';
+
+// Song library - these are the actual files in public/music
+const SONG_LIBRARY = [
+    { file: "04 Fake Plastic Trees.mp3", title: "Fake Plastic Trees", artist: "Radiohead" },
+    { file: "The Strokes - The New Abnormal - 02 - Selfless.mp3", title: "Selfless", artist: "The Strokes" },
+    { file: "The Strokes - The New Abnormal - 07 - Why Are Sundays So Depressing.mp3", title: "Why Are Sundays So Depressing", artist: "The Strokes" },
+    { file: "The Strokes - The New Abnormal - 09 - Ode to the Mets.mp3", title: "Ode to the Mets", artist: "The Strokes" },
+];
+
+interface MusicPlayerProps {
+    songIndex?: number;
+}
+
+export function MusicPlayer({ songIndex }: MusicPlayerProps) {
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [currentTime, setCurrentTime] = useState(0);
+    const [duration, setDuration] = useState(0);
+    const [currentSong, setCurrentSong] = useState(SONG_LIBRARY[0]);
+    const [hasError, setHasError] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const audioRef = useRef<HTMLAudioElement>(null);
+
+    // Select random song on mount
+    useEffect(() => {
+        if (songIndex !== undefined && SONG_LIBRARY[songIndex]) {
+            setCurrentSong(SONG_LIBRARY[songIndex]);
+        } else {
+            const randomIndex = Math.floor(Math.random() * SONG_LIBRARY.length);
+            setCurrentSong(SONG_LIBRARY[randomIndex]);
+        }
+    }, [songIndex]);
+
+    useEffect(() => {
+        const audio = audioRef.current;
+        if (!audio) return;
+
+        const updateTime = () => setCurrentTime(audio.currentTime);
+        const updateDuration = () => {
+            setDuration(audio.duration);
+            setHasError(false);
+            setIsLoading(false);
+        };
+        const handleError = () => {
+            setHasError(true);
+            setIsLoading(false);
+        };
+        const handleCanPlay = () => {
+            setIsLoading(false);
+            setHasError(false);
+        };
+
+        audio.addEventListener('timeupdate', updateTime);
+        audio.addEventListener('loadedmetadata', updateDuration);
+        audio.addEventListener('ended', () => setIsPlaying(false));
+        audio.addEventListener('error', handleError);
+        audio.addEventListener('canplay', handleCanPlay);
+
+        // Try to load the audio
+        audio.load();
+
+        return () => {
+            audio.removeEventListener('timeupdate', updateTime);
+            audio.removeEventListener('loadedmetadata', updateDuration);
+            audio.removeEventListener('ended', () => setIsPlaying(false));
+            audio.removeEventListener('error', handleError);
+            audio.removeEventListener('canplay', handleCanPlay);
+        };
+    }, [currentSong]);
+
+    const togglePlay = async () => {
+        if (audioRef.current && !hasError) {
+            try {
+                if (isPlaying) {
+                    audioRef.current.pause();
+                    setIsPlaying(false);
+                } else {
+                    await audioRef.current.play();
+                    setIsPlaying(true);
+                }
+            } catch (err) {
+                setHasError(true);
+            }
+        }
+    };
+
+    const formatTime = (time: number) => {
+        if (isNaN(time)) return "0:00";
+        const minutes = Math.floor(time / 60);
+        const seconds = Math.floor(time % 60);
+        return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    };
+
+    const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
+
+    return (
+        <div className="flex items-center gap-4">
+            <audio
+                ref={audioRef}
+                src={`/music/${encodeURIComponent(currentSong.file)}`}
+                preload="metadata"
+            />
+
+            <button
+                onClick={togglePlay}
+                disabled={hasError || isLoading}
+                className="flex-shrink-0 w-12 h-12 flex items-center justify-center border-2 border-black hover:bg-black hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+                {isLoading ? (
+                    <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                ) : hasError ? (
+                    <Music className="w-5 h-5" />
+                ) : isPlaying ? (
+                    <Pause className="w-5 h-5" />
+                ) : (
+                    <Play className="w-5 h-5 ml-0.5" />
+                )}
+            </button>
+
+            <div className="flex-1 min-w-0">
+                <div className="text-sm font-bold font-mono text-black truncate uppercase">
+                    {currentSong.title}
+                </div>
+                <div className="text-xs text-black/60 truncate font-serif">
+                    {currentSong.artist}
+                </div>
+
+                <div className="mt-2 flex items-center gap-2">
+                    <div className="flex-1 h-1 bg-black/20 overflow-hidden">
+                        <div
+                            className="h-full bg-black transition-all duration-100"
+                            style={{ width: `${progress}%` }}
+                        />
+                    </div>
+                    <span className="text-xs text-black/60 font-mono tabular-nums">
+                        {formatTime(currentTime)}
+                    </span>
+                </div>
+            </div>
+        </div>
+    );
+}

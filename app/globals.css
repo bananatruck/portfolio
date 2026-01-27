@@ -1,0 +1,188 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Vagabond Manga Aesthetic - Paper & Ink */
+    
+    /* Light Mode (Default) */
+    --background: 60 10% 96%; /* #f5f5f0 - Off-white Paper */
+    --foreground: 0 0% 0%; /* #000000 - Black Ink */
+
+    --card: 60 10% 96%;
+    --card-foreground: 0 0% 0%;
+
+    --popover: 60 10% 96%;
+    --popover-foreground: 0 0% 0%;
+
+    --primary: 0 0% 0%; /* Black */
+    --primary-foreground: 60 10% 96%; /* White text on black */
+
+    --secondary: 0 0% 90%; /* Light Gray Wash */
+    --secondary-foreground: 0 0% 0%;
+
+    --muted: 0 0% 60%; /* Medium Gray */
+    --muted-foreground: 0 0% 40%; /* Darker Gray */
+
+    --accent: 0 0% 0%;
+    --accent-foreground: 60 10% 96%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 60 10% 96%;
+
+    --border: 0 0% 0%; /* Black Borders */
+    --input: 0 0% 0%;
+    --ring: 0 0% 0%;
+
+    --radius: 0rem; /* Sharp corners for manga panels */
+  }
+
+  .dark {
+    /* Dark Mode Support (Inverted Manga) */
+    --background: 0 0% 5%; /* #0d0d0d */
+    --foreground: 60 10% 96%;
+
+    --card: 0 0% 5%;
+    --card-foreground: 60 10% 96%;
+
+    --popover: 0 0% 5%;
+    --popover-foreground: 60 10% 96%;
+
+    --primary: 60 10% 96%;
+    --primary-foreground: 0 0% 0%;
+
+    --secondary: 0 0% 20%;
+    --secondary-foreground: 60 10% 96%;
+
+    --muted: 0 0% 40%;
+    --muted-foreground: 0 0% 60%;
+
+    --accent: 60 10% 96%;
+    --accent-foreground: 0 0% 0%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 60 10% 96%;
+
+    --border: 60 10% 96%;
+    --input: 60 10% 96%;
+    --ring: 60 10% 96%;
+  }
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.05'/%3E%3C/svg%3E");
+  }
+}
+
+@layer utilities {
+  .manga-panel {
+    @apply border-2 border-black bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] transition-all duration-300;
+  }
+  
+  .manga-panel:hover {
+    @apply shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] -translate-y-1;
+  }
+
+  .manga-text-outline {
+    text-shadow: 
+      -1px -1px 0 #fff,  
+       1px -1px 0 #fff,
+      -1px  1px 0 #fff,
+       1px  1px 0 #fff;
+  }
+}
+
+/* Custom Utilities */
+.text-glow {
+  /* Removed for manga style */
+}
+
+.box-glow {
+  /* Removed for manga style */
+}
+
+.terminal-cursor::after {
+  content: "_";
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* Logoloop - Updated for Monochrome */
+.logoloop {
+  position: relative;
+  --logoloop-gap: 32px;
+  --logoloop-logoHeight: 28px;
+  --logoloop-fadeColorAuto: #f5f5f0; /* Match paper bg */
+}
+
+@media (prefers-color-scheme: dark) {
+  .logoloop {
+    --logoloop-fadeColorAuto: #0d0d0d;
+  }
+}
+
+.logoloop__track {
+  display: flex;
+  width: max-content;
+  will-change: transform;
+  user-select: none;
+  position: relative;
+  z-index: 0;
+}
+
+.logoloop__list {
+  display: flex;
+  align-items: center;
+}
+
+.logoloop__item {
+  flex: 0 0 auto;
+  margin-right: var(--logoloop-gap);
+  font-size: var(--logoloop-logoHeight);
+  line-height: 1;
+  filter: grayscale(100%) contrast(120%); /* Force B&W logos */
+}
+
+.logoloop__item img {
+  height: var(--logoloop-logoHeight);
+  width: auto;
+  display: block;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.logoloop--fade::before,
+.logoloop--fade::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: clamp(24px, 8%, 120px);
+  pointer-events: none;
+  z-index: 10;
+}
+
+.logoloop--fade::before {
+  left: 0;
+  background: linear-gradient(to right, var(--logoloop-fadeColorAuto) 0%, rgba(0,0,0,0) 100%);
+}
+
+.logoloop--fade::after {
+  right: 0;
+  background: linear-gradient(to left, var(--logoloop-fadeColorAuto) 0%, rgba(0,0,0,0) 100%);
+}
