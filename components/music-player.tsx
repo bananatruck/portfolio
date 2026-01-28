@@ -5,17 +5,53 @@ import { Play, Pause, Music } from 'lucide-react';
 
 // Song library - these are the actual MP3 files in public/music
 const SONG_LIBRARY = [
-    { file: "04 Fake Plastic Trees.mp3", title: "Fake Plastic Trees", artist: "Radiohead" },
-    { file: "10 (10) No Surprises.mp3", title: "No Surprises", artist: "Radiohead" },
-    { file: "06 (06) Karma Police.mp3", title: "Karma Police", artist: "Radiohead" },
+    // Radiohead - OK Computer
     { file: "01 (01) Airbag.mp3", title: "Airbag", artist: "Radiohead" },
+    { file: "02 (02) Paranoid Android.mp3", title: "Paranoid Android", artist: "Radiohead" },
+    { file: "03 (03) Subterranean Homesick Alien.mp3", title: "Subterranean Homesick Alien", artist: "Radiohead" },
+    { file: "05 (05) Let Down.mp3", title: "Let Down", artist: "Radiohead" },
+    { file: "06 (06) Karma Police.mp3", title: "Karma Police", artist: "Radiohead" },
+    { file: "07 (07) Fitter Happier.mp3", title: "Fitter Happier", artist: "Radiohead" },
+    { file: "08 (08) Electioneering.mp3", title: "Electioneering", artist: "Radiohead" },
+    { file: "09 (09) Climbing Up The Walls.mp3", title: "Climbing Up The Walls", artist: "Radiohead" },
+    { file: "10 (10) No Surprises.mp3", title: "No Surprises", artist: "Radiohead" },
+    { file: "11 (11) Lucky.mp3", title: "Lucky", artist: "Radiohead" },
+    { file: "12 (12) The Tourist.mp3", title: "The Tourist", artist: "Radiohead" },
+    // Radiohead - The Bends
+    { file: "04 Fake Plastic Trees.mp3", title: "Fake Plastic Trees", artist: "Radiohead" },
+    // The Strokes
+    { file: "01 The Adults Are Talking.mp3", title: "The Adults Are Talking", artist: "The Strokes" },
+    { file: "01 What Ever Happened_.mp3", title: "What Ever Happened?", artist: "The Strokes" },
     { file: "02 Selfless.mp3", title: "Selfless", artist: "The Strokes" },
-    { file: "07 Why Are Sunday's So Depressing.mp3", title: "Why Are Sunday's So Depressing", artist: "The Strokes" },
+    { file: "07 Why Are Sunday's So Depressing.mp3", title: "Why Are Sundays So Depressing", artist: "The Strokes" },
     { file: "09 Ode To The Mets.mp3", title: "Ode To The Mets", artist: "The Strokes" },
+    // Pink Floyd - Dark Side of the Moon
     { file: "2 Breathe (In the Air).mp3", title: "Breathe (In the Air)", artist: "Pink Floyd" },
+    { file: "3 On the Run.mp3", title: "On the Run", artist: "Pink Floyd" },
     { file: "4 Time.mp3", title: "Time", artist: "Pink Floyd" },
+    { file: "5 The Great Gig in the Sky.mp3", title: "The Great Gig in the Sky", artist: "Pink Floyd" },
+    { file: "7 Us and Them.mp3", title: "Us and Them", artist: "Pink Floyd" },
+    { file: "8 Any Colour You Like.mp3", title: "Any Colour You Like", artist: "Pink Floyd" },
+    { file: "9 Brain Damage.mp3", title: "Brain Damage", artist: "Pink Floyd" },
+    { file: "10 Eclipse.mp3", title: "Eclipse", artist: "Pink Floyd" },
+    // Masayoshi Takanaka
     { file: "Masayoshi Takanaka - Chill Me Out - 1982.mp3", title: "Chill Me Out", artist: "Masayoshi Takanaka" },
+    { file: "Masayoshi Takanaka -Thunderstorm - 1981.mp3", title: "Thunderstorm", artist: "Masayoshi Takanaka" },
+    { file: "MASAYOSHI TAKANAKA - パラレル・ターン (Parallel Turn) - 1979.mp3", title: "Parallel Turn", artist: "Masayoshi Takanaka" },
+    { file: "Masayoshi Takanaka - 大航海時代 - 1984.mp3", title: "大航海時代", artist: "Masayoshi Takanaka" },
+    { file: "01 ＯＨ！　ＴＥＮＧＯ　ＳＵＥＲＴＥ.mp3", title: "OH! TENGO SUERTE", artist: "Masayoshi Takanaka" },
+    { file: "02 T O K Y O　R E G G Y.mp3", title: "TOKYO REGGY", artist: "Masayoshi Takanaka" },
+    // David Bowie
     { file: "01 Space Oddity David Bowie.mp3", title: "Space Oddity", artist: "David Bowie" },
+    // George Michael
+    { file: "21. George Michael - Careless Whisper.mp3", title: "Careless Whisper", artist: "George Michael" },
+    // Jeff Buckley
+    { file: "Jeff Buckley - Grace - 01 - Mojo Pin.mp3", title: "Mojo Pin", artist: "Jeff Buckley" },
+    { file: "Jeff Buckley - Grace - 05 - So Real.mp3", title: "So Real", artist: "Jeff Buckley" },
+    { file: "Jeff Buckley - Grace - 07 - Lover, You Should've Come Over.mp3", title: "Lover, You Should've Come Over", artist: "Jeff Buckley" },
+    { file: "Jeff Buckley - You and I - 06 - Dream of You and I.mp3", title: "Dream of You and I", artist: "Jeff Buckley" },
+    // Persona 4
+    { file: "4. 11. Shihoko Hirata - Heartbeat, Heartbreak.mp3", title: "Heartbeat, Heartbreak", artist: "Shihoko Hirata" },
 ];
 
 interface MusicPlayerProps {
