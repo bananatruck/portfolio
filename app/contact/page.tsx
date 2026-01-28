@@ -36,10 +36,10 @@ import Squares from '@/components/Squares';
 
 export default function ContactPage() {
     return (
-        <div className="min-h-screen pt-24 pb-12 relative overflow-hidden" style={{ backgroundColor: '#f5f5f0' }}>
+        <div className="min-h-screen pt-24 pb-12 relative overflow-hidden bg-background">
             {/* Background image layer */}
             <div
-                className="absolute inset-0 z-0 opacity-20 grayscale"
+                className="absolute inset-0 z-0 opacity-20 dark:opacity-10 grayscale dark:invert"
                 style={{
                     backgroundImage: 'url("/images/contact.jpg")',
                     backgroundSize: 'cover',
@@ -47,7 +47,7 @@ export default function ContactPage() {
                 }}
             ></div>
             {/* Subtle manga grid background */}
-            <div className="absolute inset-0 z-1 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+            <div className="absolute inset-0 z-1 opacity-10 dark:opacity-5 pointer-events-none dark:invert" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
 
             <CenteredContainer maxWidth="narrow" className="relative z-10">
                 <motion.div

@@ -12,9 +12,9 @@ import Squares from '@/components/Squares';
 
 export default function Home() {
     return (
-        <main className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#f5f5f0' }}>
+        <main className="min-h-screen relative overflow-hidden bg-background">
             {/* Subtle grid background for manga aesthetic */}
-            <div className="absolute inset-0 z-0 opacity-10 pointer-events-none" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
+            <div className="absolute inset-0 z-0 opacity-10 dark:opacity-5 pointer-events-none dark:invert" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '24px 24px' }}></div>
 
             {/* Hero Section - Full width with centered content */}
             <section className="min-h-screen flex items-center justify-center py-12 relative z-10">
