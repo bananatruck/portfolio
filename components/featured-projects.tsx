@@ -56,7 +56,7 @@ const projects: Project[] = [
 
 export function FeaturedProjects() {
     return (
-        <section className="py-24 relative overflow-hidden" style={{ backgroundColor: '#f5f5f0' }}>
+        <section className="py-24 relative overflow-hidden bg-background">
             <div className="container px-4 md:px-6 relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
