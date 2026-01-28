@@ -79,7 +79,8 @@ export default function Projects() {
                 }}
             ></div>
             {/* Subtle manga grid background */}
-            <div className="absolute inset-0 z-1 opacity-10 dark:opacity-5 pointer-events-none dark:invert" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+            <div className="absolute inset-0 z-1 opacity-10 pointer-events-none dark:hidden" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+            <div className="absolute inset-0 z-1 opacity-10 pointer-events-none hidden dark:block" style={{ backgroundImage: 'radial-gradient(#f5f5f0 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
 
             <div className="container relative z-10 mx-auto px-4 sm:px-6 lg:px-8">
                 <motion.div

@@ -220,7 +220,7 @@ export default function About() {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {hobbies.map((item, index) => (
-                            <div key={index} className="group relative aspect-square border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                            <div key={index} className="group relative aspect-square border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                                 <Image
                                     src={item.image}
                                     alt={item.title}
@@ -229,7 +229,7 @@ export default function About() {
                                     sizes="(max-width: 768px) 50vw, 25vw"
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                                     <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
                                     <span className="text-white/70 text-xs font-mono">{item.description}</span>
                                 </div>
@@ -254,7 +254,7 @@ export default function About() {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {favorites.map((item, index) => (
-                            <div key={index} className="group relative aspect-[2/3] border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                            <div key={index} className="group relative aspect-[2/3] border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                                 <Image
                                     src={item.image}
                                     alt={item.title}
@@ -263,7 +263,7 @@ export default function About() {
                                     sizes="(max-width: 768px) 50vw, 25vw"
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                                     <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
                                     <span className="text-white/70 text-xs font-mono">{item.year}</span>
                                 </div>
@@ -288,7 +288,7 @@ export default function About() {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {manga.map((item, index) => (
-                            <div key={index} className="group relative aspect-[2/3] border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                            <div key={index} className="group relative aspect-[2/3] border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                                 <Image
                                     src={item.image}
                                     alt={item.title}
@@ -297,7 +297,7 @@ export default function About() {
                                     sizes="(max-width: 768px) 50vw, 25vw"
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                                     <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
                                     <span className="text-white/70 text-xs font-mono">{item.author}</span>
                                 </div>
@@ -322,7 +322,7 @@ export default function About() {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {anime.map((item, index) => (
-                            <div key={index} className="group relative aspect-[2/3] border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                            <div key={index} className="group relative aspect-[2/3] border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                                 <Image
                                     src={item.image}
                                     alt={item.title}
@@ -331,7 +331,7 @@ export default function About() {
                                     sizes="(max-width: 768px) 50vw, 25vw"
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                                     <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
                                     <span className="text-white/70 text-xs font-mono">{item.year}</span>
                                 </div>
@@ -356,7 +356,7 @@ export default function About() {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {artists.map((item, index) => (
-                            <div key={index} className="group relative aspect-square border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                            <div key={index} className="group relative aspect-square border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                                 <Image
                                     src={item.image}
                                     alt={item.name}
@@ -365,7 +365,7 @@ export default function About() {
                                     sizes="(max-width: 768px) 50vw, 25vw"
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                                     <span className="text-white font-bold font-serif text-lg leading-tight">{item.name}</span>
                                     <span className="text-white/70 text-xs font-mono">{item.album}</span>
                                 </div>
@@ -390,7 +390,7 @@ export default function About() {
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                         {tvShows.map((item, index) => (
-                            <div key={index} className="group relative aspect-[2/3] border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
+                            <div key={index} className="group relative aspect-[2/3] border-2 border-foreground bg-foreground overflow-hidden cursor-pointer shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-none transition-all">
                                 <Image
                                     src={item.image}
                                     alt={item.title}
@@ -399,7 +399,7 @@ export default function About() {
                                     sizes="(max-width: 768px) 50vw, 25vw"
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-t from-foreground/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
+                                <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
                                     <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
                                     <span className="text-white/70 text-xs font-mono">{item.year}</span>
                                 </div>
@@ -428,9 +428,9 @@ export default function About() {
                             {visibleMilestones.map((item, index) => (
                                 <div
                                     key={index}
-                                    className="flex gap-6 p-6 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:shadow-[6px_6px_0px_0px_rgba(0,0,0,1)] transition-all"
+                                    className="flex gap-6 p-6 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:shadow-[6px_6px_0px_0px_hsl(var(--foreground))] transition-all"
                                 >
-                                    <div className="flex-shrink-0 w-20 h-24 border-2 border-foreground flex items-center justify-center flex-col gap-1 bg-foreground text-white">
+                                    <div className="flex-shrink-0 w-20 h-24 border-2 border-foreground flex items-center justify-center flex-col gap-1 bg-foreground text-background">
                                         <span className="text-lg font-bold font-mono">{item.year}</span>
                                         <Disc className="w-6 h-6" />
                                     </div>
@@ -478,25 +478,25 @@ export default function About() {
                                     On Repeat
                                 </h2>
                             </div>
-                            <div className="border-2 border-foreground p-4 bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                            <div className="border-2 border-foreground p-4 bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))]">
                                 <MusicPlayer />
                             </div>
                         </div>
 
-                        <div className="p-6 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+                        <div className="p-6 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))]">
                             <h3 className="text-xl font-black font-serif uppercase mb-4 border-b-2 border-foreground pb-2">Diary</h3>
                             <div className="space-y-4 font-mono text-sm">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">This Year</span>
-                                    <span className="bg-foreground text-white px-2 py-1 font-bold">142</span>
+                                    <span className="bg-foreground text-background px-2 py-1 font-bold">142</span>
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">This Month</span>
-                                    <span className="bg-foreground text-white px-2 py-1 font-bold">12</span>
+                                    <span className="bg-foreground text-background px-2 py-1 font-bold">12</span>
                                 </div>
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">Total</span>
-                                    <span className="bg-foreground text-white px-2 py-1 font-bold">1,823</span>
+                                    <span className="bg-foreground text-background px-2 py-1 font-bold">1,823</span>
                                 </div>
                             </div>
                         </div>
