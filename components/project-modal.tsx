@@ -25,7 +25,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm"
+                        className="fixed inset-0 z-50 bg-foreground/80 backdrop-blur-sm"
                     />
 
                     {/* Modal */}
@@ -45,7 +45,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                                 </div>
                                 <button
                                     onClick={onClose}
-                                    className="p-1 hover:bg-white/10 rounded transition-colors"
+                                    className="p-1 hover:bg-background/10 rounded transition-colors"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>

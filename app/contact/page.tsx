@@ -56,10 +56,10 @@ export default function ContactPage() {
                     transition={{ duration: 0.6 }}
                     className="text-center mb-12"
                 >
-                    <h1 className="text-4xl md:text-5xl font-black mb-4 font-serif uppercase tracking-widest text-black">
-                        <span className="text-black border-b-4 border-black">Contact</span>
+                    <h1 className="text-4xl md:text-5xl font-black mb-4 font-serif uppercase tracking-widest text-foreground">
+                        <span className="text-foreground border-b-4 border-foreground">Contact</span>
                     </h1>
-                    <p className="text-black/70 text-lg font-mono">
+                    <p className="text-foreground/70 text-lg font-mono">
                         Let's connect
                     </p>
                 </motion.div>
@@ -78,16 +78,16 @@ export default function ContactPage() {
                                 whileHover={{ scale: 1.05, y: -5 }}
                                 whileTap={{ scale: 0.95 }}
                                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                                className="group relative p-8 manga-panel hover:bg-black hover:text-white transition-all duration-300 overflow-hidden cursor-target flex flex-col items-center text-center gap-4"
+                                className="group relative p-8 manga-panel hover:bg-foreground hover:text-white transition-all duration-300 overflow-hidden cursor-target flex flex-col items-center text-center gap-4"
                             >
-                                <div className="p-4 border-2 border-black rounded-full group-hover:border-white group-hover:bg-white/10 transition-colors">
-                                    <Icon className="w-8 h-8 text-black group-hover:text-white" />
+                                <div className="p-4 border-2 border-foreground rounded-full group-hover:border-white group-hover:bg-background/10 transition-colors">
+                                    <Icon className="w-8 h-8 text-foreground group-hover:text-white" />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-mono font-bold text-black group-hover:text-white transition-colors uppercase">
+                                    <h3 className="text-xl font-mono font-bold text-foreground group-hover:text-white transition-colors uppercase">
                                         {link.name}
                                     </h3>
-                                    <p className="text-sm text-black/60 mt-1 group-hover:text-white/80 font-serif">
+                                    <p className="text-sm text-foreground/60 mt-1 group-hover:text-white/80 font-serif">
                                         {link.description}
                                     </p>
                                 </div>

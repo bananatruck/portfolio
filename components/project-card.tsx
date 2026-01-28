@@ -19,7 +19,7 @@ export function ProjectCard({ project }: { project: Project }) {
         <div className="group relative flex flex-col justify-between h-full manga-panel p-6 min-h-[220px]">
             <div>
                 <div className="flex items-center justify-between mb-4">
-                    <div className="flex items-center gap-2 text-black">
+                    <div className="flex items-center gap-2 text-foreground">
                         <Terminal className="w-5 h-5" />
                         <span className="text-xs font-mono font-bold">./src</span>
                     </div>
@@ -30,7 +30,7 @@ export function ProjectCard({ project }: { project: Project }) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={(e) => e.stopPropagation()}
-                                className="text-black hover:scale-110 transition-transform cursor-target"
+                                className="text-foreground hover:scale-110 transition-transform cursor-target"
                             >
                                 <Github className="w-5 h-5" />
                             </Link>
@@ -41,7 +41,7 @@ export function ProjectCard({ project }: { project: Project }) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={(e) => e.stopPropagation()}
-                                className="text-black hover:scale-110 transition-transform cursor-target"
+                                className="text-foreground hover:scale-110 transition-transform cursor-target"
                             >
                                 <ExternalLink className="w-5 h-5" />
                             </Link>
@@ -49,17 +49,17 @@ export function ProjectCard({ project }: { project: Project }) {
                     </div>
                 </div>
 
-                <h3 className="text-xl font-black mb-3 text-black group-hover:underline decoration-2 underline-offset-4 transition-all font-mono uppercase">
+                <h3 className="text-xl font-black mb-3 text-foreground group-hover:underline decoration-2 underline-offset-4 transition-all font-mono uppercase">
                     {project.title}
                 </h3>
-                <p className="text-sm text-black/80 mb-4 line-clamp-3 font-serif leading-relaxed font-medium">
+                <p className="text-sm text-foreground/80 mb-4 line-clamp-3 font-serif leading-relaxed font-medium">
                     {project.description}
                 </p>
             </div>
 
             <div className="flex flex-wrap gap-2 mt-auto">
                 {project.tags.map((tag) => (
-                    <span key={tag} className="text-xs font-mono font-bold text-black border border-black px-2 py-1 bg-transparent">
+                    <span key={tag} className="text-xs font-mono font-bold text-foreground border border-foreground px-2 py-1 bg-transparent">
                         {tag}
                     </span>
                 ))}

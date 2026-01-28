@@ -70,11 +70,11 @@ export function TechStack() {
 
     const createLogoItems = (items: TechItem[]): LogoItem[] => items.map(item => ({
         node: (
-            <div className="flex items-center gap-2 px-4 py-2 bg-white border-2 border-black rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 transition-all duration-300 cursor-default group">
+            <div className="flex items-center gap-2 px-4 py-2 bg-background border-2 border-foreground rounded-none shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 transition-all duration-300 cursor-default group">
                 <item.icon
-                    className="w-5 h-5 text-black group-hover:scale-110 transition-transform duration-300"
+                    className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform duration-300"
                 />
-                <span className="text-sm font-mono font-bold text-black uppercase">
+                <span className="text-sm font-mono font-bold text-foreground uppercase">
                     {item.name}
                 </span>
             </div>
@@ -89,7 +89,7 @@ export function TechStack() {
         <section className="w-full py-6" style={{ backgroundColor: '#f5f5f0' }}>
             <div className="mb-4 text-center">
                 <h2 className="text-xl md:text-2xl font-black mb-2 font-mono uppercase tracking-widest">
-                    <span className="text-black border-b-2 border-black">Stack</span>
+                    <span className="text-foreground border-b-2 border-foreground">Stack</span>
                 </h2>
             </div>
 

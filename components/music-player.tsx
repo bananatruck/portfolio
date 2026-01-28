@@ -114,10 +114,10 @@ export function MusicPlayer({ songIndex }: MusicPlayerProps) {
             <button
                 onClick={togglePlay}
                 disabled={hasError || isLoading}
-                className="flex-shrink-0 w-12 h-12 flex items-center justify-center border-2 border-black hover:bg-black hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                className="flex-shrink-0 w-12 h-12 flex items-center justify-center border-2 border-foreground hover:bg-foreground hover:text-white transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 {isLoading ? (
-                    <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin" />
+                    <div className="w-4 h-4 border-2 border-foreground border-t-transparent rounded-full animate-spin" />
                 ) : hasError ? (
                     <Music className="w-5 h-5" />
                 ) : isPlaying ? (
@@ -128,21 +128,21 @@ export function MusicPlayer({ songIndex }: MusicPlayerProps) {
             </button>
 
             <div className="flex-1 min-w-0">
-                <div className="text-sm font-bold font-mono text-black truncate uppercase">
+                <div className="text-sm font-bold font-mono text-foreground truncate uppercase">
                     {currentSong.title}
                 </div>
-                <div className="text-xs text-black/60 truncate font-serif">
+                <div className="text-xs text-foreground/60 truncate font-serif">
                     {currentSong.artist}
                 </div>
 
                 <div className="mt-2 flex items-center gap-2">
-                    <div className="flex-1 h-1 bg-black/20 overflow-hidden">
+                    <div className="flex-1 h-1 bg-foreground/20 overflow-hidden">
                         <div
-                            className="h-full bg-black transition-all duration-100"
+                            className="h-full bg-foreground transition-all duration-100"
                             style={{ width: `${progress}%` }}
                         />
                     </div>
-                    <span className="text-xs text-black/60 font-mono tabular-nums">
+                    <span className="text-xs text-foreground/60 font-mono tabular-nums">
                         {formatTime(currentTime)}
                     </span>
                 </div>

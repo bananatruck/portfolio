@@ -88,12 +88,12 @@ export default function Projects() {
                     transition={{ duration: 0.5 }}
                     className="mb-12"
                 >
-                    <Badge variant="default" className="mb-4 bg-black text-white border-black font-mono uppercase">
+                    <Badge variant="default" className="mb-4 bg-foreground text-white border-foreground font-mono uppercase">
                         <span className="mr-2">●</span>
                         PROJECTS
                     </Badge>
                     <h1 className="text-4xl md:text-5xl font-black mb-4 font-serif uppercase tracking-wider">
-                        <span className="text-black border-b-4 border-black">Featured Work</span>
+                        <span className="text-foreground border-b-4 border-foreground">Featured Work</span>
                     </h1>
                     <p className="text-muted-foreground text-lg max-w-2xl font-mono">
                         A collection of systems, tools, and experiments I've engineered.
@@ -109,11 +109,11 @@ export default function Projects() {
                     transition={{ duration: 0.5, delay: 0.2 }}
                 >
                     <TerminalWindow title="zsh — projects">
-                        <div className="mb-6 text-black font-bold">
-                            <span className="text-black">user@portfolio</span>
-                            <span className="text-black">:</span>
-                            <span className="text-black/60">~/all-projects</span>
-                            <span className="text-black">$</span> ls -la --sort=date
+                        <div className="mb-6 text-foreground font-bold">
+                            <span className="text-foreground">user@portfolio</span>
+                            <span className="text-foreground">:</span>
+                            <span className="text-foreground/60">~/all-projects</span>
+                            <span className="text-foreground">$</span> ls -la --sort=date
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -133,11 +133,11 @@ export default function Projects() {
                         </div>
 
                         <div className="mt-6 flex items-center gap-2">
-                            <span className="text-black">user@portfolio</span>
-                            <span className="text-black">:</span>
-                            <span className="text-black/60">~/all-projects</span>
-                            <span className="text-black">$</span>
-                            <span className="w-2 h-5 bg-black animate-pulse" />
+                            <span className="text-foreground">user@portfolio</span>
+                            <span className="text-foreground">:</span>
+                            <span className="text-foreground/60">~/all-projects</span>
+                            <span className="text-foreground">$</span>
+                            <span className="w-2 h-5 bg-foreground animate-pulse" />
                         </div>
                     </TerminalWindow>
                 </motion.div>

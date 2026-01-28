@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Download } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 
 const navItems = [
     { name: 'home', href: '/', isDownload: false },
@@ -21,9 +22,9 @@ export function Header() {
                 {/* Logo/Name - Links to About */}
                 <Link
                     href="/about"
-                    className="font-mono text-base sm:text-lg font-bold text-black hover:text-black/70 transition-colors group shrink-0 mr-2"
+                    className="font-mono text-base sm:text-lg font-bold text-foreground hover:text-foreground/70 transition-colors group shrink-0 mr-2"
                 >
-                    <span className="text-black font-black tracking-wider border-2 border-black px-2 py-1 bg-white shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:-translate-y-0.5 transition-all">KESH</span>
+                    <span className="text-foreground font-black tracking-wider border-2 border-border px-2 py-1 bg-background shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:-translate-y-0.5 transition-all">KESH</span>
                 </Link>
 
                 {/* Terminal-style Navigation */}
@@ -35,7 +36,7 @@ export function Header() {
                                     key={item.href}
                                     href={item.href}
                                     download
-                                    className="relative font-bold transition-colors text-black hover:underline decoration-2 underline-offset-4 cursor-target flex items-center gap-1 uppercase"
+                                    className="relative font-bold transition-colors text-foreground hover:underline decoration-2 underline-offset-4 cursor-target flex items-center gap-1 uppercase"
                                 >
                                     {item.name}
                                     <Download className="w-3 h-3" />
@@ -48,13 +49,16 @@ export function Header() {
                                 href={item.href}
                                 className={cn(
                                     "relative font-bold transition-colors hover:underline decoration-2 underline-offset-4 cursor-target uppercase",
-                                    pathname === item.href ? "text-black underline" : "text-black/60"
+                                    pathname === item.href ? "text-foreground underline" : "text-foreground/60"
                                 )}
                             >
                                 {item.name}
                             </Link>
                         );
                     })}
+
+                    {/* Dark Mode Toggle */}
+                    <ThemeToggle />
                 </div>
             </nav>
 

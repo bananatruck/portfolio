@@ -66,19 +66,19 @@ export function FeaturedProjects() {
                     <div className="space-y-8">
                         <div className="mb-8">
                             <h2 className="text-3xl md:text-4xl font-black mb-2 font-mono uppercase tracking-wider">
-                                <span className="text-black border-b-4 border-black">
+                                <span className="text-foreground border-b-4 border-foreground">
                                     <DecryptedText
                                         text="Built Apps"
                                         animateOn="view"
                                         revealDirection="center"
                                         sequential={true}
                                         speed={30}
-                                        className="text-black"
-                                        encryptedClassName="text-black/50"
+                                        className="text-foreground"
+                                        encryptedClassName="text-foreground/50"
                                     />
                                 </span>
                             </h2>
-                            <p className="text-black/70">
+                            <p className="text-foreground/70">
                                 A selection of my recent work
                             </p>
                         </div>
@@ -94,11 +94,11 @@ export function FeaturedProjects() {
                         transition={{ duration: 0.5 }}
                     >
                         <TerminalWindow title="zsh — 80x24">
-                            <div className="mb-6 text-black font-bold">
-                                <span className="text-black">bananatruck</span>
-                                <span className="text-black">:</span>
-                                <span className="text-black/60">~/projects</span>
-                                <span className="text-black">$</span> ls -la
+                            <div className="mb-6 text-foreground font-bold">
+                                <span className="text-foreground">bananatruck</span>
+                                <span className="text-foreground">:</span>
+                                <span className="text-foreground/60">~/projects</span>
+                                <span className="text-foreground">$</span> ls -la
                             </div>
 
                             <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -116,11 +116,11 @@ export function FeaturedProjects() {
                             </div>
 
                             <div className="mt-6 flex items-center gap-2">
-                                <span className="text-black">user@portfolio</span>
-                                <span className="text-black">:</span>
-                                <span className="text-black/60">~/projects</span>
-                                <span className="text-black">$</span>
-                                <span className="w-2 h-5 bg-black animate-pulse" />
+                                <span className="text-foreground">user@portfolio</span>
+                                <span className="text-foreground">:</span>
+                                <span className="text-foreground/60">~/projects</span>
+                                <span className="text-foreground">$</span>
+                                <span className="w-2 h-5 bg-foreground animate-pulse" />
                             </div>
                         </TerminalWindow>
                     </motion.div>
