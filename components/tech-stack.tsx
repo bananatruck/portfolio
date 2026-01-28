@@ -1,6 +1,7 @@
 
 "use client";
 
+import { useMemo } from "react";
 import { motion } from "framer-motion";
 import {
     SiPython, SiC, SiCplusplus, SiTypescript, SiJavascript, SiRust, SiGo,
@@ -20,6 +21,7 @@ interface TechItem {
     color: string;
 }
 
+// Moved outside component to prevent recreation on every render
 const techItems: TechItem[] = [
     // Languages
     { name: "Python", icon: SiPython, color: "#3776AB" },
@@ -63,27 +65,30 @@ const techItems: TechItem[] = [
     { name: "CI/CD", icon: TbInfinity, color: "#22c55e" },
 ];
 
+// Pre-compute row split
+const midPoint = Math.ceil(techItems.length / 2);
+const row1Items = techItems.slice(0, midPoint);
+const row2Items = techItems.slice(midPoint);
+
+// Helper function to create logo items - defined outside component
+const createLogoItem = (item: TechItem): LogoItem => ({
+    node: (
+        <div className="flex items-center gap-2 px-4 py-2 bg-background border-2 border-foreground rounded-none shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:-translate-y-0.5 transition-all duration-300 cursor-default group">
+            <item.icon
+                className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform duration-300"
+            />
+            <span className="text-sm font-mono font-bold text-foreground uppercase">
+                {item.name}
+            </span>
+        </div>
+    ),
+    title: item.name
+});
+
 export function TechStack() {
-    const midPoint = Math.ceil(techItems.length / 2);
-    const row1 = techItems.slice(0, midPoint);
-    const row2 = techItems.slice(midPoint);
-
-    const createLogoItems = (items: TechItem[]): LogoItem[] => items.map(item => ({
-        node: (
-            <div className="flex items-center gap-2 px-4 py-2 bg-background border-2 border-foreground rounded-none shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:-translate-y-0.5 transition-all duration-300 cursor-default group">
-                <item.icon
-                    className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform duration-300"
-                />
-                <span className="text-sm font-mono font-bold text-foreground uppercase">
-                    {item.name}
-                </span>
-            </div>
-        ),
-        title: item.name
-    }));
-
-    const row1Items = createLogoItems(row1);
-    const row2Items = createLogoItems(row2);
+    // Memoize the logo items to prevent recreation on every render
+    const row1Logos = useMemo(() => row1Items.map(createLogoItem), []);
+    const row2Logos = useMemo(() => row2Items.map(createLogoItem), []);
 
     return (
         <section className="w-full py-6 bg-background">
@@ -98,7 +103,7 @@ export function TechStack() {
                 <div className="absolute right-0 top-0 bottom-0 w-12 md:w-24 z-10 pointer-events-none bg-gradient-to-l from-background to-transparent" />
 
                 <LogoLoop
-                    logos={row1Items}
+                    logos={row1Logos}
                     direction="left"
                     speed={4}
                     gap={20}
@@ -106,7 +111,7 @@ export function TechStack() {
                     pauseOnHover={true}
                 />
                 <LogoLoop
-                    logos={row2Items}
+                    logos={row2Logos}
                     direction="right"
                     speed={4}
                     gap={20}

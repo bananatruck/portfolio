@@ -1,6 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+    // For GitHub Pages deployment, uncomment the following line:
+    // output: 'export',
+
+    // For GitHub Pages subdirectory deployment, uncomment and set:
+    // basePath: '/portfolio--main',
+
     images: {
+        // For static export (GitHub Pages), set to true:
+        // unoptimized: true,
+
         // Enable modern image formats for better compression
         formats: ['image/avif', 'image/webp'],
         // Allow remote images from picsum.photos
@@ -8,6 +17,11 @@ const nextConfig = {
             {
                 protocol: 'https',
                 hostname: 'picsum.photos',
+                pathname: '/**',
+            },
+            {
+                protocol: 'https',
+                hostname: 'www.transparenttextures.com',
                 pathname: '/**',
             },
         ],

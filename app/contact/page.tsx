@@ -79,16 +79,16 @@ export default function ContactPage() {
                                 whileHover={{ scale: 1.05, y: -5 }}
                                 whileTap={{ scale: 0.95 }}
                                 transition={{ duration: 0.3, delay: index * 0.1 }}
-                                className="group relative p-8 manga-panel hover:bg-foreground hover:text-white transition-all duration-300 overflow-hidden cursor-target flex flex-col items-center text-center gap-4"
+                                className="group relative p-8 manga-panel hover:bg-foreground transition-all duration-300 overflow-hidden cursor-target flex flex-col items-center text-center gap-4"
                             >
-                                <div className="p-4 border-2 border-foreground rounded-full group-hover:border-white group-hover:bg-background/10 transition-colors">
-                                    <Icon className="w-8 h-8 text-foreground group-hover:text-white" />
+                                <div className="p-4 border-2 border-foreground rounded-full group-hover:border-background group-hover:bg-background/10 transition-colors">
+                                    <Icon className="w-8 h-8 text-foreground group-hover:text-background" />
                                 </div>
                                 <div>
-                                    <h3 className="text-xl font-mono font-bold text-foreground group-hover:text-white transition-colors uppercase">
+                                    <h3 className="text-xl font-mono font-bold text-foreground group-hover:text-background transition-colors uppercase">
                                         {link.name}
                                     </h3>
-                                    <p className="text-sm text-foreground/60 mt-1 group-hover:text-white/80 font-serif">
+                                    <p className="text-sm text-foreground/60 mt-1 group-hover:text-background/80 font-serif">
                                         {link.description}
                                     </p>
                                 </div>

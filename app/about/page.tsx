@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Star, Heart, Disc, ChevronDown, ChevronUp, MapPin, Link as LinkIcon, Calendar, BookOpen, Tv } from 'lucide-react';
@@ -8,149 +8,155 @@ import { MusicPlayer } from '@/components/music-player';
 import { CenteredContainer } from '@/components/centered-container';
 import Image from 'next/image';
 
+// Static data moved outside component to prevent recreation on every render
+const favorites = [
+    {
+        label: "CINEMA",
+        title: "Dead Poets Society",
+        year: "1989",
+        image: "/images/dead-poets-society.jpg"
+    },
+    {
+        label: "CINEMA",
+        title: "Perfect Blue",
+        year: "1997",
+        image: "/images/perfect-blue.jpg"
+    },
+    {
+        label: "CINEMA",
+        title: "Good Will Hunting",
+        year: "1997",
+        image: "/images/good-will-hunting.jpg"
+    },
+    {
+        label: "CINEMA",
+        title: "Dune: Part Two",
+        year: "2024",
+        image: "/images/dune-2.jpg"
+    },
+];
+
+const manga = [
+    { title: "Vagabond", author: "Takehiko Inoue", image: "/images/Vagabond.jpg" },
+    { title: "The Climber", author: "Shin'ichi Sakamoto", image: "/images/The climber.webp" },
+    { title: "Berserk", author: "Kentaro Miura", image: "/images/berserk.jpg" },
+    { title: "Kingdom", author: "Yasuhisa Hara", image: "/images/Kingdom.jpg" },
+];
+
+const anime = [
+    { title: "Orb: On the Movements of the Earth", year: "2024", image: "/images/Orb.jpg" },
+    { title: "Vinland Saga", year: "2019", image: "/images/Vinland Saga.jpg" },
+    { title: "Neon Genesis Evangelion", year: "1995", image: "/images/evangelion.jpg" },
+    { title: "Hunter X Hunter", year: "2011", image: "/images/hunter-x-hunter.jpg" },
+];
+
+const tvShows = [
+    { title: "Mr Robot", year: "2015", image: "/images/mr-robot.jpg" },
+    { title: "Breaking Bad", year: "2008", image: "/images/Breaking bad.jpg" },
+    { title: "Better Call Saul", year: "2015", image: "/images/better call saul.jpg" },
+    { title: "The Office", year: "2005", image: "/images/the office.jpg" },
+];
+
+const artists = [
+    { name: "Radiohead", album: "OK Computer", image: "/images/radiohead.jpg" },
+    { name: "The Strokes", album: "Is This It", image: "/images/the strokes.jpg" },
+    { name: "Masayoshi Takanaka", album: "All Of Me", image: "/images/Masayoshi Takanaka.jpg" },
+    { name: "Pink Floyd", album: "Dark Side of the Moon", image: "/images/Pink Floyd.jpg" },
+];
+
+const hobbies = [
+    { title: "Writing", description: "Essays & Stories", image: "/images/writing.jpg" },
+    { title: "Photography", description: "Street & Nature", image: "/images/photography.jpg" },
+    { title: "Art", description: "Drawing & Design", image: "/images/art.jpg" },
+    { title: "Tech", description: "Building & Tinkering", image: "/images/tech.jpg" },
+];
+
+const milestones = [
+    {
+        year: "2025",
+        title: "Founder and President of a Startup",
+        rating: 5,
+        review: "Trying to build something new and foster a better computer science community in my college.",
+        loved: true
+    },
+    {
+        year: "2024",
+        title: "First Hackathon",
+        rating: 4.5,
+        review: "Saw the inspiring CS community for the first time ever and built one of the coolest projects I ever have.",
+        loved: true
+    },
+    {
+        year: "2023",
+        title: "CS Undergrad",
+        rating: 4,
+        review: "Enrolled into my CS undergrad Bachelors and started my formal journey into computer science.",
+        loved: false
+    },
+    {
+        year: "2022",
+        title: "Small Internships",
+        rating: 3.5,
+        review: "Helping out local companies to practice more experience before college.",
+        loved: false
+    },
+    {
+        year: "2021",
+        title: "Coding Adventure",
+        rating: 3,
+        review: "Learning how to code finally through online tutorials and high school classes.",
+        loved: false
+    },
+    {
+        year: "2016",
+        title: "Android app modding",
+        rating: 4,
+        review: "Getting back into CS as an android app modder and helping random indie devs.",
+        loved: false
+    },
+    {
+        year: "2013",
+        title: "Android Rooting and ROM ricing",
+        rating: 5,
+        review: "Learning to root android devices to install custom operating skins of android to really get more into CS.",
+        loved: true
+    },
+    {
+        year: "2012",
+        title: "C++ snake game",
+        rating: 5,
+        review: "Made my first project ever and got into programming.",
+        loved: true
+    }
+];
+
+// Helper function moved outside component
+const renderStars = (rating: number) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 !== 0;
+    const stars = [];
+
+    for (let i = 0; i < fullStars; i++) {
+        stars.push(<Star key={`full-${i}`} className="w-3 h-3 fill-foreground text-foreground dark:fill-foreground" />);
+    }
+    if (hasHalfStar) {
+        stars.push(<Star key="half" className="w-3 h-3 fill-foreground/50 text-foreground" />);
+    }
+    const emptyStars = 5 - Math.ceil(rating);
+    for (let i = 0; i < emptyStars; i++) {
+        stars.push(<Star key={`empty-${i}`} className="w-3 h-3 text-foreground/20" />);
+    }
+    return stars;
+};
+
 export default function About() {
     const [showAllMovies, setShowAllMovies] = useState(false);
 
-    const favorites = [
-        {
-            label: "CINEMA",
-            title: "Dead Poets Society",
-            year: "1989",
-            image: "/images/dead-poets-society.jpg"
-        },
-        {
-            label: "CINEMA",
-            title: "Perfect Blue",
-            year: "1997",
-            image: "/images/perfect-blue.jpg"
-        },
-        {
-            label: "CINEMA",
-            title: "Good Will Hunting",
-            year: "1997",
-            image: "/images/good-will-hunting.jpg"
-        },
-        {
-            label: "CINEMA",
-            title: "Dune: Part Two",
-            year: "2024",
-            image: "/images/dune-2.jpg"
-        },
-    ];
-
-    const manga = [
-        { title: "Vagabond", author: "Takehiko Inoue", image: "/images/Vagabond.jpg" },
-        { title: "The Climber", author: "Shin'ichi Sakamoto", image: "/images/The climber.webp" },
-        { title: "Berserk", author: "Kentaro Miura", image: "/images/berserk.jpg" },
-        { title: "Kingdom", author: "Yasuhisa Hara", image: "/images/Kingdom.jpg" },
-    ];
-
-    const anime = [
-        { title: "Orb: On the Movements of the Earth", year: "2024", image: "/images/Orb.jpg" },
-        { title: "Vinland Saga", year: "2019", image: "/images/Vinland Saga.jpg" },
-        { title: "Neon Genesis Evangelion", year: "1995", image: "/images/evangelion.jpg" },
-        { title: "Hunter X Hunter", year: "2011", image: "/images/hunter-x-hunter.jpg" },
-    ];
-
-    const tvShows = [
-        { title: "Mr Robot", year: "2015", image: "/images/mr-robot.jpg" },
-        { title: "Breaking Bad", year: "2008", image: "/images/Breaking bad.jpg" },
-        { title: "Better Call Saul", year: "2015", image: "/images/better call saul.jpg" },
-        { title: "The Office", year: "2005", image: "/images/the office.jpg" },
-    ];
-
-    const artists = [
-        { name: "Radiohead", album: "OK Computer", image: "/images/radiohead.jpg" },
-        { name: "The Strokes", album: "Is This It", image: "/images/the strokes.jpg" },
-        { name: "Masayoshi Takanaka", album: "All Of Me", image: "/images/Masayoshi Takanaka.jpg" },
-        { name: "Pink Floyd", album: "Dark Side of the Moon", image: "/images/Pink Floyd.jpg" },
-    ];
-
-    const hobbies = [
-        { title: "Writing", description: "Essays & Stories", image: "/images/writing.jpg" },
-        { title: "Photography", description: "Street & Nature", image: "/images/photography.jpg" },
-        { title: "Art", description: "Drawing & Design", image: "/images/art.jpg" },
-        { title: "Tech", description: "Building & Tinkering", image: "/images/tech.jpg" },
-    ];
-
-    const milestones = [
-        {
-            year: "2025",
-            title: "Founder and President of a Startup",
-            rating: 5,
-            review: "Trying to build something new and foster a better computer science community in my college.",
-            loved: true
-        },
-        {
-            year: "2024",
-            title: "First Hackathon",
-            rating: 4.5,
-            review: "Saw the inspiring CS community for the first time ever and built one of the coolest projects I ever have.",
-            loved: true
-        },
-        {
-            year: "2023",
-            title: "CS Undergrad",
-            rating: 4,
-            review: "Enrolled into my CS undergrad Bachelors and started my formal journey into computer science.",
-            loved: false
-        },
-        {
-            year: "2022",
-            title: "Small Internships",
-            rating: 3.5,
-            review: "Helping out local companies to practice more experience before college.",
-            loved: false
-        },
-        {
-            year: "2021",
-            title: "Coding Adventure",
-            rating: 3,
-            review: "Learning how to code finally through online tutorials and high school classes.",
-            loved: false
-        },
-        {
-            year: "2016",
-            title: "Android app modding",
-            rating: 4,
-            review: "Getting back into CS as an android app modder and helping random indie devs.",
-            loved: false
-        },
-        {
-            year: "2013",
-            title: "Android Rooting and ROM ricing",
-            rating: 5,
-            review: "Learning to root android devices to install custom operating skins of android to really get more into CS.",
-            loved: true
-        },
-        {
-            year: "2012",
-            title: "C++ snake game",
-            rating: 5,
-            review: "Made my first project ever and got into programming.",
-            loved: true
-        }
-    ];
-
-    const visibleMilestones = showAllMovies ? milestones : milestones.slice(0, 4);
-
-    const renderStars = (rating: number) => {
-        const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 !== 0;
-        const stars = [];
-
-        for (let i = 0; i < fullStars; i++) {
-            stars.push(<Star key={`full-${i}`} className="w-3 h-3 fill-black text-foreground" />);
-        }
-        if (hasHalfStar) {
-            stars.push(<Star key="half" className="w-3 h-3 fill-black/50 text-foreground" />);
-        }
-        const emptyStars = 5 - Math.ceil(rating);
-        for (let i = 0; i < emptyStars; i++) {
-            stars.push(<Star key={`empty-${i}`} className="w-3 h-3 text-foreground/20" />);
-        }
-        return stars;
-    };
+    // Memoize the visible milestones based on showAllMovies state
+    const visibleMilestones = useMemo(
+        () => showAllMovies ? milestones : milestones.slice(0, 4),
+        [showAllMovies]
+    );
 
     return (
         <div className="min-h-screen pt-24 pb-12 relative overflow-hidden bg-background text-foreground selection:bg-foreground selection:text-background">
@@ -230,8 +236,8 @@ export default function About() {
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                                    <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
-                                    <span className="text-white/70 text-xs font-mono">{item.description}</span>
+                                    <span className="text-white dark:text-black font-bold font-serif text-lg leading-tight">{item.title}</span>
+                                    <span className="text-white/70 dark:text-black/70 text-xs font-mono">{item.description}</span>
                                 </div>
                             </div>
                         ))}
@@ -264,8 +270,8 @@ export default function About() {
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                                    <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
-                                    <span className="text-white/70 text-xs font-mono">{item.year}</span>
+                                    <span className="text-white dark:text-black font-bold font-serif text-lg leading-tight">{item.title}</span>
+                                    <span className="text-white/70 dark:text-black/70 text-xs font-mono">{item.year}</span>
                                 </div>
                             </div>
                         ))}
@@ -298,8 +304,8 @@ export default function About() {
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                                    <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
-                                    <span className="text-white/70 text-xs font-mono">{item.author}</span>
+                                    <span className="text-white dark:text-black font-bold font-serif text-lg leading-tight">{item.title}</span>
+                                    <span className="text-white/70 dark:text-black/70 text-xs font-mono">{item.author}</span>
                                 </div>
                             </div>
                         ))}
@@ -332,8 +338,8 @@ export default function About() {
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                                    <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
-                                    <span className="text-white/70 text-xs font-mono">{item.year}</span>
+                                    <span className="text-white dark:text-black font-bold font-serif text-lg leading-tight">{item.title}</span>
+                                    <span className="text-white/70 dark:text-black/70 text-xs font-mono">{item.year}</span>
                                 </div>
                             </div>
                         ))}
@@ -366,8 +372,8 @@ export default function About() {
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                                    <span className="text-white font-bold font-serif text-lg leading-tight">{item.name}</span>
-                                    <span className="text-white/70 text-xs font-mono">{item.album}</span>
+                                    <span className="text-white dark:text-black font-bold font-serif text-lg leading-tight">{item.name}</span>
+                                    <span className="text-white/70 dark:text-black/70 text-xs font-mono">{item.album}</span>
                                 </div>
                             </div>
                         ))}
@@ -400,8 +406,8 @@ export default function About() {
                                     className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black dark:from-white via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex flex-col justify-end p-4">
-                                    <span className="text-white font-bold font-serif text-lg leading-tight">{item.title}</span>
-                                    <span className="text-white/70 text-xs font-mono">{item.year}</span>
+                                    <span className="text-white dark:text-black font-bold font-serif text-lg leading-tight">{item.title}</span>
+                                    <span className="text-white/70 dark:text-black/70 text-xs font-mono">{item.year}</span>
                                 </div>
                             </div>
                         ))}
