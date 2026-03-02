@@ -32,6 +32,13 @@ export default function LoadingScreen() {
     return (
         <div
             className={`loading-screen ${phase === "exit" ? "loading-screen--exit" : ""}`}
+            style={{
+                position: 'fixed',
+                inset: 0,
+                zIndex: 9999,
+                background: 'hsl(60 10% 96%)',
+                overflow: 'hidden',
+            }}
             onAnimationEnd={(e) => {
                 if (e.animationName === "pageTurnFade") {
                     setPhase("done");
