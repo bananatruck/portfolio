@@ -4,13 +4,10 @@ import { Providers } from "./providers";
 import dynamic from "next/dynamic";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import LoadingScreen from "@/components/LoadingScreen";
 import "./globals.css";
 
 const TargetCursor = dynamic(() => import("@/components/TargetCursor"), {
-    ssr: false,
-});
-
-const LoadingScreen = dynamic(() => import("@/components/LoadingScreen"), {
     ssr: false,
 });
 
