@@ -4,8 +4,13 @@ import { useState, useMemo, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
 import { Star, Heart, Disc, ChevronDown, ChevronUp, MapPin, Link as LinkIcon, Calendar, BookOpen, Tv } from 'lucide-react';
-import { MusicPlayer } from '@/components/music-player';
+import dynamic from "next/dynamic";
 import { CenteredContainer } from '@/components/centered-container';
+
+const MusicPlayer = dynamic(
+    () => import('@/components/music-player').then(mod => ({ default: mod.MusicPlayer })),
+    { ssr: false }
+);
 import Image from 'next/image';
 
 // Static data moved outside component to prevent recreation on every render

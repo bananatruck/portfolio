@@ -1,10 +1,18 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono } from "next/font/google";
 import { Providers } from "./providers";
+import dynamic from "next/dynamic";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
-import TargetCursor from "@/components/TargetCursor";
 import "./globals.css";
+
+const TargetCursor = dynamic(() => import("@/components/TargetCursor"), {
+    ssr: false,
+});
+
+const LoadingScreen = dynamic(() => import("@/components/LoadingScreen"), {
+    ssr: false,
+});
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const jetbrainsMono = JetBrains_Mono({
@@ -33,6 +41,7 @@ export default function RootLayout({
     return (
         <html lang="en" suppressHydrationWarning>
             <body className={`${inter.variable} ${jetbrainsMono.variable} font-sans antialiased bg-background text-foreground selection:bg-primary/20`}>
+                <LoadingScreen />
                 <TargetCursor
                     spinDuration={2}
                     hideDefaultCursor={true}

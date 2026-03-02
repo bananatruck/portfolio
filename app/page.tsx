@@ -8,7 +8,11 @@ import { FeaturedProjects } from '@/components/featured-projects';
 import { TechStack } from '@/components/tech-stack';
 import { CenteredContainer } from '@/components/centered-container';
 
-import Squares from '@/components/Squares';
+import dynamic from "next/dynamic";
+
+const Squares = dynamic(() => import('@/components/Squares'), {
+    ssr: false,
+});
 
 export default function Home() {
     return (

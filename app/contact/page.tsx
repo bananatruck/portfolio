@@ -32,7 +32,11 @@ const socialLinks = [
     },
 ];
 
-import Squares from '@/components/Squares';
+import dynamic from "next/dynamic";
+
+const Squares = dynamic(() => import('@/components/Squares'), {
+    ssr: false,
+});
 
 export default function ContactPage() {
     return (

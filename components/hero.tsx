@@ -1,5 +1,6 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Github, Linkedin, ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -7,13 +8,29 @@ import { TypingEffect } from "@/components/typing-effect";
 import { Button } from "@/components/ui/button";
 
 export function Hero() {
+    const [ready, setReady] = useState(false);
+
+    useEffect(() => {
+        // Listen for the loading screen completion event
+        const handler = () => setReady(true);
+        window.addEventListener("loadingComplete", handler);
+
+        // Fallback: if no loading screen (e.g. navigated from another page), start immediately
+        const fallback = setTimeout(() => setReady(true), 3200);
+
+        return () => {
+            window.removeEventListener("loadingComplete", handler);
+            clearTimeout(fallback);
+        };
+    }, []);
+
     return (
         <section className="container mx-auto px-6 py-12 lg:py-24 relative overflow-hidden bg-background">
             <div className="max-w-5xl flex flex-col lg:flex-row items-center gap-12">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
+                    animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                    transition={{ duration: 0.6 }}
                     className="space-y-8 relative z-10"
                 >
                     <h1 className="text-5xl sm:text-7xl lg:text-8xl font-bold tracking-tighter whitespace-nowrap">
@@ -21,14 +38,14 @@ export function Hero() {
                             Hi, I&apos;m
                         </span>
                         <span className="text-foreground font-black">
-                            <TypingEffect text="Keshav Jindal" />
+                            {ready && <TypingEffect text="Keshav Jindal" />}
                         </span>
                     </h1>
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.1 }}
+                        animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.5, delay: 0.15 }}
                         className="space-y-4"
                     >
                         <p className="text-xl sm:text-3xl text-foreground/70 font-light max-w-3xl leading-relaxed">
@@ -41,8 +58,8 @@ export function Hero() {
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.15 }}
+                        animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.5, delay: 0.2 }}
                         className="flex flex-col gap-2 text-sm font-mono text-foreground/70 pt-4"
                     >
                         <div className="flex items-center gap-2">
@@ -53,8 +70,8 @@ export function Hero() {
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.2 }}
+                        animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.5, delay: 0.25 }}
                         className="flex flex-wrap gap-6 pt-8"
                     >
                         <div className="flex gap-4">
@@ -69,8 +86,8 @@ export function Hero() {
 
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.5, delay: 0.3 }}
+                        animate={ready ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                        transition={{ duration: 0.5, delay: 0.35 }}
                         className="pt-12 border-t-2 border-foreground"
                     >
                         <div>
@@ -87,7 +104,7 @@ export function Hero() {
                 {/* Manga Portrait Background */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.8 }}
-                    animate={{ opacity: 1, scale: 1 }}
+                    animate={ready ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
                     className="hidden lg:flex flex-shrink-0 relative"
                 >
