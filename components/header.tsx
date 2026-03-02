@@ -9,7 +9,7 @@ import ThemeToggle from "./ThemeToggle";
 const navItems = [
     { name: 'home', href: '/', isDownload: false },
     { name: 'projects', href: '/projects', isDownload: false },
-    { name: 'resume', href: '/resume', isDownload: false },
+    { name: 'resume', href: '/keshav-jindal-resume.pdf', isDownload: true },
     { name: 'contact', href: '/contact', isDownload: false },
 ];
 
