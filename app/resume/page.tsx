@@ -179,7 +179,7 @@ export default function Resume() {
                     position: relative;
                     display: flex;
                     justify-content: center;
-                    padding: 24px 12px 48px;
+                    padding: 4px 0 0;
                     min-height: calc(100vh - 120px);
                     overflow: auto;
                     background: hsl(var(--background));
@@ -251,7 +251,6 @@ export default function Resume() {
                 .resume-paper-stack {
                     position: relative;
                     width: 100%;
-                    max-width: 1000px;
                 }
 
                 .resume-paper {
@@ -275,10 +274,7 @@ export default function Resume() {
                 .resume-pdf-frame {
                     position: relative;
                     width: 100%;
-                    border: 2px solid hsl(var(--foreground));
-                    box-shadow:
-                        0 2px 8px hsl(var(--foreground) / 0.1),
-                        0 8px 24px hsl(var(--foreground) / 0.06);
+                    border: none;
                     background: white;
                     transition: transform 0.3s ease;
                     aspect-ratio: 8.5 / 11;
