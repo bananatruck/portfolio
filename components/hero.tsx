@@ -11,12 +11,24 @@ export function Hero() {
     const [ready, setReady] = useState(false);
 
     useEffect(() => {
-        // Listen for the loading screen completion event
-        const handler = () => setReady(true);
+        // If loading screen already played this session, start immediately
+        if (sessionStorage.getItem("loadingDone")) {
+            setReady(true);
+            return;
+        }
+
+        // First visit: wait for loading screen completion event
+        const handler = () => {
+            sessionStorage.setItem("loadingDone", "1");
+            setReady(true);
+        };
         window.addEventListener("loadingComplete", handler);
 
-        // Fallback: if no loading screen (e.g. navigated from another page), start immediately
-        const fallback = setTimeout(() => setReady(true), 3200);
+        // Fallback in case event was missed (e.g. fast load)
+        const fallback = setTimeout(() => {
+            sessionStorage.setItem("loadingDone", "1");
+            setReady(true);
+        }, 3200);
 
         return () => {
             window.removeEventListener("loadingComplete", handler);

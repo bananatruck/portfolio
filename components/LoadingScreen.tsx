@@ -4,8 +4,16 @@ import { useState, useEffect } from "react";
 
 export default function LoadingScreen() {
     const [phase, setPhase] = useState<"loading" | "exit" | "done">("loading");
+    const [shouldShow, setShouldShow] = useState(true);
 
     useEffect(() => {
+        // If loading screen already played this session, skip entirely
+        if (sessionStorage.getItem("loadingDone")) {
+            setShouldShow(false);
+            window.dispatchEvent(new CustomEvent("loadingComplete"));
+            return;
+        }
+
         // Start exit after 2.4s
         const exitTimer = setTimeout(() => setPhase("exit"), 2400);
         return () => clearTimeout(exitTimer);
@@ -13,12 +21,13 @@ export default function LoadingScreen() {
 
     useEffect(() => {
         if (phase === "done") {
-            // Dispatch custom event so hero knows loading is complete
+            // Mark as played and dispatch event
+            sessionStorage.setItem("loadingDone", "1");
             window.dispatchEvent(new CustomEvent("loadingComplete"));
         }
     }, [phase]);
 
-    if (phase === "done") return null;
+    if (!shouldShow || phase === "done") return null;
 
     return (
         <div

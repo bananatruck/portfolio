@@ -1,8 +1,7 @@
 
 "use client";
 
-import { useMemo } from "react";
-import { motion } from "framer-motion";
+import { useMemo, useRef, useState, useCallback, useEffect } from "react";
 import {
     SiPython, SiC, SiCplusplus, SiTypescript, SiJavascript, SiRust, SiGo,
     SiFlask, SiJsonwebtokens, SiAmazonwebservices, SiAmazonec2, SiAmazons3,
@@ -21,7 +20,6 @@ interface TechItem {
     color: string;
 }
 
-// Moved outside component to prevent recreation on every render
 const techItems: TechItem[] = [
     // Languages
     { name: "Python", icon: SiPython, color: "#3776AB" },
@@ -65,18 +63,17 @@ const techItems: TechItem[] = [
     { name: "CI/CD", icon: TbInfinity, color: "#22c55e" },
 ];
 
-// Pre-compute row split
-const midPoint = Math.ceil(techItems.length / 2);
-const row1Items = techItems.slice(0, midPoint);
-const row2Items = techItems.slice(midPoint);
+// Split into 4 rows
+const rowCount = 4;
+const itemsPerRow = Math.ceil(techItems.length / rowCount);
+const rows = Array.from({ length: rowCount }, (_, i) =>
+    techItems.slice(i * itemsPerRow, (i + 1) * itemsPerRow)
+);
 
-// Helper function to create logo items - defined outside component
 const createLogoItem = (item: TechItem): LogoItem => ({
     node: (
-        <div className="flex items-center gap-2 px-4 py-2 bg-background border-2 border-foreground rounded-none shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:-translate-y-0.5 transition-all duration-300 cursor-default group">
-            <item.icon
-                className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform duration-300"
-            />
+        <div className="tech-chip">
+            <item.icon className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform duration-300" />
             <span className="text-sm font-mono font-bold text-foreground uppercase">
                 {item.name}
             </span>
@@ -86,9 +83,68 @@ const createLogoItem = (item: TechItem): LogoItem => ({
 });
 
 export function TechStack() {
-    // Memoize the logo items to prevent recreation on every render
-    const row1Logos = useMemo(() => row1Items.map(createLogoItem), []);
-    const row2Logos = useMemo(() => row2Items.map(createLogoItem), []);
+    const rowLogos = useMemo(() => rows.map(row => row.map(createLogoItem)), []);
+    const containerRef = useRef<HTMLDivElement>(null);
+    const [isDragging, setIsDragging] = useState(false);
+    const dragState = useRef({ startX: 0, scrollLeft: 0, velocityX: 0, lastX: 0, lastTime: 0 });
+    const rafRef = useRef<number | null>(null);
+
+    // Drag handlers for manual scrolling
+    const onPointerDown = useCallback((e: React.PointerEvent) => {
+        const el = containerRef.current;
+        if (!el) return;
+        setIsDragging(true);
+        el.setPointerCapture(e.pointerId);
+        dragState.current.startX = e.clientX;
+        dragState.current.scrollLeft = el.scrollLeft;
+        dragState.current.lastX = e.clientX;
+        dragState.current.lastTime = Date.now();
+        dragState.current.velocityX = 0;
+        if (rafRef.current) cancelAnimationFrame(rafRef.current);
+    }, []);
+
+    const onPointerMove = useCallback((e: React.PointerEvent) => {
+        if (!isDragging) return;
+        const el = containerRef.current;
+        if (!el) return;
+        const dx = e.clientX - dragState.current.startX;
+        el.scrollLeft = dragState.current.scrollLeft - dx;
+
+        const now = Date.now();
+        const dt = now - dragState.current.lastTime;
+        if (dt > 0) {
+            dragState.current.velocityX = (e.clientX - dragState.current.lastX) / dt;
+        }
+        dragState.current.lastX = e.clientX;
+        dragState.current.lastTime = now;
+    }, [isDragging]);
+
+    const onPointerUp = useCallback((e: React.PointerEvent) => {
+        if (!isDragging) return;
+        setIsDragging(false);
+        const el = containerRef.current;
+        if (!el) return;
+        el.releasePointerCapture(e.pointerId);
+
+        // Momentum scroll
+        let velocity = dragState.current.velocityX * 16; // scale up
+        const decelerate = () => {
+            velocity *= 0.95;
+            if (Math.abs(velocity) < 0.5) return;
+            el.scrollLeft -= velocity;
+            rafRef.current = requestAnimationFrame(decelerate);
+        };
+        decelerate();
+    }, [isDragging]);
+
+    // Cleanup
+    useEffect(() => {
+        return () => {
+            if (rafRef.current) cancelAnimationFrame(rafRef.current);
+        };
+    }, []);
+
+    const directions: Array<"left" | "right"> = ["left", "right", "left", "right"];
 
     return (
         <section className="w-full py-6 bg-background">
@@ -98,28 +154,87 @@ export function TechStack() {
                 </h2>
             </div>
 
-            <div className="relative w-full overflow-hidden flex flex-col gap-4">
-                <div className="absolute left-0 top-0 bottom-0 w-12 md:w-24 z-10 pointer-events-none bg-gradient-to-r from-background to-transparent" />
-                <div className="absolute right-0 top-0 bottom-0 w-12 md:w-24 z-10 pointer-events-none bg-gradient-to-l from-background to-transparent" />
+            <div
+                ref={containerRef}
+                className={`tech-stack-container ${isDragging ? "tech-stack-dragging" : ""}`}
+                onPointerDown={onPointerDown}
+                onPointerMove={onPointerMove}
+                onPointerUp={onPointerUp}
+                onPointerCancel={onPointerUp}
+            >
+                {/* Edge fades */}
+                <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 z-10 pointer-events-none bg-gradient-to-r from-background to-transparent" />
+                <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 z-10 pointer-events-none bg-gradient-to-l from-background to-transparent" />
 
-                <LogoLoop
-                    logos={row1Logos}
-                    direction="left"
-                    speed={4}
-                    gap={20}
-                    logoHeight={40}
-                    pauseOnHover={true}
-                />
-                <LogoLoop
-                    logos={row2Logos}
-                    direction="right"
-                    speed={4}
-                    gap={20}
-                    logoHeight={40}
-                    pauseOnHover={true}
-                />
+                <div className="flex flex-col gap-3">
+                    {rowLogos.map((logos, i) => (
+                        <LogoLoop
+                            key={i}
+                            logos={logos}
+                            direction={directions[i]}
+                            speed={50}
+                            gap={16}
+                            logoHeight={40}
+                            pauseOnHover={true}
+                        />
+                    ))}
+                </div>
             </div>
+
+            <style jsx>{`
+                .tech-stack-container {
+                    position: relative;
+                    width: 100%;
+                    overflow-x: auto;
+                    overflow-y: visible;
+                    padding: 6px 0;
+                    cursor: grab;
+                    -webkit-overflow-scrolling: touch;
+                    scrollbar-width: none;
+                    -ms-overflow-style: none;
+                }
+
+                .tech-stack-container::-webkit-scrollbar {
+                    display: none;
+                }
+
+                .tech-stack-dragging {
+                    cursor: grabbing;
+                    user-select: none;
+                }
+
+                :global(.tech-chip) {
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    padding: 6px 14px;
+                    background: hsl(var(--background));
+                    border: 2px solid hsl(var(--foreground));
+                    box-shadow: 2px 2px 0px 0px hsl(var(--foreground));
+                    transition: all 0.2s ease;
+                    cursor: default;
+                    white-space: nowrap;
+                }
+
+                :global(.tech-chip:hover) {
+                    box-shadow: 4px 4px 0px 0px hsl(var(--foreground));
+                    transform: translateY(-2px);
+                }
+
+                /* Ensure hover effects aren't clipped */
+                :global(.logoloop) {
+                    overflow: visible !important;
+                }
+                :global(.logoloop__list) {
+                    overflow: visible !important;
+                }
+                :global(.logoloop__item) {
+                    overflow: visible !important;
+                }
+                :global(.logoloop__track) {
+                    overflow: visible !important;
+                }
+            `}</style>
         </section>
     );
 }
-
