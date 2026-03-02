@@ -1,14 +1,14 @@
 "use client";
 
-import { useState, useRef, useCallback } from "react";
+import { useState, useRef, useCallback, useEffect } from "react";
 import { Download, ZoomIn, ZoomOut, FileText, Maximize2, Minimize2 } from "lucide-react";
 
-const PDF_URL = "/Keshav%20Jindal.pdf";
+const PDF_FILE = "keshav-jindal-resume.pdf";
 
 export default function Resume() {
     const [zoom, setZoom] = useState(100);
     const [isFullscreen, setIsFullscreen] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
+    const previewRef = useRef<HTMLDivElement>(null);
 
     const zoomIn = useCallback(() => setZoom(z => Math.min(z + 25, 200)), []);
     const zoomOut = useCallback(() => setZoom(z => Math.max(z - 25, 50)), []);
@@ -16,16 +16,20 @@ export default function Resume() {
 
     const toggleFullscreen = useCallback(() => {
         if (!document.fullscreenElement) {
-            containerRef.current?.requestFullscreen();
-            setIsFullscreen(true);
+            previewRef.current?.requestFullscreen();
         } else {
             document.exitFullscreen();
-            setIsFullscreen(false);
         }
     }, []);
 
+    useEffect(() => {
+        const handler = () => setIsFullscreen(!!document.fullscreenElement);
+        document.addEventListener("fullscreenchange", handler);
+        return () => document.removeEventListener("fullscreenchange", handler);
+    }, []);
+
     return (
-        <div ref={containerRef} className="resume-viewer min-h-screen pt-16 bg-background">
+        <div className="resume-viewer min-h-screen pt-16 bg-background">
             {/* Toolbar */}
             <div className="resume-toolbar">
                 <div className="resume-toolbar-inner">
@@ -58,15 +62,15 @@ export default function Resume() {
                     </div>
 
                     {/* Right: Download */}
-                    <a href={PDF_URL} download className="resume-download-btn group cursor-target">
+                    <a href={PDF_FILE} download className="resume-download-btn group cursor-target">
                         <Download className="w-4 h-4 group-hover:animate-bounce" />
                         <span className="hidden sm:inline font-mono text-xs font-bold uppercase">Download</span>
                     </a>
                 </div>
             </div>
 
-            {/* PDF Preview Area */}
-            <div className="resume-preview-area">
+            {/* PDF Preview Area — fullscreen targets this */}
+            <div ref={previewRef} className={`resume-preview-area ${isFullscreen ? "resume-fullscreen" : ""}`}>
                 {/* Manga corner brackets */}
                 <div className="resume-bracket resume-bracket-tl" />
                 <div className="resume-bracket resume-bracket-tr" />
@@ -87,7 +91,7 @@ export default function Resume() {
                         style={{ transform: `scale(${zoom / 100})`, transformOrigin: 'top center' }}
                     >
                         <iframe
-                            src={`${PDF_URL}#toolbar=0&navpanes=0&scrollbar=1`}
+                            src={`${PDF_FILE}#toolbar=0&navpanes=0&scrollbar=1`}
                             className="resume-iframe"
                             title="Resume Preview"
                         />
@@ -178,6 +182,27 @@ export default function Resume() {
                     padding: 24px 12px 48px;
                     min-height: calc(100vh - 120px);
                     overflow: auto;
+                    background: hsl(var(--background));
+                }
+
+                /* Fullscreen mode — fill entire screen */
+                .resume-fullscreen {
+                    padding: 16px;
+                    display: flex;
+                    align-items: flex-start;
+                    justify-content: center;
+                }
+
+                .resume-fullscreen .resume-paper-stack {
+                    max-width: 100%;
+                    height: 100%;
+                }
+
+                .resume-fullscreen .resume-pdf-frame {
+                    max-width: none;
+                    width: 100%;
+                    height: calc(100vh - 32px);
+                    aspect-ratio: unset;
                 }
 
                 .resume-halftone {
@@ -191,7 +216,7 @@ export default function Resume() {
 
                 /* Manga corner brackets */
                 .resume-bracket {
-                    position: fixed;
+                    position: absolute;
                     width: 24px;
                     height: 24px;
                     border-color: hsl(var(--foreground));
@@ -202,23 +227,23 @@ export default function Resume() {
                 }
 
                 .resume-bracket-tl {
-                    top: 80px;
-                    left: 12px;
+                    top: 8px;
+                    left: 8px;
                     border-width: 3px 0 0 3px;
                 }
                 .resume-bracket-tr {
-                    top: 80px;
-                    right: 12px;
+                    top: 8px;
+                    right: 8px;
                     border-width: 3px 3px 0 0;
                 }
                 .resume-bracket-bl {
-                    bottom: 12px;
-                    left: 12px;
+                    bottom: 8px;
+                    left: 8px;
                     border-width: 0 0 3px 3px;
                 }
                 .resume-bracket-br {
-                    bottom: 12px;
-                    right: 12px;
+                    bottom: 8px;
+                    right: 8px;
                     border-width: 0 3px 3px 0;
                 }
 
@@ -265,19 +290,6 @@ export default function Resume() {
                     height: 100%;
                     border: none;
                     display: block;
-                }
-
-                /* Fullscreen adjustments */
-                :global(.resume-viewer:fullscreen) .resume-toolbar {
-                    top: 0;
-                }
-
-                :global(.resume-viewer:fullscreen) .resume-bracket-tl {
-                    top: 60px;
-                }
-
-                :global(.resume-viewer:fullscreen) .resume-bracket-tr {
-                    top: 60px;
                 }
 
                 @media (max-width: 640px) {
