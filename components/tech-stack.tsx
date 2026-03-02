@@ -162,9 +162,7 @@ export function TechStack() {
                 onPointerUp={onPointerUp}
                 onPointerCancel={onPointerUp}
             >
-                {/* Edge fades */}
-                <div className="absolute left-0 top-0 bottom-0 w-8 md:w-16 z-10 pointer-events-none bg-gradient-to-r from-background to-transparent" />
-                <div className="absolute right-0 top-0 bottom-0 w-8 md:w-16 z-10 pointer-events-none bg-gradient-to-l from-background to-transparent" />
+
 
                 <div className="flex flex-col gap-3">
                     {rowLogos.map((logos, i) => (
@@ -172,7 +170,7 @@ export function TechStack() {
                             key={i}
                             logos={logos}
                             direction={directions[i]}
-                            speed={50}
+                            speed={25}
                             gap={16}
                             logoHeight={40}
                             pauseOnHover={true}
@@ -185,8 +183,7 @@ export function TechStack() {
                 .tech-stack-container {
                     position: relative;
                     width: 100%;
-                    overflow-x: auto;
-                    overflow-y: visible;
+                    overflow: hidden;
                     padding: 6px 0;
                     cursor: grab;
                     -webkit-overflow-scrolling: touch;
