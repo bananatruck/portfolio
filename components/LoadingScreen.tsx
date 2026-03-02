@@ -49,7 +49,7 @@ export default function LoadingScreen() {
             <div className="halftone-overlay" />
 
             {/* Central manga panel */}
-            <div className="manga-loading-panel">
+            <div className="manga-loading-panel" style={{ opacity: 0 }}>
                 <div className="panel-border" />
 
                 {/* KESH text — matches header font exactly */}

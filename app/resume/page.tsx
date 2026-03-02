@@ -3,7 +3,7 @@
 import { useState, useRef, useCallback } from "react";
 import { Download, ZoomIn, ZoomOut, FileText, Maximize2, Minimize2 } from "lucide-react";
 
-const PDF_URL = "/Keshav Jindal.pdf";
+const PDF_URL = "/Keshav%20Jindal.pdf";
 
 export default function Resume() {
     const [zoom, setZoom] = useState(100);
