@@ -16,39 +16,44 @@ export type Project = {
 
 const projects: Project[] = [
     {
-        title: "Barter",
-        description: "Skill exchange platform with real-time chat, AR navigation, and AI-enabled matching system.",
-        tags: ["React", "Flask", "Firebase", "SocketIO", "AR"],
-        link: "https://devpost.com",
-        github: "https://github.com/bananatruck/Barter",
+        title: "LaunchGuard",
+        description: "Local-first deployment intelligence platform. Audits security with Trivy/OSV-Scanner, simulates rootless Podman OCI sandboxes, and generates reviewable PRs. Verified 40/40 fixture suite.",
+        tags: ["Rust", "Podman", "OCI", "Security", "Trivy", "Tauri"],
+        github: "https://github.com/bananatruck/launchguard",
         featured: true
     },
     {
-        title: "FableFrog",
-        description: "Text-to-speech storytelling app built in 36h. Features RAFT prompts, kid-safe content filtering, and 20+ emotion parameters.",
-        tags: ["Python", "React Native", "OpenAI", "ElevenLabs"],
-        link: "https://devpost.com",
-        github: "https://github.com/bananatruck/FableFrog",
+        title: "DevFlow Agent",
+        description: "Agentic AI workflow automation turning feature requests into PR-ready code via a 4-step LangGraph cycle (Plan → Checklist → Execute → Summary) with AST tree-sitter parsing.",
+        tags: ["Python", "FastAPI", "Next.js", "LangGraph", "DeepSeek", "Docker"],
+        github: "https://github.com/bananatruck/devflow-agent",
         featured: true
     },
     {
-        title: "Cyno (Sitara)",
-        description: "AI Astrobuddy - an intelligent space companion that provides personalized astronomical insights and guidance.",
-        tags: ["Python", "OpenAI", "React", "Astronomy API"],
-        github: "https://github.com/bananatruck/Cyno",
+        title: "DocWeave",
+        description: "Policy-aware, distributed documentation crawler in Go with PostgreSQL SKIP LOCKED lease work queues for crash recovery, host rate limiting, & Grafana observability.",
+        tags: ["Go", "PostgreSQL", "Prometheus", "Grafana", "Docker", "SSE"],
+        github: "https://github.com/bananatruck/docweave",
         featured: true
     },
     {
-        title: "DevFlowAgent",
-        description: "Agentic AI workflow automation tool that helps automate steps in coding projects and streamline developer workflows.",
-        tags: ["Python", "LLMs", "Automation", "CLI"],
-        github: "https://github.com/bananatruck/DevFlow",
+        title: "Employmentmaxxing",
+        description: "Telemetry AI job command center scraping 100+ official tech company ATS APIs with active HTTP link verification, 7-factor Gemini resume match scoring, & Kanban tracking.",
+        tags: ["Python", "FastAPI", "Gemini AI", "SQLite", "BeautifulSoup4"],
+        github: "https://github.com/bananatruck/employmentmaxxing",
+        featured: true
+    },
+    {
+        title: "Hubris",
+        description: "Local-first activity, habit, and goal tracking monorepo featuring 2-second quick logging, GitHub-style heatmaps, & frequency scoring across Mobile and Chrome extension.",
+        tags: ["React Native", "Expo", "TypeScript", "SQLite", "Turborepo"],
+        github: "https://github.com/bananatruck/hubris",
         featured: true
     },
     {
         title: "JM Global Logistics",
-        description: "Full-stack company website for a logistics company with modern design and comprehensive service showcase.",
-        tags: ["Next.js", "TypeScript", "Tailwind", "Vercel"],
+        description: "Full-stack corporate freight logistics platform featuring a 5-page interactive flow, shipment tracking simulator, and container spec filter with imperial/metric conversions.",
+        tags: ["Next.js", "TypeScript", "Tailwind CSS", "Vite"],
         link: "https://jmgloballogistics.com",
         featured: true
     }

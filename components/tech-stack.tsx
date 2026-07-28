@@ -147,8 +147,14 @@ export function TechStack() {
     const directions: Array<"left" | "right"> = ["left", "right", "left", "right"];
 
     return (
-        <section className="w-full py-6 bg-background">
-            <div className="mb-4 text-center">
+        <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 bg-background relative overflow-hidden">
+            {/* Left Edge Disappearing Blur Fade */}
+            <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-background via-background/80 to-transparent z-20 pointer-events-none backdrop-blur-[1px]" />
+            
+            {/* Right Edge Disappearing Blur Fade */}
+            <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-background via-background/80 to-transparent z-20 pointer-events-none backdrop-blur-[1px]" />
+
+            <div className="mb-6 text-center">
                 <h2 className="text-xl md:text-2xl font-black mb-2 font-mono uppercase tracking-widest">
                     <span className="text-foreground border-b-2 border-foreground">Stack</span>
                 </h2>
@@ -156,14 +162,12 @@ export function TechStack() {
 
             <div
                 ref={containerRef}
-                className={`tech-stack-container ${isDragging ? "tech-stack-dragging" : ""}`}
+                className={`tech-stack-container w-full ${isDragging ? "tech-stack-dragging" : ""}`}
                 onPointerDown={onPointerDown}
                 onPointerMove={onPointerMove}
                 onPointerUp={onPointerUp}
                 onPointerCancel={onPointerUp}
             >
-
-
                 <div className="flex flex-col gap-3">
                     {rowLogos.map((logos, i) => (
                         <LogoLoop
@@ -178,6 +182,7 @@ export function TechStack() {
                     ))}
                 </div>
             </div>
+
 
             <style jsx>{`
                 .tech-stack-container {

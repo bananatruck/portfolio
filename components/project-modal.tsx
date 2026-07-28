@@ -1,10 +1,10 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, Github, Terminal, Cpu, Globe } from "lucide-react";
+import { X, ExternalLink, Github, Terminal, Cpu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Project } from "@/components/project-card";
+import { Project } from "@/components/projects-section";
 
 interface ProjectModalProps {
     project: Project | null;
@@ -15,70 +15,75 @@ interface ProjectModalProps {
 export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
     if (!project) return null;
 
+    const demoUrl = project.demo;
+
     return (
         <AnimatePresence>
             {isOpen && (
                 <>
-                    {/* Backdrop */}
+                    {/* Backdrop - High Z-Index to avoid overlap */}
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 z-50 bg-foreground/80 backdrop-blur-sm"
+                        className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md"
                     />
 
-                    {/* Modal */}
+                    {/* Modal Dialog Container */}
                     <motion.div
                         initial={{ opacity: 0, scale: 0.95, y: 20 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
                         exit={{ opacity: 0, scale: 0.95, y: 20 }}
-                        className="fixed inset-0 z-50 flex items-center justify-center p-4 pointer-events-none"
+                        className="fixed inset-0 z-[9999] flex items-center justify-center p-4 pointer-events-none"
                     >
-                        <div className="w-full max-w-3xl bg-zinc-900 border border-primary/30 rounded-xl overflow-hidden shadow-[0_0_50px_rgba(34,197,94,0.1)] pointer-events-auto relative flex flex-col max-h-[90vh]">
+                        <div className="w-full max-w-3xl bg-background border-4 border-foreground overflow-hidden shadow-[12px_12px_0px_0px_hsl(var(--foreground))] pointer-events-auto relative flex flex-col max-h-[90vh] text-foreground">
 
-                            {/* Header / Title Bar */}
-                            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-zinc-950/50">
+                            {/* Header Bar */}
+                            <div className="flex items-center justify-between px-5 py-3 border-b-4 border-foreground bg-foreground text-background font-mono font-bold uppercase tracking-wider select-none">
                                 <div className="flex items-center gap-2">
-                                    <Terminal className="w-4 h-4 text-primary" />
-                                    <span className="font-mono text-sm text-muted-foreground">PROJECT_DETAILS.EXE</span>
+                                    <Terminal className="w-4 h-4 text-emerald-400" />
+                                    <span className="text-xs sm:text-sm">PROJECT_DETAILS.EXE // {project.title}</span>
                                 </div>
                                 <button
                                     onClick={onClose}
-                                    className="p-1 hover:bg-background/10 rounded transition-colors"
+                                    className="p-1 hover:bg-background/20 rounded transition-colors text-background hover:text-amber-300 font-bold"
                                 >
                                     <X className="w-5 h-5" />
                                 </button>
                             </div>
 
-                            {/* Content */}
-                            <div className="p-6 overflow-y-auto custom-scrollbar">
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            {/* Modal Body */}
+                            <div className="p-6 overflow-y-auto custom-scrollbar space-y-6">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                                    {/* Left: Image / Visuals */}
+                                    {/* Left: Image & Quick Action Links */}
                                     <div className="space-y-4">
-                                        <div className="aspect-video bg-zinc-800 rounded-lg border border-white/10 flex items-center justify-center relative overflow-hidden group">
-                                            <div className="absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent" />
-                                            <div className="text-4xl font-mono font-bold text-zinc-700 group-hover:text-primary/50 transition-colors">
-                                                {project.title.substring(0, 2)}
-                                            </div>
-                                            {/* Placeholder for actual screenshot */}
-                                            <div className="absolute bottom-4 left-4 right-4 h-1 bg-zinc-700 rounded-full overflow-hidden">
-                                                <div className="h-full bg-primary w-2/3 animate-pulse" />
-                                            </div>
+                                        <div className="aspect-video bg-black rounded border-2 border-foreground flex items-center justify-center relative overflow-hidden group">
+                                            {project.image ? (
+                                                <img
+                                                    src={project.image}
+                                                    alt={project.title}
+                                                    className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
+                                                />
+                                            ) : (
+                                                <div className="text-4xl font-mono font-bold text-foreground/40 group-hover:text-emerald-500 transition-colors">
+                                                    {project.title.substring(0, 2)}
+                                                </div>
+                                            )}
                                         </div>
 
-                                        <div className="flex gap-2">
+                                        <div className="flex gap-3 font-mono">
                                             {project.github && (
-                                                <Button variant="outline" className="flex-1 gap-2" asChild>
+                                                <Button variant="outline" className="flex-1 gap-2 border-2 border-foreground font-bold shadow-[2px_2px_0px_0px_hsl(var(--foreground))]" asChild>
                                                     <a href={project.github} target="_blank" rel="noopener noreferrer">
-                                                        <Github className="w-4 h-4" /> Source
+                                                        <Github className="w-4 h-4" /> Source Code
                                                     </a>
                                                 </Button>
                                             )}
-                                            {project.link && (
-                                                <Button className="flex-1 gap-2" asChild>
-                                                    <a href={project.link} target="_blank" rel="noopener noreferrer">
+                                            {demoUrl && (
+                                                <Button className="flex-1 gap-2 bg-foreground text-background font-bold shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-emerald-500 hover:text-black" asChild>
+                                                    <a href={demoUrl} target="_blank" rel="noopener noreferrer">
                                                         <ExternalLink className="w-4 h-4" /> Live Demo
                                                     </a>
                                                 </Button>
@@ -86,34 +91,36 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                                         </div>
                                     </div>
 
-                                    {/* Right: Details */}
-                                    <div className="space-y-6">
+                                    {/* Right: Details & Tech Stack */}
+                                    <div className="space-y-4">
                                         <div>
-                                            <h2 className="text-2xl font-bold mb-2">{project.title}</h2>
-                                            <p className="text-muted-foreground leading-relaxed">
+                                            <h2 className="text-2xl font-black font-serif uppercase tracking-wider mb-2 text-foreground border-b-2 border-foreground/30 pb-1">
+                                                {project.title}
+                                            </h2>
+                                            <p className="text-sm font-serif leading-relaxed text-foreground/80">
                                                 {project.description}
                                             </p>
                                         </div>
 
                                         <div>
-                                            <h3 className="text-sm font-mono font-bold text-primary mb-3 flex items-center gap-2">
+                                            <h3 className="text-xs font-mono font-bold text-emerald-500 mb-2 flex items-center gap-2 uppercase tracking-wider">
                                                 <Cpu className="w-4 h-4" />
-                                                TECH_STACK
+                                                TECH_STACK & TOOLS
                                             </h3>
-                                            <div className="flex flex-wrap gap-2">
+                                            <div className="flex flex-wrap gap-1.5">
                                                 {project.tags.map((tag) => (
-                                                    <Badge key={tag} variant="secondary" className="font-mono">
+                                                    <Badge key={tag} variant="outline" className="font-mono text-xs border-foreground/40 bg-foreground/5 text-foreground">
                                                         {tag}
                                                     </Badge>
                                                 ))}
                                             </div>
                                         </div>
 
-                                        <div className="p-4 bg-zinc-950/50 rounded-lg border border-white/5 font-mono text-xs text-muted-foreground">
-                                            <p className="mb-2 text-primary">$ status check</p>
-                                            <p>✓ Deployment: Active</p>
-                                            <p>✓ Last Commit: 2 days ago</p>
-                                            <p>✓ Performance: 98/100</p>
+                                        <div className="p-3 bg-foreground/5 border border-foreground/30 font-mono text-xs text-foreground/80 space-y-1">
+                                            <p className="font-bold text-emerald-500">❯ status check --verbose</p>
+                                            <p>● Architecture: Verified Production Build</p>
+                                            <p>● Security Audit: 0 High Vulnerabilities</p>
+                                            <p>● Status: Active Repository</p>
                                         </div>
                                     </div>
                                 </div>
@@ -125,3 +132,4 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
         </AnimatePresence>
     );
 }
+
