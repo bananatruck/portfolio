@@ -160,20 +160,30 @@ export function AboutSection() {
 
     return (
         <div className="py-12 relative overflow-hidden bg-background text-foreground selection:bg-foreground selection:text-background">
-            {/* Ink wash background effect */}
-            <div className="absolute inset-0 pointer-events-none z-0 opacity-[0.03]" style={{ backgroundImage: 'url("https://www.transparenttextures.com/patterns/paper.png")' }}></div>
+            {/* Background image layer */}
+            <div
+                className="absolute inset-0 z-0 opacity-20 dark:opacity-10 grayscale dark:invert"
+                style={{
+                    backgroundImage: 'url("/images/projects.jpg")',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                }}
+            ></div>
+            {/* Subtle manga grid background */}
+            <div className="absolute inset-0 z-1 opacity-10 pointer-events-none dark:hidden" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
+            <div className="absolute inset-0 z-1 opacity-10 pointer-events-none hidden dark:block" style={{ backgroundImage: 'radial-gradient(#f5f5f0 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
 
-            <div className="max-w-6xl mx-auto px-4 sm:px-6">
+            <div className="max-w-4xl relative z-10 mx-auto px-4 sm:px-6">
                 {/* Profile Header - Manga Panel Style */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="flex flex-col md:flex-row gap-8 mb-16 items-start relative z-10 border-4 border-foreground p-6 bg-background shadow-[8px_8px_0px_0px_rgba(0,0,0,1)]"
+                    className="flex flex-col md:flex-row gap-6 mb-12 items-start relative z-10 border-3 border-foreground p-4 sm:p-5 bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
                 >
                     {/* Avatar Column */}
                     <div className="flex-shrink-0 mx-auto md:mx-0">
-                        <div className="w-40 h-40 border-4 border-foreground overflow-hidden relative grayscale contrast-125">
+                        <div className="w-28 h-28 sm:w-32 sm:h-32 border-3 border-foreground overflow-hidden relative grayscale contrast-125">
                             <Image
                                 src="/images/Mori pfp.jpg"
                                 alt="Kesh"
@@ -185,27 +195,27 @@ export function AboutSection() {
 
                     {/* Info Column */}
                     <div className="flex-grow text-center md:text-left">
-                        <div className="flex flex-col md:flex-row items-center md:items-end gap-4 mb-4 border-b-2 border-foreground pb-4">
-                            <h1 className="text-5xl font-black font-serif tracking-tighter uppercase">Kesh</h1>
+                        <div className="flex flex-col md:flex-row items-center md:items-end gap-3 mb-3 border-b-2 border-foreground pb-3">
+                            <h1 className="text-3xl sm:text-4xl font-black font-manhattan tracking-tighter uppercase">Kesh</h1>
                             <img
                                 src="/garchomp.gif"
                                 alt="Garchomp"
-                                className="w-10 h-10 mb-2 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
+                                className="w-8 h-8 mb-1 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
                             />
                         </div>
 
                         {/* Bio */}
-                        <div className="prose prose-p:text-foreground max-w-none mb-6 font-serif">
-                            <p className="text-lg leading-relaxed font-medium">
+                        <div className="prose prose-p:text-foreground max-w-none mb-4 font-serif">
+                            <p className="text-sm sm:text-base leading-relaxed font-medium">
                                 Creatively enriched software developer who tries to build <span className="font-black underline decoration-2 underline-offset-4">useful applications</span>.
                             </p>
-                            <div className="flex flex-wrap justify-center md:justify-start gap-6 mt-6 text-sm font-bold uppercase tracking-wider">
-                                <span className="flex items-center gap-2"><MapPin className="w-4 h-4" /> Long Beach, CA</span>
-                                <a href="https://letterboxd.com/TommyWiseauo/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:underline decoration-2 underline-offset-4"><Film className="w-4 h-4" /> Letterboxd</a>
-                                <a href="https://medium.com/@wanderingstoicist" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:underline decoration-2 underline-offset-4"><BookOpen className="w-4 h-4" /> Medium</a>
-                                <a href="https://myanimelist.net/profile/Kenshai" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:underline decoration-2 underline-offset-4"><Tv className="w-4 h-4" /> MyAnimeList</a>
-                                <span className="text-foreground/40 text-xs normal-case font-normal italic">"I use Arch btw"</span>
-                                <a href="https://play.pokemonshowdown.com/users/canihave5dollars" target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 hover:underline decoration-2 underline-offset-4">@canihave5dollars</a>
+                            <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4 text-xs font-bold uppercase tracking-wider">
+                                <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> Long Beach, CA</span>
+                                <a href="https://letterboxd.com/TommyWiseauo/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline decoration-2 underline-offset-4"><Film className="w-3.5 h-3.5" /> Letterboxd</a>
+                                <a href="https://medium.com/@wanderingstoicist" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline decoration-2 underline-offset-4"><BookOpen className="w-3.5 h-3.5" /> Medium</a>
+                                <a href="https://myanimelist.net/profile/Kenshai" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline decoration-2 underline-offset-4"><Tv className="w-3.5 h-3.5" /> MyAnimeList</a>
+                                <span className="text-foreground/40 text-[11px] normal-case font-normal italic">"I use Arch btw"</span>
+                                <a href="https://play.pokemonshowdown.com/users/canihave5dollars" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline decoration-2 underline-offset-4">@canihave5dollars</a>
                             </div>
                         </div>
                     </div>
@@ -219,7 +229,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-serif uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
                             Hobbies
                         </h2>
                         <span className="font-mono text-xs font-bold">ACTIVITIES</span>
@@ -253,7 +263,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-serif uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
                             Cinema
                         </h2>
                         <span className="font-mono text-xs font-bold">FAVORITES_COLLECTION</span>
@@ -287,7 +297,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-serif uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
                             Manga
                         </h2>
                         <span className="font-mono text-xs font-bold">READING_LIST</span>
@@ -321,7 +331,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-serif uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
                             Anime
                         </h2>
                         <span className="font-mono text-xs font-bold">WATCH_LIST</span>
@@ -355,7 +365,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-serif uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
                             Artists
                         </h2>
                         <span className="font-mono text-xs font-bold">PLAYLIST</span>
@@ -389,7 +399,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-serif uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
                             TV Shows
                         </h2>
                         <span className="font-mono text-xs font-bold">BINGE_LIST</span>
@@ -425,37 +435,37 @@ export function AboutSection() {
                         className="lg:col-span-2"
                     >
                         <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                            <h2 className="text-2xl font-black font-serif uppercase tracking-widest">
+                            <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
                                 Path
                             </h2>
                             <span className="font-mono text-xs font-bold">MILESTONES</span>
                         </div>
 
-                        <div className="space-y-6">
+                        <div className="space-y-4">
                             {visibleMilestones.map((item, index) => (
                                 <div
                                     key={index}
-                                    className="flex gap-6 p-6 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:shadow-[6px_6px_0px_0px_hsl(var(--foreground))] transition-all"
+                                    className="flex gap-4 p-4 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:shadow-[6px_6px_0px_0px_hsl(var(--foreground))] transition-all"
                                 >
-                                    <div className="flex-shrink-0 w-20 h-24 border-2 border-foreground flex items-center justify-center flex-col gap-1 bg-foreground text-background">
-                                        <span className="text-lg font-bold font-mono">{item.year}</span>
-                                        <Disc className="w-6 h-6" />
+                                    <div className="flex-shrink-0 w-16 h-20 border-2 border-foreground flex items-center justify-center flex-col gap-0.5 bg-foreground text-background">
+                                        <span className="text-sm font-bold font-mono">{item.year}</span>
+                                        <Disc className="w-5 h-5" />
                                     </div>
                                     <div className="flex-grow">
-                                        <div className="flex items-start justify-between mb-2">
-                                            <h3 className="font-bold text-xl font-serif uppercase tracking-wide">
+                                        <div className="flex items-start justify-between mb-1">
+                                            <h3 className="font-bold text-base sm:text-lg font-manhattan uppercase tracking-wide">
                                                 {item.title}
                                             </h3>
                                         </div>
-                                        <div className="flex items-center gap-2 mb-3">
+                                        <div className="flex items-center gap-2 mb-2">
                                             <div className="flex gap-0.5">
                                                 {renderStars(item.rating)}
                                             </div>
                                             {item.loved && (
-                                                <Heart className="w-4 h-4 fill-black text-foreground" />
+                                                <Heart className="w-3.5 h-3.5 fill-black text-foreground" />
                                             )}
                                         </div>
-                                        <p className="text-sm font-serif leading-relaxed text-foreground/80">{item.review}</p>
+                                        <p className="text-xs sm:text-sm font-serif leading-relaxed text-foreground/80">{item.review}</p>
                                     </div>
                                 </div>
                             ))}
@@ -481,7 +491,7 @@ export function AboutSection() {
                     >
                         <div className="mb-12">
                             <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                                <h2 className="text-xl font-black font-serif uppercase tracking-widest">
+                                <h2 className="text-xl font-black font-manhattan uppercase tracking-widest">
                                     On Repeat
                                 </h2>
                             </div>
@@ -491,7 +501,7 @@ export function AboutSection() {
                         </div>
 
                         <div className="p-6 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))]">
-                            <h3 className="text-xl font-black font-serif uppercase mb-4 border-b-2 border-foreground pb-2">Diary</h3>
+                            <h3 className="text-xl font-black font-manhattan uppercase mb-4 border-b-2 border-foreground pb-2">Diary</h3>
                             <div className="space-y-4 font-mono text-sm">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">This Year</span>

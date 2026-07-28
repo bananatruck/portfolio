@@ -141,7 +141,7 @@ export function MusicPlayer({ songIndex }: MusicPlayerProps) {
     const progress = duration > 0 ? (currentTime / duration) * 100 : 0;
 
     return (
-        <div className="p-2 sm:p-3 space-y-4 font-mono">
+        <div className="p-3 sm:p-4 space-y-4 font-mono">
             <audio
                 ref={audioRef}
                 src={`/music/${encodeURIComponent(currentSong.file)}`}
@@ -161,56 +161,49 @@ export function MusicPlayer({ songIndex }: MusicPlayerProps) {
                         </div>
                     </div>
                 </div>
-
-                {/* Animated Spectrum Equalizer Bars */}
-                <div className="flex items-end gap-1 h-5 px-1.5 border-l border-foreground/20">
-                    <span className={`w-1.5 bg-emerald-500 rounded-t transition-all duration-300 ${isPlaying ? 'h-5 animate-bounce' : 'h-1.5'}`} style={{ animationDelay: '0ms' }} />
-                    <span className={`w-1.5 bg-emerald-400 rounded-t transition-all duration-300 ${isPlaying ? 'h-3.5 animate-bounce' : 'h-1.5'}`} style={{ animationDelay: '150ms' }} />
-                    <span className={`w-1.5 bg-emerald-500 rounded-t transition-all duration-300 ${isPlaying ? 'h-5 animate-bounce' : 'h-1.5'}`} style={{ animationDelay: '300ms' }} />
-                    <span className={`w-1.5 bg-emerald-400 rounded-t transition-all duration-300 ${isPlaying ? 'h-2.5 animate-bounce' : 'h-1.5'}`} style={{ animationDelay: '75ms' }} />
-                </div>
             </div>
 
-            {/* Bigger Clickable Control Buttons Row */}
-            <div className="flex items-center justify-between gap-3 py-1">
-                <div className="flex items-center gap-2">
-                    {/* Previous Button */}
-                    <button
-                        onClick={handlePrev}
-                        title="Previous Track"
-                        className="p-2.5 border-2 border-foreground hover:bg-foreground hover:text-background transition-all text-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
-                    >
-                        <SkipBack className="w-4 h-4" />
-                    </button>
+            {/* Vertically Stretched Control Buttons & Timestamp Rows */}
+            <div className="flex flex-col gap-3 py-1">
+                {/* Control Buttons Centered */}
+                <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                        {/* Previous Button */}
+                        <button
+                            onClick={handlePrev}
+                            title="Previous Track"
+                            className="p-2 border-2 border-foreground hover:bg-foreground hover:text-background transition-all text-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
+                        >
+                            <SkipBack className="w-4 h-4" />
+                        </button>
 
-                    {/* Main Play/Pause Button - Bigger & Prominent */}
-                    <button
-                        onClick={togglePlay}
-                        disabled={hasError || isLoading}
-                        className="p-3.5 border-2 border-foreground bg-foreground text-background hover:bg-emerald-500 hover:border-emerald-500 hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[2px_2px_0px_0px_hsl(var(--foreground))]"
-                    >
-                        {isLoading ? (
-                            <div className="w-5 h-5 border-2 border-background border-t-transparent rounded-full animate-spin" />
-                        ) : hasError ? (
-                            <Music className="w-5 h-5" />
-                        ) : isPlaying ? (
-                            <Pause className="w-5 h-5" />
-                        ) : (
-                            <Play className="w-5 h-5 ml-0.5" />
-                        )}
-                    </button>
+                        {/* Main Play/Pause Button */}
+                        <button
+                            onClick={togglePlay}
+                            disabled={hasError || isLoading}
+                            className="p-3 border-2 border-foreground bg-foreground text-background hover:bg-emerald-500 hover:border-emerald-500 hover:text-black transition-all disabled:opacity-50 disabled:cursor-not-allowed shadow-[3px_3px_0px_0px_hsl(var(--foreground))] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_hsl(var(--foreground))]"
+                        >
+                            {isLoading ? (
+                                <div className="w-4 h-4 border-2 border-background border-t-transparent rounded-full animate-spin" />
+                            ) : hasError ? (
+                                <Music className="w-4 h-4" />
+                            ) : isPlaying ? (
+                                <Pause className="w-4 h-4" />
+                            ) : (
+                                <Play className="w-4 h-4 ml-0.5" />
+                            )}
+                        </button>
 
-                    {/* Next Button */}
-                    <button
-                        onClick={handleNext}
-                        title="Next Track"
-                        className="p-2.5 border-2 border-foreground hover:bg-foreground hover:text-background transition-all text-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
-                    >
-                        <SkipForward className="w-4 h-4" />
-                    </button>
-                </div>
+                        {/* Next Button */}
+                        <button
+                            onClick={handleNext}
+                            title="Next Track"
+                            className="p-2 border-2 border-foreground hover:bg-foreground hover:text-background transition-all text-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-none"
+                        >
+                            <SkipForward className="w-4 h-4" />
+                        </button>
+                    </div>
 
-                <div className="flex items-center gap-2">
                     <button
                         onClick={toggleMute}
                         title={isMuted ? "Unmute" : "Mute"}
@@ -218,13 +211,18 @@ export function MusicPlayer({ songIndex }: MusicPlayerProps) {
                     >
                         {isMuted ? <VolumeX className="w-4 h-4 text-rose-500" /> : <Volume2 className="w-4 h-4" />}
                     </button>
-                    <span className="text-xs text-emerald-500 font-mono font-bold tabular-nums">
+                </div>
+
+                {/* Dedicated Timestamp Row */}
+                <div className="flex items-center justify-between text-xs text-emerald-500 font-mono font-bold tabular-nums pt-1 border-t border-foreground/10">
+                    <span>TIMECODE</span>
+                    <span className="bg-emerald-500/10 px-2 py-0.5 border border-emerald-500/30">
                         {formatTime(currentTime)} / {formatTime(duration)}
                     </span>
                 </div>
             </div>
 
-            {/* Bigger Clickable Progress Bar */}
+            {/* Clickable Progress Bar */}
             <div
                 ref={progressBarRef}
                 onClick={handleSeek}

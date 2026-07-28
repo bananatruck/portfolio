@@ -73,8 +73,8 @@ const rows = Array.from({ length: rowCount }, (_, i) =>
 const createLogoItem = (item: TechItem): LogoItem => ({
     node: (
         <div className="tech-chip">
-            <item.icon className="w-5 h-5 text-foreground group-hover:scale-110 transition-transform duration-300" />
-            <span className="text-sm font-mono font-bold text-foreground uppercase">
+            <item.icon className="w-4 h-4 text-foreground group-hover:scale-110 transition-transform duration-300" />
+            <span className="text-xs font-mono font-bold text-foreground uppercase">
                 {item.name}
             </span>
         </div>
@@ -147,7 +147,7 @@ export function TechStack() {
     const directions: Array<"left" | "right"> = ["left", "right", "left", "right"];
 
     return (
-        <section className="w-full max-w-6xl mx-auto px-4 sm:px-6 py-8 bg-background relative overflow-hidden">
+        <section className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 bg-background relative overflow-hidden">
             {/* Left Edge Disappearing Blur Fade */}
             <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-background via-background/80 to-transparent z-20 pointer-events-none backdrop-blur-[1px]" />
             
@@ -168,15 +168,15 @@ export function TechStack() {
                 onPointerUp={onPointerUp}
                 onPointerCancel={onPointerUp}
             >
-                <div className="flex flex-col gap-3">
+                <div className="flex flex-col gap-2.5">
                     {rowLogos.map((logos, i) => (
                         <LogoLoop
                             key={i}
                             logos={logos}
                             direction={directions[i]}
                             speed={25}
-                            gap={16}
-                            logoHeight={40}
+                            gap={12}
+                            logoHeight={34}
                             pauseOnHover={true}
                         />
                     ))}
@@ -189,7 +189,7 @@ export function TechStack() {
                     position: relative;
                     width: 100%;
                     overflow: hidden;
-                    padding: 6px 0;
+                    padding: 4px 0;
                     cursor: grab;
                     -webkit-overflow-scrolling: touch;
                     scrollbar-width: none;
@@ -208,8 +208,8 @@ export function TechStack() {
                 :global(.tech-chip) {
                     display: flex;
                     align-items: center;
-                    gap: 8px;
-                    padding: 6px 14px;
+                    gap: 6px;
+                    padding: 4px 10px;
                     background: hsl(var(--background));
                     border: 2px solid hsl(var(--foreground));
                     box-shadow: 2px 2px 0px 0px hsl(var(--foreground));

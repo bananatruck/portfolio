@@ -251,7 +251,7 @@ export function ProjectsSection() {
             <div className="absolute inset-0 z-1 opacity-10 pointer-events-none dark:hidden" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
             <div className="absolute inset-0 z-1 opacity-10 pointer-events-none hidden dark:block" style={{ backgroundImage: 'radial-gradient(#f5f5f0 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
 
-            <div className="max-w-6xl relative z-10 mx-auto px-4 sm:px-6">
+            <div className="max-w-4xl relative z-10 mx-auto px-4 sm:px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -263,10 +263,10 @@ export function ProjectsSection() {
                             <span className="mr-2 text-emerald-400">●</span>
                             PROJECTS
                         </Badge>
-                        <h1 className="text-4xl md:text-5xl font-black mb-3 font-serif uppercase tracking-wider">
-                            <span className="text-foreground border-b-4 border-foreground">Featured Work</span>
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-2 font-manhattan uppercase tracking-wider">
+                            <span className="text-foreground border-b-3 border-foreground">Featured Work</span>
                         </h1>
-                        <p className="text-muted-foreground text-base sm:text-lg max-w-2xl font-mono mt-4 pt-1 mb-2">
+                        <p className="text-muted-foreground text-xs sm:text-sm max-w-xl font-mono mt-2 mb-1">
                             A collection of systems, tools, and experiments I&apos;ve engineered.
                         </p>
 

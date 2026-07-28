@@ -11,7 +11,7 @@ export function Footer() {
                 className="absolute inset-0 opacity-10 dark:opacity-5 pointer-events-none bg-bottom bg-no-repeat bg-cover dark:invert"
                 style={{ backgroundImage: 'url(/manga-mountains.jpg)' }}
             />
-            <div className="container mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
+            <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
                 <p className="text-sm text-foreground font-mono font-bold">
                     © {new Date().getFullYear()} <span className="text-foreground border-b-2 border-foreground">KESH</span>. All rights reserved.
                 </p>

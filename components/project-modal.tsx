@@ -94,7 +94,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                                     {/* Right: Details & Tech Stack */}
                                     <div className="space-y-4">
                                         <div>
-                                            <h2 className="text-2xl font-black font-serif uppercase tracking-wider mb-2 text-foreground border-b-2 border-foreground/30 pb-1">
+                                            <h2 className="text-2xl font-black font-manhattan uppercase tracking-wider mb-2 text-foreground border-b-2 border-foreground/30 pb-1">
                                                 {project.title}
                                             </h2>
                                             <p className="text-sm font-serif leading-relaxed text-foreground/80">

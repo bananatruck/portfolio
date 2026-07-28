@@ -18,7 +18,7 @@ export function Header() {
 
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/40">
-            <nav className="w-full max-w-6xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
+            <nav className="w-full max-w-4xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between">
 
                 {/* Logo/Name - Links to Hero */}
                 <Link
