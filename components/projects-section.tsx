@@ -263,7 +263,7 @@ export function ProjectsSection() {
                             <span className="mr-2 text-emerald-400">●</span>
                             PROJECTS
                         </Badge>
-                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-2 font-manhattan uppercase tracking-wider">
+                        <h1 className="text-2xl sm:text-3xl lg:text-4xl font-black mb-2 font-display uppercase tracking-wider">
                             <span className="text-foreground border-b-3 border-foreground">Featured Work</span>
                         </h1>
                         <p className="text-muted-foreground text-xs sm:text-sm max-w-xl font-mono mt-2 mb-1">

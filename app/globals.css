@@ -1,16 +1,6 @@
-@import url('https://fonts.googleapis.com/css2?family=Corben:wght@700;900&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,600;1,700&display=swap');
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-.font-corpta {
-  font-family: 'Corpta', 'Corben', 'Cormorant Garamond', Georgia, serif !important;
-}
-
-.font-manhattan {
-  font-family: 'Manhattan', 'Corben', 'Cormorant Garamond', Georgia, serif !important;
-}
 
 @layer base {
   :root {

@@ -56,7 +56,7 @@ export function ContactSection() {
                     transition={{ duration: 0.6 }}
                     className="text-center my-4 sm:my-6"
                 >
-                    <h1 className="text-2xl md:text-4xl font-black font-manhattan uppercase tracking-widest text-foreground">
+                    <h1 className="text-2xl md:text-4xl font-black font-display uppercase tracking-widest text-foreground">
                         <span className="text-foreground border-b-3 border-foreground pb-1.5">Contacts</span>
                     </h1>
                 </motion.div>

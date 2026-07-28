@@ -70,11 +70,11 @@ export function Hero() {
                     transition={{ duration: 0.5, delay: 0.1 }}
                     className="space-y-1.5 max-w-lg w-full"
                 >
-                    <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tighter font-manhattan uppercase leading-tight mb-1">
+                    <h1 className="text-2xl sm:text-4xl lg:text-5xl font-black tracking-tighter font-display uppercase leading-tight mb-1">
                         <span className="block text-foreground/60 text-[11px] sm:text-sm font-mono tracking-wider font-medium mb-0.5">
                             Hi, I&apos;m
                         </span>
-                        <span className="text-foreground border-b-2 sm:border-b-3 border-foreground pb-0.5 inline-block font-manhattan">
+                        <span className="text-foreground border-b-2 sm:border-b-3 border-foreground pb-0.5 inline-block font-display">
                             {ready ? <TypingEffect text="Keshav Jindal" /> : "Keshav Jindal"}
                         </span>
                     </h1>

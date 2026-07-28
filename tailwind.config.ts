@@ -49,6 +49,7 @@ const config: Config = {
             fontFamily: {
                 sans: ["var(--font-sans)"],
                 mono: ["var(--font-mono)"],
+                display: ["var(--font-display)", "var(--font-mono)", "ui-monospace", "monospace"],
             },
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

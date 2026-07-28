@@ -196,7 +196,7 @@ export function AboutSection() {
                     {/* Info Column */}
                     <div className="flex-grow text-center md:text-left">
                         <div className="flex flex-col md:flex-row items-center md:items-end gap-3 mb-3 border-b-2 border-foreground pb-3">
-                            <h1 className="text-3xl sm:text-4xl font-black font-manhattan tracking-tighter uppercase">Kesh</h1>
+                            <h1 className="text-3xl sm:text-4xl font-black font-display tracking-tighter uppercase">Kesh</h1>
                             <img
                                 src="/garchomp.gif"
                                 alt="Garchomp"
@@ -229,7 +229,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                             Hobbies
                         </h2>
                         <span className="font-mono text-xs font-bold">ACTIVITIES</span>
@@ -263,7 +263,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                             Cinema
                         </h2>
                         <span className="font-mono text-xs font-bold">FAVORITES_COLLECTION</span>
@@ -297,7 +297,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                             Manga
                         </h2>
                         <span className="font-mono text-xs font-bold">READING_LIST</span>
@@ -331,7 +331,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                             Anime
                         </h2>
                         <span className="font-mono text-xs font-bold">WATCH_LIST</span>
@@ -365,7 +365,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                             Artists
                         </h2>
                         <span className="font-mono text-xs font-bold">PLAYLIST</span>
@@ -399,7 +399,7 @@ export function AboutSection() {
                     className="mb-16 relative z-10"
                 >
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                        <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
+                        <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                             TV Shows
                         </h2>
                         <span className="font-mono text-xs font-bold">BINGE_LIST</span>
@@ -435,7 +435,7 @@ export function AboutSection() {
                         className="lg:col-span-2"
                     >
                         <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                            <h2 className="text-2xl font-black font-manhattan uppercase tracking-widest">
+                            <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                                 Path
                             </h2>
                             <span className="font-mono text-xs font-bold">MILESTONES</span>
@@ -453,7 +453,7 @@ export function AboutSection() {
                                     </div>
                                     <div className="flex-grow">
                                         <div className="flex items-start justify-between mb-1">
-                                            <h3 className="font-bold text-base sm:text-lg font-manhattan uppercase tracking-wide">
+                                            <h3 className="font-bold text-base sm:text-lg font-display uppercase tracking-wide">
                                                 {item.title}
                                             </h3>
                                         </div>
@@ -491,7 +491,7 @@ export function AboutSection() {
                     >
                         <div className="mb-12">
                             <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
-                                <h2 className="text-xl font-black font-manhattan uppercase tracking-widest">
+                                <h2 className="text-xl font-black font-display uppercase tracking-widest">
                                     On Repeat
                                 </h2>
                             </div>
@@ -501,7 +501,7 @@ export function AboutSection() {
                         </div>
 
                         <div className="p-6 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))]">
-                            <h3 className="text-xl font-black font-manhattan uppercase mb-4 border-b-2 border-foreground pb-2">Diary</h3>
+                            <h3 className="text-xl font-black font-display uppercase mb-4 border-b-2 border-foreground pb-2">Diary</h3>
                             <div className="space-y-4 font-mono text-sm">
                                 <div className="flex justify-between items-center">
                                     <span className="font-bold">This Year</span>
