@@ -92,7 +92,7 @@ export default function LoadingScreen() {
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    background: hsl(60 10% 96%);
+                    background: hsl(0 0% 5%);
                     overflow: hidden;
                 }
 

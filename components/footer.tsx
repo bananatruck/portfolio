@@ -9,7 +9,7 @@ export function Footer() {
             {/* Decorative manga mountain background */}
             <div
                 className="absolute inset-0 opacity-10 dark:opacity-5 pointer-events-none bg-bottom bg-no-repeat bg-cover dark:invert"
-                style={{ backgroundImage: 'url(/manga-mountains.jpg)' }}
+                style={{ backgroundImage: 'url(/manga-mountains.webp)' }}
             />
             <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
                 <p className="text-sm text-foreground font-mono font-bold">

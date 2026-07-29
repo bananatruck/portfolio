@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Github, Linkedin, ArrowUpRight, Terminal, Radio, Activity } from "lucide-react";
+import { Github, Linkedin, ArrowUpRight, Terminal, Radio, Activity, Download } from "lucide-react";
 import Link from "next/link";
 import { TypingEffect } from "@/components/typing-effect";
 import dynamic from "next/dynamic";
@@ -135,14 +135,22 @@ export function Hero() {
                                 </div>
                             </div>
 
-                            {/* Pixel Art Image Container */}
-                            <div className="relative aspect-[16/9] w-full max-h-[240px] sm:max-h-[280px] overflow-hidden bg-black flex items-center justify-center">
+                            {/* Pixel Art Image Container - Click to GitHub */}
+                            <Link
+                                href="https://github.com/bananatruck"
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                title="Open GitHub Profile"
+                                className="relative aspect-[16/9] w-full max-h-[240px] sm:max-h-[280px] overflow-hidden bg-black flex items-center justify-center group cursor-pointer block"
+                            >
                                 <img
-                                    src="/images/project-exe-hero.jpg"
-                                    alt="Project.exe Hero"
-                                    className="w-full h-full object-contain filter contrast-125 hover:scale-105 transition-transform duration-500"
+                                    src="/images/project-exe-hero.webp"
+                                    alt="Project.exe Hero - GitHub Profile"
+                                    loading="lazy"
+                                    decoding="async"
+                                    className="w-full h-full object-contain filter contrast-125 group-hover:scale-105 transition-transform duration-500"
                                 />
-                            </div>
+                            </Link>
                         </div>
                     </motion.div>
 
@@ -162,15 +170,15 @@ export function Hero() {
                         </div>
 
                         <div className="flex flex-col gap-0.5 pt-0.5">
-                            <Link
-                                href="https://github.com/bananatruck"
-                                target="_blank"
+                            <a
+                                href="/keshav-jindal-resume.pdf"
+                                download
                                 className="inline-flex items-center justify-between px-1.5 py-0.5 bg-foreground text-background text-[9px] font-bold uppercase border border-foreground hover:bg-emerald-500 hover:text-black transition-colors"
                             >
-                                <Github className="w-2.5 h-2.5" />
-                                <span>GitHub</span>
-                                <ArrowUpRight className="w-2.5 h-2.5" />
-                            </Link>
+                                <Download className="w-2.5 h-2.5" />
+                                <span>Metadata</span>
+                                <Download className="w-2.5 h-2.5" />
+                            </a>
 
                             <Link
                                 href="https://www.linkedin.com/in/keshavjindal04/"
@@ -196,15 +204,14 @@ export function Hero() {
                     transition={{ duration: 0.4, delay: 0.4 }}
                     className="flex xl:hidden items-center justify-center gap-3 pt-2"
                 >
-                    <Link
-                        href="https://github.com/bananatruck"
-                        target="_blank"
+                    <a
+                        href="/keshav-jindal-resume.pdf"
+                        download
                         className="inline-flex items-center gap-1.5 px-4 py-2 bg-foreground text-background font-mono text-xs font-bold uppercase tracking-wider border-2 border-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))] hover:bg-emerald-500 hover:text-black transition-all"
                     >
-                        <Github className="w-3.5 h-3.5" />
-                        <span>GitHub</span>
-                        <ArrowUpRight className="w-3.5 h-3.5" />
-                    </Link>
+                        <Download className="w-3.5 h-3.5" />
+                        <span>Metadata</span>
+                    </a>
 
                     <Link
                         href="https://www.linkedin.com/in/keshavjindal04/"

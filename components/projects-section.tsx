@@ -242,7 +242,7 @@ export function ProjectsSection() {
             <div
                 className="absolute inset-0 z-0 opacity-20 dark:opacity-10 grayscale dark:invert"
                 style={{
-                    backgroundImage: 'url("/images/projects.jpg")',
+                    backgroundImage: 'url("/images/projects.webp")',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}

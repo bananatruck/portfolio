@@ -16,61 +16,61 @@ const favorites = [
         label: "CINEMA",
         title: "Dead Poets Society",
         year: "1989",
-        image: "/images/dead-poets-society.jpg"
+        image: "/images/dead-poets-society.webp"
     },
     {
         label: "CINEMA",
         title: "Perfect Blue",
         year: "1997",
-        image: "/images/perfect-blue.jpg"
+        image: "/images/perfect-blue.webp"
     },
     {
         label: "CINEMA",
         title: "Good Will Hunting",
         year: "1997",
-        image: "/images/good-will-hunting.jpg"
+        image: "/images/good-will-hunting.webp"
     },
     {
         label: "CINEMA",
         title: "Dune: Part Two",
         year: "2024",
-        image: "/images/dune-2.jpg"
+        image: "/images/dune-2.webp"
     },
 ];
 
 const manga = [
-    { title: "Vagabond", author: "Takehiko Inoue", image: "/images/Vagabond.jpg" },
-    { title: "The Climber", author: "Shin'ichi Sakamoto", image: "/images/The climber.webp" },
-    { title: "Berserk", author: "Kentaro Miura", image: "/images/berserk.jpg" },
-    { title: "Kingdom", author: "Yasuhisa Hara", image: "/images/Kingdom.jpg" },
+    { title: "Vagabond", author: "Takehiko Inoue", image: "/images/Vagabond.webp" },
+    { title: "The Climber", author: "Shin'ichi Sakamoto", image: "/images/The-climber.webp" },
+    { title: "Berserk", author: "Kentaro Miura", image: "/images/berserk.webp" },
+    { title: "Kingdom", author: "Yasuhisa Hara", image: "/images/Kingdom.webp" },
 ];
 
 const anime = [
-    { title: "Orb: On the Movements of the Earth", year: "2024", image: "/images/Orb.jpg" },
-    { title: "Vinland Saga", year: "2019", image: "/images/Vinland Saga.jpg" },
-    { title: "Neon Genesis Evangelion", year: "1995", image: "/images/evangelion.jpg" },
-    { title: "Hunter X Hunter", year: "2011", image: "/images/hunter-x-hunter.jpg" },
+    { title: "Orb: On the Movements of the Earth", year: "2024", image: "/images/Orb.webp" },
+    { title: "Vinland Saga", year: "2019", image: "/images/Vinland-Saga.webp" },
+    { title: "Neon Genesis Evangelion", year: "1995", image: "/images/evangelion.webp" },
+    { title: "Hunter X Hunter", year: "2011", image: "/images/hunter-x-hunter.webp" },
 ];
 
 const tvShows = [
-    { title: "Mr Robot", year: "2015", image: "/images/mr-robot.jpg" },
-    { title: "Breaking Bad", year: "2008", image: "/images/Breaking bad.jpg" },
-    { title: "Better Call Saul", year: "2015", image: "/images/better call saul.jpg" },
-    { title: "The Office", year: "2005", image: "/images/the office.jpg" },
+    { title: "Mr Robot", year: "2015", image: "/images/mr-robot.webp" },
+    { title: "Breaking Bad", year: "2008", image: "/images/Breaking-bad.webp" },
+    { title: "Better Call Saul", year: "2015", image: "/images/better-call-saul.webp" },
+    { title: "The Office", year: "2005", image: "/images/the-office.webp" },
 ];
 
 const artists = [
-    { name: "Radiohead", album: "OK Computer", image: "/images/radiohead.jpg" },
-    { name: "The Strokes", album: "Is This It", image: "/images/the strokes.jpg" },
-    { name: "Masayoshi Takanaka", album: "All Of Me", image: "/images/Masayoshi Takanaka.jpg" },
-    { name: "Pink Floyd", album: "Dark Side of the Moon", image: "/images/Pink Floyd.jpg" },
+    { name: "Radiohead", album: "OK Computer", image: "/images/radiohead.webp" },
+    { name: "The Strokes", album: "Is This It", image: "/images/the-strokes.webp" },
+    { name: "Masayoshi Takanaka", album: "All Of Me", image: "/images/Masayoshi-Takanaka.webp" },
+    { name: "Pink Floyd", album: "Dark Side of the Moon", image: "/images/Pink-Floyd.webp" },
 ];
 
 const hobbies = [
-    { title: "Writing", description: "Essays & Stories", image: "/images/writing.jpg" },
-    { title: "Photography", description: "Street & Nature", image: "/images/photography.jpg" },
-    { title: "Art", description: "Drawing & Design", image: "/images/art.jpg" },
-    { title: "Tech", description: "Building & Tinkering", image: "/images/tech.jpg" },
+    { title: "Writing", description: "Essays & Stories", image: "/images/writing.webp" },
+    { title: "Photography", description: "Street & Nature", image: "/images/photography.webp" },
+    { title: "Art", description: "Drawing & Design", image: "/images/art.webp" },
+    { title: "Tech", description: "Building & Tinkering", image: "/images/tech.webp" },
 ];
 
 const milestones = [
@@ -164,7 +164,7 @@ export function AboutSection() {
             <div
                 className="absolute inset-0 z-0 opacity-20 dark:opacity-10 grayscale dark:invert"
                 style={{
-                    backgroundImage: 'url("/images/projects.jpg")',
+                    backgroundImage: 'url("/images/projects.webp")',
                     backgroundSize: 'cover',
                     backgroundPosition: 'center'
                 }}
@@ -179,13 +179,13 @@ export function AboutSection() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="flex flex-col md:flex-row gap-6 mb-12 items-start relative z-10 border-3 border-foreground p-4 sm:p-5 bg-background shadow-[6px_6px_0px_0px_rgba(0,0,0,1)]"
+                    className="flex flex-col md:flex-row gap-6 mb-12 items-start relative z-10 border-2 border-foreground p-5 sm:p-6 bg-background shadow-[6px_6px_0px_0px_hsl(var(--foreground))]"
                 >
                     {/* Avatar Column */}
                     <div className="flex-shrink-0 mx-auto md:mx-0">
-                        <div className="w-28 h-28 sm:w-32 sm:h-32 border-3 border-foreground overflow-hidden relative grayscale contrast-125">
+                        <div className="w-28 h-28 sm:w-32 sm:h-32 border-2 border-foreground overflow-hidden relative grayscale contrast-125 shadow-[3px_3px_0px_0px_hsl(var(--foreground))]">
                             <Image
-                                src="/images/Mori pfp.jpg"
+                                src="/images/Mori-pfp.webp"
                                 alt="Kesh"
                                 fill
                                 className="object-cover"
@@ -194,28 +194,33 @@ export function AboutSection() {
                     </div>
 
                     {/* Info Column */}
-                    <div className="flex-grow text-center md:text-left">
+                    <div className="flex-grow text-center md:text-left min-w-0 w-full">
                         <div className="flex flex-col md:flex-row items-center md:items-end gap-3 mb-3 border-b-2 border-foreground pb-3">
                             <h1 className="text-3xl sm:text-4xl font-black font-display tracking-tighter uppercase">Kesh</h1>
                             <img
                                 src="/garchomp.gif"
                                 alt="Garchomp"
+                                loading="lazy"
+                                decoding="async"
                                 className="w-8 h-8 mb-1 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
                             />
                         </div>
 
                         {/* Bio */}
-                        <div className="prose prose-p:text-foreground max-w-none mb-4 font-serif">
+                        <div className="prose prose-p:text-foreground max-w-none font-serif">
                             <p className="text-sm sm:text-base leading-relaxed font-medium">
                                 Creatively enriched software developer who tries to build <span className="font-black underline decoration-2 underline-offset-4">useful applications</span>.
                             </p>
-                            <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-4 text-xs font-bold uppercase tracking-wider">
-                                <span className="flex items-center gap-1.5"><MapPin className="w-3.5 h-3.5" /> Long Beach, CA</span>
-                                <a href="https://letterboxd.com/TommyWiseauo/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline decoration-2 underline-offset-4"><Film className="w-3.5 h-3.5" /> Letterboxd</a>
-                                <a href="https://medium.com/@wanderingstoicist" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline decoration-2 underline-offset-4"><BookOpen className="w-3.5 h-3.5" /> Medium</a>
-                                <a href="https://myanimelist.net/profile/Kenshai" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline decoration-2 underline-offset-4"><Tv className="w-3.5 h-3.5" /> MyAnimeList</a>
-                                <span className="text-foreground/40 text-[11px] normal-case font-normal italic">"I use Arch btw"</span>
-                                <a href="https://play.pokemonshowdown.com/users/canihave5dollars" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1.5 hover:underline decoration-2 underline-offset-4">@canihave5dollars</a>
+                            <div className="flex flex-wrap items-center justify-center md:justify-start gap-2.5 sm:gap-3.5 mt-3 text-[11px] sm:text-xs font-bold uppercase tracking-wider">
+                                <a href="https://letterboxd.com/TommyWiseauo/" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:underline decoration-2 underline-offset-4"><Film className="w-3.5 h-3.5" /> Letterboxd</a>
+                                <span className="text-foreground/40">•</span>
+                                <a href="https://medium.com/@wanderingstoicist" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:underline decoration-2 underline-offset-4"><BookOpen className="w-3.5 h-3.5" /> Medium</a>
+                                <span className="text-foreground/40">•</span>
+                                <a href="https://myanimelist.net/profile/Kenshai" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:underline decoration-2 underline-offset-4"><Tv className="w-3.5 h-3.5" /> MyAnimeList</a>
+                                <span className="text-foreground/40">•</span>
+                                <span className="text-foreground/50 text-[10px] normal-case font-normal italic">"I use Arch btw"</span>
+                                <span className="text-foreground/40">•</span>
+                                <a href="https://play.pokemonshowdown.com/users/canihave5dollars" target="_blank" rel="noopener noreferrer" className="flex items-center gap-1 hover:underline decoration-2 underline-offset-4">@canihave5dollars</a>
                             </div>
                         </div>
                     </div>

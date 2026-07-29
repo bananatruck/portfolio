@@ -38,7 +38,7 @@ export function ContactSection() {
             <div
                 className="absolute inset-0 z-0 opacity-15 dark:opacity-10 grayscale dark:invert"
                 style={{
-                    backgroundImage: 'url("/images/contact.jpg")',
+                    backgroundImage: 'url("/images/contact.webp")',
                     backgroundSize: 'cover',
                     backgroundPosition: 'top center'
                 }}
