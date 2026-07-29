@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
+import { Inter, JetBrains_Mono, Press_Start_2P, Space_Grotesk } from "next/font/google";
 import { Providers } from "./providers";
 import dynamic from "next/dynamic";
 import { Header } from "@/components/header";
@@ -20,6 +20,15 @@ const spaceGrotesk = Space_Grotesk({
     subsets: ["latin"],
     weight: ["500", "600", "700"],
     variable: "--font-display",
+});
+// Only the secret game uses this, so keep it out of the preload set — it's
+// fetched if and when the easter egg is opened.
+const pressStart = Press_Start_2P({
+    subsets: ["latin"],
+    weight: "400",
+    variable: "--font-pixel",
+    display: "swap",
+    preload: false,
 });
 
 export const metadata: Metadata = {
@@ -42,7 +51,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="en" className="dark" suppressHydrationWarning>
-            <body className={`${inter.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable} font-sans antialiased bg-background text-foreground selection:bg-primary/20`}>
+            <body className={`${inter.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable} ${pressStart.variable} font-sans antialiased bg-background text-foreground selection:bg-primary/20`}>
                 <LoadingScreen />
                 <TargetCursor
                     spinDuration={2}

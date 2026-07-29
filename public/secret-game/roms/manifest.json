@@ -1,0 +1,12 @@
+{
+  "roms": [
+    {
+      "file": "pokemon-unbound.zip",
+      "label": "Pokemon Unbound"
+    },
+    {
+      "file": "pokemon-firered.zip",
+      "label": "Pokemon FireRed"
+    }
+  ]
+}

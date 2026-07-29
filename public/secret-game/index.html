@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Secret Game</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body,
+        #game {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        body {
+            overflow: hidden;
+            background: #000;
+        }
+
+        #boot-error {
+            display: none;
+            position: absolute;
+            inset: 0;
+            place-content: center;
+            padding: 32px;
+            color: #f5f5f0;
+            background: #000;
+            font: 12px/1.9 ui-monospace, "Courier New", monospace;
+            text-align: center;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        #boot-error.visible {
+            display: grid;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="game"></div>
+    <div id="boot-error" role="alert"></div>
+
+    <script>
+        (function () {
+            "use strict";
+
+            // The parent passes the ROM in the hash rather than the query string so
+            // that a blob: URL survives without a server ever seeing it.
+            var params = new URLSearchParams(window.location.hash.slice(1));
+            var romUrl = params.get("rom");
+            var romName = params.get("name") || "Secret Game";
+
+            function fail(message) {
+                var el = document.getElementById("boot-error");
+                el.textContent = message;
+                el.classList.add("visible");
+            }
+
+            if (!romUrl) {
+                fail("No cartridge inserted.");
+                return;
+            }
+
+            // EmulatorJS keys saves and save states off the game id, so derive a
+            // stable one per ROM. Without this every game shares one save slot.
+            var gameId = 0;
+            for (var i = 0; i < romName.length; i++) {
+                gameId = (gameId * 31 + romName.charCodeAt(i)) >>> 0;
+            }
+
+            window.EJS_player = "#game";
+            window.EJS_core = "gba";
+            window.EJS_gameName = romName;
+            window.EJS_gameID = gameId;
+            window.EJS_gameUrl = romUrl;
+            window.EJS_pathtodata = "https://cdn.emulatorjs.org/4.2.3/data/";
+            window.EJS_startOnLoaded = true;
+            window.EJS_color = "#f5f5f0";
+            window.EJS_alignStartButton = "center";
+
+            // GitHub Pages can't send the COOP/COEP headers SharedArrayBuffer needs,
+            // so the threaded core would fail to start. mGBA is fine single-threaded.
+            window.EJS_threads = false;
+
+            // The GBA core runs without a BIOS. Drop one in and uncomment to use it.
+            // window.EJS_biosUrl = "gba_bios.bin";
+
+            // Deliberately no "emulator ready" signal back to the parent: if
+            // autoplay is blocked EmulatorJS waits on its own Play button, so
+            // gating the boot animation on a start event could cover the very
+            // button the user needs to press. The parent reveals on a timer.
+
+            // Escape pressed inside the iframe never reaches the parent document,
+            // so forward it up to close the overlay.
+            window.addEventListener("keydown", function (event) {
+                if (event.key === "Escape") {
+                    window.parent.postMessage({ type: "secret-game:close" }, window.location.origin);
+                }
+            });
+
+            var loader = document.createElement("script");
+            loader.src = window.EJS_pathtodata + "loader.js";
+            loader.onerror = function () {
+                fail("Could not reach the emulator. Check your connection.");
+            };
+            document.body.appendChild(loader);
+        })();
+    </script>
+</body>
+
+</html>

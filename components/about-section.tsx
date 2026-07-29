@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import { Star, Heart, Disc, ChevronDown, ChevronUp, MapPin, BookOpen, Tv, Film } from 'lucide-react';
 import dynamic from "next/dynamic";
 import Image from 'next/image';
+import { GarchompTrigger } from '@/components/secret-game/garchomp-trigger';
 
 const MusicPlayer = dynamic(
     () => import('@/components/music-player').then(mod => ({ default: mod.MusicPlayer })),
@@ -197,13 +198,7 @@ export function AboutSection() {
                     <div className="flex-grow text-center md:text-left min-w-0 w-full">
                         <div className="flex flex-col md:flex-row items-center md:items-end gap-3 mb-3 border-b-2 border-foreground pb-3">
                             <h1 className="text-3xl sm:text-4xl font-black font-display tracking-tighter uppercase">Kesh</h1>
-                            <img
-                                src="/garchomp.gif"
-                                alt="Garchomp"
-                                loading="lazy"
-                                decoding="async"
-                                className="w-8 h-8 mb-1 grayscale hover:grayscale-0 transition-all duration-300 cursor-pointer"
-                            />
+                            <GarchompTrigger />
                         </div>
 
                         {/* Bio */}

@@ -12,6 +12,14 @@ dist/
 # Large audio files (use MP3 instead for web)
 *.flac
 
+# ROMs — never commit these to a public repo.
+# Matches both ./roms and ./public/secret-game/roms.
+*.gba
+*.gbc
+*.gb
+*.sav
+*.srm
+
 # Testing
 coverage/
 
