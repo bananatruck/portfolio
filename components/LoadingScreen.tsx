@@ -27,6 +27,20 @@ export default function LoadingScreen() {
         }
     }, [phase]);
 
+    // Belt and braces for the exit. This overlay is fixed, full-screen and at
+    // z-index 9999, so for as long as it's mounted nothing else on the page can
+    // be clicked — and the only thing that unmounts it is an animationend event.
+    // Phones drop that event routinely: background the tab during the 2.4s
+    // intro, or come back to a throttled one, and the animation never runs to
+    // completion, leaving the whole site covered by an invisible sheet.
+    useEffect(() => {
+        if (phase !== "exit") return;
+        // Comfortably longer than the 0.6s pageTurnFade, so this only ever fires
+        // when the event itself went missing.
+        const timer = setTimeout(() => setPhase("done"), 1200);
+        return () => clearTimeout(timer);
+    }, [phase]);
+
     if (!shouldShow || phase === "done") return null;
 
     return (
@@ -309,6 +323,11 @@ export default function LoadingScreen() {
                 /* ── Exit: Subtle manga page fade ── */
                 .loading-screen--exit {
                     animation: pageTurnFade 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+                    /* Set here rather than only in the keyframe: the page should
+                       take clicks the moment it starts fading, and this still
+                       holds if the animation is throttled and never reaches
+                       100%. */
+                    pointer-events: none;
                 }
 
                 @keyframes pageTurnFade {
