@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { Star, Heart, Disc, ChevronDown, ChevronUp, MapPin, BookOpen, Tv, Film } from 'lucide-react';
 import dynamic from "next/dynamic";
 import Image from 'next/image';
 import { GarchompTrigger } from '@/components/secret-game/garchomp-trigger';
+import { PokeballHint } from '@/components/secret-game/pokeball-hint';
 
 const MusicPlayer = dynamic(
     () => import('@/components/music-player').then(mod => ({ default: mod.MusicPlayer })),
@@ -153,6 +154,9 @@ const renderStars = (rating: number) => {
 
 export function AboutSection() {
     const [showAllMovies, setShowAllMovies] = useState(false);
+    // Watched by the pokeball hint, which only shows itself while this section
+    // is the one you're looking at.
+    const sectionRef = useRef<HTMLDivElement>(null);
 
     const visibleMilestones = useMemo(
         () => showAllMovies ? milestones : milestones.slice(0, 4),
@@ -160,7 +164,7 @@ export function AboutSection() {
     );
 
     return (
-        <div className="py-12 relative overflow-hidden bg-background text-foreground selection:bg-foreground selection:text-background">
+        <div ref={sectionRef} className="py-12 relative overflow-hidden bg-background text-foreground selection:bg-foreground selection:text-background">
             {/* Background image layer */}
             <div
                 className="absolute inset-0 z-0 opacity-20 dark:opacity-10 grayscale dark:invert"
@@ -520,6 +524,8 @@ export function AboutSection() {
                     </motion.div>
                 </div>
             </div>
+
+            <PokeballHint sectionRef={sectionRef} />
         </div>
     );
 }

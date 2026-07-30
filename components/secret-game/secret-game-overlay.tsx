@@ -3,32 +3,58 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { getBasePath } from "./base-path";
-import { PixelBackArrow, PixelCartridge, PixelPokeball, PixelSadFace } from "./pixel-icons";
+import { BootAnimation, pickBootKind } from "./boot-animations";
+import { useEmulatorBridge } from "./emulator-bridge";
+import { GbaShell } from "./gba-shell";
+import { Leaderboard } from "./leaderboard";
+import { PixelBackArrow, PixelCartridge, PixelSadFace } from "./pixel-icons";
+import { usePlaytime } from "./playtime";
+import { ShareProgress } from "./share-progress";
 import "./secret-game.css";
 
-/** How long the boot sequence runs before the emulator is revealed. */
-const BOOT_DURATION_MS = 2600;
+/** The boot animation always gets to play through, even on a fast core. */
+const BOOT_MIN_MS = 3400;
+/** ...but a core that never reports in shouldn't trap anyone behind it. */
+const BOOT_MAX_MS = 14000;
+/** Matches the boot screen's fade-out in CSS. */
+const BOOT_EXIT_MS = 420;
+
+const DEFAULT_VOLUME = 0.5;
 
 type Rom = { file: string; label: string };
 type Cartridge = { url: string; label: string; isObjectUrl: boolean };
+type Panel = "cartridges" | "leaderboard" | "share" | null;
 
 export default function SecretGameOverlay({ onClose }: { onClose: () => void }) {
     const [booting, setBooting] = useState(true);
-    const [menuOpen, setMenuOpen] = useState(false);
+    const [bootLeaving, setBootLeaving] = useState(false);
+    const [panel, setPanel] = useState<Panel>(null);
     const [roms, setRoms] = useState<Rom[]>([]);
     const [cartridge, setCartridge] = useState<Cartridge | null>(null);
     // Distinguishes "no ROMs bundled" from "haven't looked yet", so the empty
     // state can't flash while the manifest is still in flight.
     const [manifestLoaded, setManifestLoaded] = useState(false);
 
+    const [muted, setMuted] = useState(false);
+    const [fastForward, setFastForward] = useState(false);
+    const [shot, setShot] = useState<string | null>(null);
+    const [flash, setFlash] = useState<string | null>(null);
+
     const fileInputRef = useRef<HTMLInputElement>(null);
-    const frameRef = useRef<HTMLIFrameElement>(null);
     const backRef = useRef<HTMLButtonElement>(null);
     // Tracks the object URL currently handed to the iframe so it can be revoked
     // when it's replaced or the overlay closes.
     const objectUrlRef = useRef<string | null>(null);
 
     const basePath = useMemo(getBasePath, []);
+    // Chosen once, on mount: FireRed the first time anyone opens this, random
+    // after that. Re-rolling on a re-render would restart the animation.
+    const bootKind = useMemo(pickBootKind, []);
+
+    const emulator = useEmulatorBridge();
+    const { frameRef, status } = emulator;
+    const live = !booting && status === "running";
+    const playtimeMs = usePlaytime(live);
 
     const insertCartridge = useCallback((next: Cartridge) => {
         // Revoking outside the state updater keeps the updater pure — React
@@ -38,7 +64,7 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         objectUrlRef.current = next.isObjectUrl ? next.url : null;
 
         setCartridge(next);
-        setMenuOpen(false);
+        setPanel(null);
     }, []);
 
     // Load whichever ROMs were bundled at build time. In a public deploy the
@@ -94,10 +120,37 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         };
     }, []);
 
+    // The boot screen clears once the core has reported in and the animation has
+    // had its full run — whichever is later. The cap covers a core that never
+    // starts at all, so the shell stays reachable.
+    const openedAt = useRef(Date.now());
+
     useEffect(() => {
-        const timer = window.setTimeout(() => setBooting(false), BOOT_DURATION_MS);
-        return () => window.clearTimeout(timer);
-    }, []);
+        let exitTimer: number;
+
+        const leave = () => {
+            setBootLeaving(true);
+            exitTimer = window.setTimeout(() => setBooting(false), BOOT_EXIT_MS);
+        };
+
+        // Measured from when the overlay opened, not from when this effect last
+        // ran — otherwise a core that reports in early would restart the clock
+        // and hold the animation for another full BOOT_MIN_MS.
+        const elapsed = Date.now() - openedAt.current;
+        const minTimer = window.setTimeout(
+            () => {
+                if (status === "running") leave();
+            },
+            Math.max(0, BOOT_MIN_MS - elapsed),
+        );
+        const capTimer = window.setTimeout(leave, Math.max(0, BOOT_MAX_MS - elapsed));
+
+        return () => {
+            window.clearTimeout(minTimer);
+            window.clearTimeout(capTimer);
+            window.clearTimeout(exitTimer);
+        };
+    }, [status]);
 
     // Move focus onto the back button once the boot sequence clears, so keyboard
     // and screen-reader users land somewhere useful rather than back at the top
@@ -107,30 +160,31 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     }, [booting]);
 
     useEffect(() => {
-        // Escape typed while focus is inside the iframe never reaches this
-        // document, so the emulator page forwards it back up.
-        const onMessage = (event: MessageEvent) => {
-            if (event.origin !== window.location.origin) return;
-            if (event.source !== frameRef.current?.contentWindow) return;
-            if (event.data?.type === "secret-game:close") onClose();
-        };
-
         const onKeyDown = (event: KeyboardEvent) => {
             if (event.key !== "Escape") return;
-            if (menuOpen) {
-                setMenuOpen(false);
+            if (panel) {
+                setPanel(null);
                 return;
             }
             onClose();
         };
 
-        window.addEventListener("message", onMessage);
         document.addEventListener("keydown", onKeyDown);
-        return () => {
-            window.removeEventListener("message", onMessage);
-            document.removeEventListener("keydown", onKeyDown);
+        return () => document.removeEventListener("keydown", onKeyDown);
+    }, [onClose, panel]);
+
+    // Escape typed while focus is inside the iframe never reaches this document,
+    // so the emulator page forwards it back up.
+    useEffect(() => {
+        const onMessage = (event: MessageEvent) => {
+            if (event.origin !== window.location.origin) return;
+            if (event.source !== frameRef.current?.contentWindow) return;
+            if (event.data?.type === "sg:close") onClose();
         };
-    }, [menuOpen, onClose]);
+
+        window.addEventListener("message", onMessage);
+        return () => window.removeEventListener("message", onMessage);
+    }, [frameRef, onClose]);
 
     // Release the picked file's object URL on unmount. Removing the iframe is
     // what actually tears the emulator down.
@@ -140,6 +194,24 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         },
         [],
     );
+
+    // The core comes up at its own default volume, so push ours once it's live
+    // and whenever it's toggled after that.
+    useEffect(() => {
+        if (!live) return;
+        emulator.volume(muted ? 0 : DEFAULT_VOLUME);
+    }, [emulator, live, muted]);
+
+    useEffect(() => {
+        if (!live) return;
+        emulator.fastForward(fastForward);
+    }, [emulator, fastForward, live]);
+
+    // A short confirmation over the screen, the way the games acknowledge a save.
+    const say = useCallback((message: string) => {
+        setFlash(message);
+        window.setTimeout(() => setFlash((current) => (current === message ? null : current)), 1600);
+    }, []);
 
     const onFileChosen = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -153,32 +225,117 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         });
     };
 
-    // Directory form rather than /index.html: some static hosts 301 the explicit
-    // filename, and a redirect is a poor thing to put in front of a blob: URL
-    // that only exists in this tab.
+    const openShare = async () => {
+        setShot(null);
+        setPanel("share");
+        setShot(await emulator.screenshot());
+    };
+
+    // Explicit /index.html rather than the directory form. `next dev` serves
+    // files out of public/ without resolving a directory index, so the bare
+    // folder 308s to a 404 and the emulator never loads locally. Static hosts
+    // serve the filename directly, and the one or two that prettify it into the
+    // directory form carry the fragment across the redirect — so the blob: URL
+    // in the hash survives either way.
     const frameSrc = cartridge
-        ? `${basePath}/secret-game/#rom=${encodeURIComponent(
+        ? `${basePath}/secret-game/index.html#rom=${encodeURIComponent(
               cartridge.url,
           )}&name=${encodeURIComponent(cartridge.label)}`
         : null;
 
+    const gameLabel = cartridge?.label ?? "No cartridge";
+
+    // Defined once and rendered twice: floating over the console on desktop, and
+    // inside the menu in portrait, where there's no room to float anything.
+    const functionButtons = (
+        <>
+            <button
+                type="button"
+                className="sg-fn"
+                data-on={fastForward}
+                disabled={!live}
+                onClick={() => setFastForward((on) => !on)}
+            >
+                FF<span className="sg-fn-key">SPACE</span>
+            </button>
+            <button
+                type="button"
+                className="sg-fn"
+                data-on={muted}
+                disabled={!live}
+                onClick={() => setMuted((on) => !on)}
+            >
+                {muted ? "UNMUTE" : "MUTE"}
+                <span className="sg-fn-key">M</span>
+            </button>
+            <button
+                type="button"
+                className="sg-fn"
+                disabled={!live}
+                onClick={() => {
+                    emulator.saveState();
+                    say("Progress saved.");
+                }}
+            >
+                SAVE
+            </button>
+            <button
+                type="button"
+                className="sg-fn"
+                disabled={!live}
+                onClick={() => {
+                    emulator.loadState();
+                    say("State loaded.");
+                }}
+            >
+                LOAD
+            </button>
+            <button
+                type="button"
+                className="sg-fn"
+                disabled={!live}
+                onClick={() => {
+                    emulator.reset();
+                    say("Rebooting...");
+                }}
+            >
+                RESET
+            </button>
+            <button type="button" className="sg-fn" disabled={!live} onClick={() => void openShare()}>
+                SEND KESH
+            </button>
+            <button
+                type="button"
+                className="sg-fn"
+                onClick={() => setPanel((open) => (open === "leaderboard" ? null : "leaderboard"))}
+            >
+                RANKS
+            </button>
+        </>
+    );
+
     return createPortal(
         <div className="sg-overlay" role="dialog" aria-modal="true" aria-label="Secret game">
-            {frameSrc ? (
-                <iframe
-                    // Re-keying on the ROM forces a fresh document, which is the
-                    // cleanest way to shut down one emulator and start another.
-                    key={frameSrc}
-                    ref={frameRef}
-                    src={frameSrc}
-                    title="Game Boy Advance emulator"
-                    allow="autoplay; fullscreen; gamepad"
-                    className={`sg-frame${booting ? "" : " sg-visible"}`}
-                />
-            ) : null}
+            <GbaShell
+                frameRef={frameRef}
+                frameSrc={frameSrc}
+                live={live}
+                press={emulator.press}
+                onFastForward={setFastForward}
+                onToggleMute={() => setMuted((on) => !on)}
+                onMenu={() => setPanel((open) => (open === "cartridges" ? null : "cartridges"))}
+                screenOverlay={
+                    <>
+                        {booting && frameSrc ? (
+                            <BootAnimation kind={bootKind} leaving={bootLeaving} />
+                        ) : null}
+                        {flash ? <p className="sg-flash">{flash}</p> : null}
+                    </>
+                }
+            />
 
-            {!frameSrc && !booting && manifestLoaded ? (
-                <div className="sg-boot">
+            {!frameSrc && manifestLoaded ? (
+                <div className="sg-empty">
                     <PixelCartridge size={72} />
                     <p className="sg-menu-title" style={{ margin: 0 }}>
                         No cartridge inserted
@@ -193,15 +350,10 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                 </div>
             ) : null}
 
-            {booting ? (
-                <div className="sg-boot">
-                    <PixelPokeball size={96} className="sg-boot-ball" />
-                    <p className="sg-boot-title">GARCHOMP OS 8</p>
-                    <div className="sg-boot-bar">
-                        <div className="sg-boot-bar-fill" />
-                    </div>
-                    <p className="sg-boot-hint">Now loading</p>
-                </div>
+            {status === "error" && emulator.error ? (
+                <p className="sg-error" role="alert">
+                    {emulator.error}
+                </p>
             ) : null}
 
             <div className="sg-scanlines" />
@@ -224,16 +376,37 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                 <button
                     type="button"
                     className="sg-btn"
-                    onClick={() => setMenuOpen((open) => !open)}
+                    onClick={() => setPanel((open) => (open === "cartridges" ? null : "cartridges"))}
                     aria-label="Change cartridge"
-                    aria-expanded={menuOpen}
+                    aria-expanded={panel === "cartridges"}
                 >
                     <PixelCartridge size={24} />
                 </button>
             </div>
 
-            {menuOpen ? (
+            <div className="sg-functions" role="group" aria-label="Emulator functions">
+                {functionButtons}
+            </div>
+
+            <a
+                className="sg-more"
+                // No trailing slash: a static export writes this as
+                // blog/pokemon-rom-hacks.html, and the slashed form would send
+                // GitHub Pages looking for a directory index that isn't there.
+                href={`${basePath}/blog/pokemon-rom-hacks`}
+                target="_blank"
+                rel="noopener noreferrer"
+            >
+                <span className="sg-more-top">Like this?</span>
+                <span className="sg-more-bottom">THERES MORE!</span>
+            </a>
+
+            {panel === "cartridges" ? (
                 <div className="sg-menu">
+                    <div className="sg-menu-functions" role="group" aria-label="Emulator functions">
+                        {functionButtons}
+                    </div>
+
                     <p className="sg-menu-title">Select cartridge</p>
 
                     {roms.map((rom) => {
@@ -267,6 +440,23 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                         Your file is read in the browser and never uploaded.
                     </p>
                 </div>
+            ) : null}
+
+            {panel === "leaderboard" ? (
+                <Leaderboard
+                    playtimeMs={playtimeMs}
+                    gameLabel={gameLabel}
+                    onClose={() => setPanel(null)}
+                />
+            ) : null}
+
+            {panel === "share" ? (
+                <ShareProgress
+                    shot={shot}
+                    gameLabel={gameLabel}
+                    playtimeMs={playtimeMs}
+                    onClose={() => setPanel(null)}
+                />
             ) : null}
 
             <input

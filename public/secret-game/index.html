@@ -25,6 +25,29 @@
             background: #000;
         }
 
+        /* The parent draws the whole console — skin, buttons, function row — so
+           every piece of EmulatorJS chrome is hidden here and driven over
+           postMessage instead. Set as !important because EmulatorJS writes some
+           of these inline as it builds its UI. */
+        .ejs_menu_bar,
+        .ejs_context_menu,
+        .ejs_virtualGamepad_parent,
+        .ejs_volume_parent,
+        .ejs_settings_parent,
+        /* The hamburger EmulatorJS adds on touch devices to open its own
+           on-screen gamepad. It sits in the top-right of the picture, which on a
+           phone is right over the game. */
+        .ejs_virtualGamepad_open {
+            display: none !important;
+        }
+
+        /* Nearest-neighbour, so 240x160 blows up to crisp pixels rather than the
+           blurry bilinear default. */
+        canvas.ejs_canvas {
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+        }
+
         #boot-error {
             display: none;
             position: absolute;
@@ -59,10 +82,17 @@
             var romUrl = params.get("rom");
             var romName = params.get("name") || "Secret Game";
 
+            var parentOrigin = window.location.origin;
+
+            function post(message) {
+                window.parent.postMessage(message, parentOrigin);
+            }
+
             function fail(message) {
                 var el = document.getElementById("boot-error");
                 el.textContent = message;
                 el.classList.add("visible");
+                post({ type: "sg:error", message: message });
             }
 
             if (!romUrl) {
@@ -94,16 +124,134 @@
             // The GBA core runs without a BIOS. Drop one in and uncomment to use it.
             // window.EJS_biosUrl = "gba_bios.bin";
 
-            // Deliberately no "emulator ready" signal back to the parent: if
-            // autoplay is blocked EmulatorJS waits on its own Play button, so
-            // gating the boot animation on a start event could cover the very
-            // button the user needs to press. The parent reveals on a timer.
+            // Every control surface belongs to the parent, so switch off the UI
+            // EmulatorJS would otherwise build for itself.
+            window.EJS_Buttons = {
+                playPause: false, restart: false, mute: false, volume: false,
+                volumeSlider: false, settings: false, fullscreen: false,
+                saveState: false, loadState: false, screenRecord: false,
+                gamepad: false, cheat: false, screenshot: false, cacheManager: false,
+                saveSavFiles: false, loadSavFiles: false, quickSave: false,
+                quickLoad: false, contextMenu: false, netplay: false,
+                diskButton: false, exitEmulation: false,
+            };
+            window.EJS_hideSettings = true;
+            // Stops EmulatorJS focusing its own container on start. Keyboard is
+            // handled entirely by the parent — it owns the labelled buttons and has
+            // to light them up — and forwarded in as simulateInput. EmulatorJS's own
+            // key bindings are left at their defaults but never fire, because the
+            // parent's iframe is pointer-inert and out of the tab order, so focus
+            // never reaches this document to double-handle a press.
+            window.EJS_noAutoFocus = true;
+
+            window.EJS_onGameStart = function () {
+                post({ type: "sg:started" });
+            };
 
             // Escape pressed inside the iframe never reaches the parent document,
             // so forward it up to close the overlay.
             window.addEventListener("keydown", function (event) {
-                if (event.key === "Escape") {
-                    window.parent.postMessage({ type: "secret-game:close" }, window.location.origin);
+                if (event.key === "Escape") post({ type: "sg:close" });
+            });
+
+            /**
+             * Commands from the parent. Each is a no-op until the core is up, which
+             * is fine: the parent gates its controls on sg:started anyway, and a
+             * dropped keypress during boot beats throwing across the frame.
+             */
+            var handlers = {
+                input: function (data) {
+                    // Value is 0 or 1 for digital buttons; simulateInput wants the
+                    // full 0..32767 range that RetroArch uses for analog.
+                    emulator().gameManager.simulateInput(0, data.index, data.pressed ? 1 : 0);
+                },
+                fastForward: function (data) {
+                    var ejs = emulator();
+                    ejs.isFastForward = !!data.on;
+                    ejs.gameManager.setFastForwardRatio(data.ratio || 3);
+                    ejs.gameManager.toggleFastForward(data.on ? 1 : 0);
+                },
+                volume: function (data) {
+                    var ejs = emulator();
+                    ejs.volume = data.volume;
+                    ejs.muted = data.volume === 0;
+                    ejs.setVolume(data.volume);
+                },
+                pause: function (data) {
+                    var ejs = emulator();
+                    if (data.on) ejs.pause(true); else ejs.play(true);
+                },
+                reset: function () {
+                    emulator().gameManager.restart();
+                },
+                saveState: function () {
+                    var ejs = emulator();
+                    // Writes to the same slot EmulatorJS's own quick-save uses, so a
+                    // state taken here is one its menu would find.
+                    ejs.gameManager.quickSave(1);
+                    post({ type: "sg:state-saved" });
+                },
+                loadState: function () {
+                    emulator().gameManager.quickLoad(1);
+                    post({ type: "sg:state-loaded" });
+                },
+                screenshot: function (data) {
+                    // Upscale 3x: a raw 240x160 grab is unreadably small once it
+                    // lands in a DM or an email.
+                    emulator()
+                        .takeScreenshot("canvas", "png", 3)
+                        .then(function (shot) {
+                            return blobToDataUrl(shot.blob);
+                        })
+                        .then(function (dataUrl) {
+                            post({ type: "sg:screenshot", requestId: data.requestId, dataUrl: dataUrl });
+                        })
+                        .catch(function (error) {
+                            post({
+                                type: "sg:screenshot",
+                                requestId: data.requestId,
+                                error: String((error && error.message) || error),
+                            });
+                        });
+                },
+            };
+
+            function emulator() {
+                var ejs = window.EJS_emulator;
+                if (!ejs || !ejs.started) throw new Error("not started");
+                return ejs;
+            }
+
+            function blobToDataUrl(blob) {
+                return new Promise(function (resolve, reject) {
+                    var reader = new FileReader();
+                    reader.onload = function () {
+                        resolve(reader.result);
+                    };
+                    reader.onerror = function () {
+                        reject(reader.error);
+                    };
+                    reader.readAsDataURL(blob);
+                });
+            }
+
+            window.addEventListener("message", function (event) {
+                if (event.origin !== parentOrigin) return;
+                if (event.source !== window.parent) return;
+
+                var data = event.data;
+                if (!data || typeof data.command !== "string") return;
+
+                var handler = handlers[data.command];
+                if (!handler) return;
+
+                try {
+                    handler(data);
+                } catch (error) {
+                    // "not started" is the expected case while the core boots.
+                    if (String(error && error.message) !== "not started") {
+                        post({ type: "sg:error", message: String((error && error.message) || error) });
+                    }
                 }
             });
 
@@ -113,6 +261,8 @@
                 fail("Could not reach the emulator. Check your connection.");
             };
             document.body.appendChild(loader);
+
+            post({ type: "sg:ready" });
         })();
     </script>
 </body>
