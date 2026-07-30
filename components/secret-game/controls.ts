@@ -77,6 +77,33 @@ export type Layout = {
     skin: string;
 };
 
+/**
+ * The DMG pad from the itephra skin, with a screen composited above it.
+ *
+ * That skin is controller-only — its info.json declares no screen frame, because
+ * Delta puts the picture in whatever space is left above the pad. Baking the
+ * screen into the art instead means one image and one frame table, exactly like
+ * a full-device skin, and the shell needs no special case for it.
+ *
+ * Frames are the skin's own 320-wide coordinates scaled 4x, offset down by the
+ * 849px screen band.
+ */
+export const ITEPHRA: Layout = {
+    mapping: { width: 1280, height: 1945 },
+    screen: { x: 90, y: 70, width: 1100, height: 733 },
+    dpad: { x: 24, y: 1073, width: 528, height: 528 },
+    buttons: {
+        A: { x: 964, y: 1097, width: 256, height: 256 },
+        B: { x: 704, y: 1333, width: 256, height: 256 },
+        START: { x: 704, y: 1669, width: 84, height: 84 },
+        SELECT: { x: 496, y: 1669, width: 84, height: 84 },
+        L: { x: 0, y: 849, width: 388, height: 116 },
+        R: { x: 896, y: 849, width: 388, height: 116 },
+    },
+    menu: { x: 32, y: 1669, width: 84, height: 84 },
+    skin: "/secret-game/skin/itephra.webp",
+};
+
 export const PORTRAIT: Layout = {
     mapping: { width: 1080, height: 2340 },
     screen: { x: 52, y: 143, width: 976, height: 651 },
@@ -108,6 +135,66 @@ export const LANDSCAPE: Layout = {
     menu: { x: 236, y: 919, width: 108, height: 108 },
     skin: "/secret-game/skin/glacier-landscape.webp",
 };
+
+/**
+ * The shells you can pick between.
+ *
+ * A skin either reshapes itself to the window or it doesn't. Glacier ships
+ * portrait and landscape art, so it follows the orientation. itephra is a Game
+ * Boy — a portrait object — and the file only contains portrait art anyway, so
+ * it stays upright and letterboxes on a wide screen, which is how holding one
+ * actually looks.
+ */
+export type SkinId = "itephra" | "glacier";
+
+export type Skin = {
+    id: SkinId;
+    label: string;
+    blurb: string;
+    portrait: Layout;
+    landscape: Layout;
+};
+
+export const SKINS: Record<SkinId, Skin> = {
+    itephra: {
+        id: "itephra",
+        label: "Game Boy",
+        blurb: "DMG-01",
+        portrait: ITEPHRA,
+        landscape: ITEPHRA,
+    },
+    glacier: {
+        id: "glacier",
+        label: "Glacier",
+        blurb: "Clear GBA",
+        portrait: PORTRAIT,
+        landscape: LANDSCAPE,
+    },
+};
+
+export const SKIN_ORDER: SkinId[] = ["itephra", "glacier"];
+
+export const DEFAULT_SKIN: SkinId = "itephra";
+
+const SKIN_KEY = "sg:skin";
+
+export function loadSkin(): SkinId {
+    try {
+        const stored = window.localStorage.getItem(SKIN_KEY);
+        if (stored && stored in SKINS) return stored as SkinId;
+    } catch {
+        // Storage is optional; the default is a fine answer.
+    }
+    return DEFAULT_SKIN;
+}
+
+export function saveSkin(id: SkinId) {
+    try {
+        window.localStorage.setItem(SKIN_KEY, id);
+    } catch {
+        // Not worth surfacing — the picker still works for this session.
+    }
+}
 
 /** Frame to CSS percentages, so the console scales with its container. */
 export function place(frame: Frame, mapping: { width: number; height: number }) {

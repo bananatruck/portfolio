@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { getBasePath } from "./base-path";
 import { BootAnimation, pickBootKind } from "./boot-animations";
+import { DEFAULT_SKIN, loadSkin, saveSkin, SKIN_ORDER, SKINS, type SkinId } from "./controls";
 import { useEmulatorBridge } from "./emulator-bridge";
 import { GbaShell } from "./gba-shell";
 import { Leaderboard } from "./leaderboard";
@@ -37,6 +38,9 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
 
     const [muted, setMuted] = useState(false);
     const [fastForward, setFastForward] = useState(false);
+    // Starts on the default so the server and first client render agree, then
+    // picks up a stored choice on mount.
+    const [skin, setSkin] = useState<SkinId>(DEFAULT_SKIN);
     const [shot, setShot] = useState<string | null>(null);
     const [flash, setFlash] = useState<string | null>(null);
 
@@ -55,6 +59,13 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     const { frameRef, status } = emulator;
     const live = !booting && status === "running";
     const playtimeMs = usePlaytime(live);
+
+    useEffect(() => setSkin(loadSkin()), []);
+
+    const chooseSkin = useCallback((next: SkinId) => {
+        setSkin(next);
+        saveSkin(next);
+    }, []);
 
     const insertCartridge = useCallback((next: Cartridge) => {
         // Revoking outside the state updater keeps the updater pure — React
@@ -323,6 +334,7 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                 press={emulator.press}
                 onFastForward={setFastForward}
                 onToggleMute={() => setMuted((on) => !on)}
+                skin={skin}
                 onMenu={() => setPanel((open) => (open === "cartridges" ? null : "cartridges"))}
                 screenOverlay={
                     <>
@@ -406,6 +418,31 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                     <div className="sg-menu-functions" role="group" aria-label="Emulator functions">
                         {functionButtons}
                     </div>
+
+                    <p className="sg-menu-title">Console</p>
+                    <div className="sg-skins">
+                        {SKIN_ORDER.map((id) => (
+                            <button
+                                key={id}
+                                type="button"
+                                className="sg-skin"
+                                data-active={skin === id}
+                                aria-pressed={skin === id}
+                                onClick={() => chooseSkin(id)}
+                            >
+                                <span
+                                    className="sg-skin-art"
+                                    style={{
+                                        backgroundImage: `url("${basePath}${SKINS[id].portrait.skin}")`,
+                                    }}
+                                />
+                                <span className="sg-skin-name">{SKINS[id].label}</span>
+                                <span className="sg-skin-blurb">{SKINS[id].blurb}</span>
+                            </button>
+                        ))}
+                    </div>
+
+                    <div className="sg-menu-sep" />
 
                     <p className="sg-menu-title">Select cartridge</p>
 

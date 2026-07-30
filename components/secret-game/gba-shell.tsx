@@ -6,13 +6,12 @@ import {
     FAST_FORWARD_KEY,
     KEY_BINDINGS,
     KEY_LABELS,
-    LANDSCAPE,
     MUTE_KEY,
     PAD,
-    PORTRAIT,
     place,
-    type Layout,
+    SKINS,
     type PadButton,
+    type SkinId,
 } from "./controls";
 import { getBasePath } from "./base-path";
 
@@ -42,6 +41,7 @@ type ShellProps = {
     onFastForward: (on: boolean) => void;
     onToggleMute: () => void;
     onMenu: () => void;
+    skin: SkinId;
     /** Drawn inside the screen cutout, over the emulator's picture. */
     screenOverlay?: React.ReactNode;
 };
@@ -58,14 +58,19 @@ type ShellProps = {
  * positive test, and losing them is the worse outcome. A touchscreen still
  * answers `coarse`, so phones and tablets stay clean either way.
  */
-function useLayoutMode() {
+function useLayoutMode(skin: SkinId) {
     // Read on the first render rather than in the effect: this only ever mounts
     // inside the ssr:false overlay, so `window` is there, and waiting for the
     // effect would flash the landscape skin on a phone before correcting.
-    const read = () => ({
-        layout: window.matchMedia("(orientation: portrait)").matches ? PORTRAIT : LANDSCAPE,
-        showKeycaps: !window.matchMedia("(pointer: coarse)").matches,
-    });
+    const read = () => {
+        const chosen = SKINS[skin];
+        return {
+            layout: window.matchMedia("(orientation: portrait)").matches
+                ? chosen.portrait
+                : chosen.landscape,
+            showKeycaps: !window.matchMedia("(pointer: coarse)").matches,
+        };
+    };
 
     const [state, setState] = useState(read);
 
@@ -82,9 +87,10 @@ function useLayoutMode() {
             tall.removeEventListener("change", sync);
             touch.removeEventListener("change", sync);
         };
-        // `read` closes over nothing that changes between renders.
+        // Re-runs on a skin change so the new art is picked up immediately; the
+        // media queries are the only other thing `read` looks at.
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [skin]);
 
     return state;
 }
@@ -97,9 +103,10 @@ export function GbaShell({
     onFastForward,
     onToggleMute,
     onMenu,
+    skin,
     screenOverlay,
 }: ShellProps) {
-    const { layout, showKeycaps } = useLayoutMode();
+    const { layout, showKeycaps } = useLayoutMode(skin);
     const [active, setActive] = useState<ReadonlySet<PadButton>>(new Set());
 
     // Held buttons are tracked in a ref as well as state: the pointer and key
@@ -216,6 +223,7 @@ export function GbaShell({
                     backgroundImage: `url("${basePath}${layout.skin}")`,
                 }}
                 data-layout={mapping.width > mapping.height ? "landscape" : "portrait"}
+                data-skin={skin}
                 data-live={live}
             >
                 <div className="sg-screen" style={place(layout.screen, mapping)}>
