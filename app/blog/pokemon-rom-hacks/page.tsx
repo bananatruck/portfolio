@@ -1,103 +1,161 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import Image from "next/image";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "What Pokemon ROM Hacks Are — Kesh",
+    title: "Pokemon ROM Hacks — Kesh",
     description:
-        "A short introduction to Pokemon ROM hacks, why they're worth your time, and the ten I'd actually hand to someone.",
+        "How a five-year-old with no console and a decrepit Android phone found Pokemon ROM hacks, and the thirteen that are still my favourites.",
 };
 
 type Hack = {
-    rank: number;
+    rank: number | "HM";
     title: string;
+    /** Sent to a search rather than a mirror — I'm not linking anyone's ROM. */
+    search: string;
     base: string;
-    pitch: string;
-    note: string;
+    image?: string;
+    body: string;
 };
 
-const TOP_TEN: Hack[] = [
+const HACKS: Hack[] = [
     {
         rank: 1,
-        title: "Pokemon Unbound",
+        title: "Pokemon Radical Red",
+        search: "Pokemon Radical Red rom Download",
         base: "FireRed",
-        pitch:
-            "The one that stopped feeling like a hack. An original region, a story with actual stakes, difficulty settings, a quest board, side content that isn't filler, and a soundtrack that had no business being that good. If you play one hack in your life, play this.",
-        note: "Start on Difficult. Insane is a different hobby.",
+        image: "/images/rom-hacks/radical-red.webp",
+        body:
+            "My most played ROM hack of all time, and the only one that just keeps getting updates. The running joke in the community is asking when the last Radical Red update will be, and the answer is that we'll get the final version some time after the cold and numbing heat death of the universe. At its core it's a difficulty hack, but it's stacked with quality-of-life features, up-to-date graphics, mega evolutions and a difficulty curve you can tune to be exactly as fun as you need it to be. It builds on the FireRed path I'd already spent a decade wandering through every now and then. I still remember my first run, where the only strategy I knew was levelling my Charizard to 100 and beating the absolute hell out of the Elite Four with nothing but attacking moves and an obscene level advantage.",
     },
     {
         rank: 2,
-        title: "Pokemon Radical Red",
+        title: "Pokemon Adventure Red Chapter",
+        search: "Pokemon Adventure Red Chapter rom Download",
         base: "FireRed",
-        pitch:
-            "Kanto rebuilt as a competitive puzzle. Every trainer is running a real team with real items and an AI that reads your switches. It is not fair and it is not trying to be — it's a boss rush wearing Gen 3's clothes.",
-        note: "Turn on the built-in QoL settings. You will need the free level cap info.",
+        image: "/images/rom-hacks/adventures-red.webp",
+        body:
+            "An adaptation of the actual Pokemon manga turned into a genuinely polished game with really good dialogue. The story follows the source to a T, and then there's some gloriously cringy fan-written fiction bolted on at the end. I won't spoil it, but it's one of the most entertaining things I've ever interacted with from this franchise, and it has a better and more interesting story than any official Pokemon game I've played. You can easily sink 70 hours into a completely free game somebody built purely out of love for it. It's probably my favourite Pokemon story overall, give or take a couple of the shows.",
     },
     {
         rank: 3,
-        title: "Pokemon Emerald Rogue",
-        base: "Emerald",
-        pitch:
-            "Hoenn as a roguelike. Randomised routes, a shop between legs, a run that ends and starts over. It solves the problem every replay has: you already know what's on Route 104.",
-        note: "The best hack for short sessions. One run fits in a lunch break.",
+        title: "Pokemon Unbound",
+        search: "Pokemon Unbound rom Download",
+        base: "FireRed",
+        image: "/images/rom-hacks/unbound.webp",
+        body:
+            "The most perfect overall rebuild a ROM hack has ever managed. A whole new region, whole new fights, custom difficulty settings, custom puzzle difficulty, an entirely new story. If Game Freak ever decided to make one more GBA game, Unbound is what they'd be trying to accomplish — except it somehow ended up better than most of the Pokemon games that actually shipped.",
     },
     {
         rank: 4,
-        title: "Pokemon Gaia",
+        title: "Pokemon Team Rocket Edition",
+        search: "Pokemon Team Rocket Edition rom Download",
         base: "FireRed",
-        pitch:
-            "Orbtus: ruins, earthquakes, an archaeology plot that holds together. The most confidently *designed* fan region I've played — every town looks like someone drew it twice.",
-        note: "Complete and stable. A good first hack if Unbound sounds like a lot.",
+        image: "/images/rom-hacks/team-rocket.webp",
+        body:
+            "An original story with a surprising amount of depth and nuance to it, in the same way Adventure Red Chapter has, which is exactly why I ended up loving both. Surprising because it was probably written by a teenager as a passion project. Definitely check it out if you've ever wanted to know what it feels like to steal from the elderly and from children.",
     },
     {
         rank: 5,
-        title: "Pokemon Renegade Platinum",
-        base: "Platinum",
-        pitch:
-            "Platinum as it should have shipped. Every Sinnoh Pokemon obtainable, the awful early-game type coverage fixed, trainers given teams worth beating, and none of the original's charm sanded off.",
-        note: "The definitive way to replay Gen 4.",
+        title: "Pokemon Dark Rising",
+        search: "Pokemon Dark Rising rom Download",
+        base: "FireRed — the whole series",
+        image: "/images/rom-hacks/dark-rising.webp",
+        body:
+            "An odd pick, and most people won't agree with me, because it's an edgy game with a shitty story. I've completed the entire series all the way through anyway. As a young kid who didn't really know the franchise as anything other than bright and friendly, seeing an edgy side to Pokemon was genuinely kind of cool, and that counts for something.",
     },
     {
         rank: 6,
-        title: "Pokemon Crystal Clear",
-        base: "Crystal",
-        pitch:
-            "Open-world Johto. Pick a starter, pick a town, go anywhere, fight the gyms in any order — the badges scale to you. Twenty-five years later it found the thing Johto was always missing.",
-        note: "Gen 2 sprite work and all. Play it on a handheld if you can.",
+        title: "Pokemon Emerald Rogue",
+        search: "Pokemon Emerald Rogue rom Download",
+        base: "Emerald",
+        image: "/images/rom-hacks/emerald-rogue.webp",
+        body:
+            "A roguelike — one of my favourite genres full stop — folded into Pokemon with a lot of polish. You can spend hundreds of hours trying to complete it, and I did complete it, including the final challenge. I'm fairly sure only a handful of people in the world are stupid enough to spend that long on something that impossible. I just did it anyway.",
     },
     {
         rank: 7,
-        title: "Pokemon Inclement Emerald",
-        base: "Emerald",
-        pitch:
-            "Emerald with every quality-of-life fix at once — physical/special split, all 386 catchable, reusable TMs, a difficulty slider — and otherwise the game you remember. The comfort food entry.",
-        note: "What to hand someone who says 'I just want to replay Emerald'.",
+        title: "Pokemon Gaia",
+        search: "Pokemon Gaia rom Download",
+        base: "FireRed",
+        image: "/images/rom-hacks/gaia.webp",
+        body:
+            "Gaia is what Unbound was probably influenced by, because it's a complete, finished version of that same idea with really fun mechanics. I think it goes up to Gen 6 Pokemon, maybe Gen 8 — I'm honestly not sure. Either way it's the better version of what Glazed was reaching for, which is why it sits one spot above it.",
     },
     {
         rank: 8,
         title: "Pokemon Glazed",
+        search: "Pokemon Glazed rom Download",
         base: "Emerald",
-        pitch:
-            "Tunod, and three regions after it. Rough around the edges in the way early hacks are, and completely sincere about it. A lot of us got into this because of Glazed.",
-        note: "Play the Blazed Glazed version; it fixes most of the sharp edges.",
+        image: "/images/rom-hacks/glazed.webp",
+        body:
+            "Tunod, and three regions after it. Rough around the edges the way early hacks always were, and completely sincere about it. A lot of us are here at all because of Glazed — it was the one that showed a whole generation of kids that a fan could just build a Pokemon game.",
     },
     {
         rank: 9,
-        title: "Pokemon Sacred Gold & Storm Silver",
-        base: "HeartGold / SoulSilver",
-        pitch:
-            "HeartGold with the difficulty turned up and the Johto roster finally opened out. Drayano's hacks are the reason 'rebalance hack' is a genre, and this is the best of them.",
-        note: "Storm Silver if you want Kyogre. It genuinely doesn't matter otherwise.",
+        title: "Pokemon Elite Redux",
+        search: "Pokemon Elite Redux rom Download",
+        base: "Emerald",
+        image: "/images/rom-hacks/elite-redux.webp",
+        body:
+            "You'll have noticed a trend by now: a lot of difficulty hacks and repetitive roguelike hacks. Elite Redux is the purest version of that itch. Every Pokemon gets multiple abilities, every trainer is built to punish you for autopiloting, and the whole thing is a team-building sandbox pretending to be a Pokemon game. If you like the fighting more than the walking, this is the one.",
     },
     {
         rank: 10,
-        title: "Pokemon Emerald Kaizo",
+        title: "Pokemon Mega Power",
+        search: "Pokemon Mega Power rom Download",
         base: "Emerald",
-        pitch:
-            "The masochism entry. Nuzlocke rules assumed, every gym leader with a full competitive team, and a Roxanne fight that has ended more runs than every other hack on this list combined.",
-        note: "Do not start here. Finish something else first, then come back angry.",
+        image: "/images/rom-hacks/mega-power.webp",
+        body:
+            "The game that introduced me to Mega Evolution. It has Mega in the name, and when I was young that was genuinely all it took to sell me on it.",
+    },
+    {
+        rank: 11,
+        title: "Pokemon Light Platinum",
+        search: "Pokemon Light Platinum rom Download",
+        base: "Ruby",
+        image: "/images/rom-hacks/light-platinum.webp",
+        body:
+            "My first complete premium Pokemon ROM hack experience, and it was really, really cool. New region, new league, new everything, and it actually ended properly instead of dropping you into an unfinished map like so much of what I'd played before it. This is the one that made me realise a fan project could be finished.",
+    },
+    {
+        rank: 12,
+        title: "Pokemon AshGray",
+        search: "Pokemon AshGray rom Download",
+        base: "FireRed",
+        image: "/images/rom-hacks/ash-gray.webp",
+        body:
+            "A very unpolished game, and something I grew up playing an enormous amount of. It follows the anime episode by episode, and playing it made me feel like I was actually in the anime, which at that age was the entire point.",
+    },
+    {
+        rank: 13,
+        title: "Pokemon Liquid Crystal",
+        search: "Pokemon Liquid Crystal rom Download",
+        base: "FireRed",
+        image: "/images/rom-hacks/liquid-crystal.webp",
+        body:
+            "Johto rebuilt on a GBA engine, and it holds a special place in my heart. Nothing clever to say about this one — it's just Crystal, done lovingly, and I was very happy the whole time I played it.",
+    },
+    {
+        rank: "HM",
+        title: "PokeRogue",
+        search: "PokeRogue rom Download",
+        base: "Browser fan game",
+        body:
+            "Honourable mention, with an asterisk. It could almost have been great, but at some point it stopped being a roguelike and turned into an autobattler instead, which I personally just got bored of — after about 200 hours of it, admittedly, so take the complaint with the appropriate amount of salt.",
     },
 ];
+
+const EMULATORS = [
+    { platform: "Android", name: "My Boy!", note: "What I actually grew up on." },
+    { platform: "iOS", name: "Delta", note: "Free, and properly good now." },
+    { platform: "PC", name: "mGBA", note: "The accurate one. Also what's running a few clicks back." },
+];
+
+function searchUrl(query: string) {
+    return `https://www.google.com/search?q=${encodeURIComponent(query)}`;
+}
 
 export default function PokemonRomHacksPage() {
     return (
@@ -115,59 +173,56 @@ export default function PokemonRomHacksPage() {
                         Field Notes
                     </p>
                     <h1 className="text-3xl sm:text-5xl font-black font-display uppercase tracking-tighter leading-none mb-4">
-                        What Pokemon ROM Hacks Are
+                        Pokemon ROM Hacks
                     </h1>
                     <p className="font-serif text-sm sm:text-base leading-relaxed text-foreground/85">
-                        You found the emulator. This is the rest of it — what these games
-                        are, why people spend years making them, and the ten I&apos;d
-                        actually put in someone&apos;s hands.
+                        You found the emulator. This is the rest of it — how I got here, and
+                        the thirteen hacks that are still my favourites.
                     </p>
                 </header>
 
                 <section className="mb-14">
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
                         <h2 className="text-2xl font-black font-display uppercase tracking-widest">
-                            The Short Version
+                            How I Got Here
                         </h2>
-                        <span className="font-mono text-xs font-bold">PRIMER</span>
+                        <span className="font-mono text-xs font-bold">ORIGIN</span>
                     </div>
 
                     <div className="space-y-5 font-serif text-sm sm:text-base leading-relaxed text-foreground/85">
                         <p>
-                            A ROM hack is a Pokemon game somebody took apart and rebuilt. Not
-                            a new game engine, not a remake from scratch — the original
-                            cartridge&apos;s code, edited. Someone opens up FireRed, redraws
-                            the map, rewrites the script, swaps the encounter tables, and what
-                            comes out the other end is a game that runs on the same hardware
-                            and feels like something else entirely.
+                            Growing up in an Asian household meant there was never really a
+                            place or a budget for buying games, or Game Boys, or any consoles
+                            at all. So five-year-old me, watching my friends play Pokemon and
+                            Mario, really wanted to join in the fray too. Restricted phone
+                            time, studying all day, and a very determined kid — which led me to
+                            go looking for solutions on the internet, like any young kid on the
+                            internet would.
                         </p>
                         <p>
-                            The scene grew up around Gen 3 for a boring, practical reason: the
-                            GBA games are the best documented. Two decades of people reverse
-                            engineering FireRed and Emerald produced disassemblies so complete
-                            that a modern hack can add mechanics Game Freak shipped ten years
-                            later — the physical/special split, Fairy typing, held item
-                            previews, running indoors — into a 2004 cartridge. That&apos;s why
-                            so much of this list is Gen 3. It&apos;s the platform with the best
-                            tools, not the best games.
+                            That's how I ended up, at five years old, in the very niche
+                            community that Pokemon ROM hack culture was at the time. I started
+                            out playing plain vanilla Pokemon games on a Game Boy emulator,
+                            because that was the only thing my old, decrepit phone could
+                            actually run. Then I got into the default Mario games. And then, as
+                            I learned more about console emulation as a whole, I found out that
+                            people were building their own games out of the existing Pokemon
+                            ones.
                         </p>
                         <p>
-                            They come in roughly three shapes.{" "}
-                            <strong className="font-black">Quality-of-life rebuilds</strong>{" "}
-                            keep the game you remember and fix what aged badly. {" "}
-                            <strong className="font-black">Difficulty hacks</strong> assume you
-                            have beaten Pokemon fifteen times and would like it to fight back.{" "}
-                            <strong className="font-black">Total conversions</strong> throw out
-                            the region, the story and the roster, and are the reason this scene
-                            is worth paying attention to at all.
+                            That's the thing that catapulted me into my own CS journey, and it
+                            had a domino effect on the rest of my life. Working with emulators
+                            and ROM hacks made me wonder if I could play other games on my
+                            phone. That made me wonder what else in my phone I could change. So
+                            I started tinkering with Android a lot more — installing custom
+                            apps, trying to build custom apps that never really worked, picking
+                            up a little bit of C++, and eventually flashing custom Android
+                            software onto my devices. Now computer science is my major and it's
+                            what I do for a living.
                         </p>
                         <p>
-                            The good ones are not nostalgia projects. They&apos;re what happens
-                            when people who love a series get to answer the design questions it
-                            never did — what if the level curve respected your time, what if
-                            the rival was a real fight, what if you could go anywhere. Some of
-                            the best game design I&apos;ve played in the last few years shipped
-                            as a .ips patch made by four people on a Discord server.
+                            So this list holds a genuinely special place in my heart. It's
+                            something personal, and I'm happy to share it with all of you.
                         </p>
                     </div>
                 </section>
@@ -175,39 +230,59 @@ export default function PokemonRomHacksPage() {
                 <section className="mb-14">
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
                         <h2 className="text-2xl font-black font-display uppercase tracking-widest">
-                            Top 10
+                            The List
                         </h2>
-                        <span className="font-mono text-xs font-bold">MY LIST</span>
+                        <span className="font-mono text-xs font-bold">TAP TO FIND IT</span>
                     </div>
 
-                    <ol className="space-y-4">
-                        {TOP_TEN.map((hack) => (
+                    <ol className="space-y-6">
+                        {HACKS.map((hack) => (
                             <li
-                                key={hack.rank}
-                                className="flex gap-4 p-4 sm:p-5 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:shadow-[6px_6px_0px_0px_hsl(var(--foreground))] transition-all"
+                                key={hack.title}
+                                className="border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:shadow-[6px_6px_0px_0px_hsl(var(--foreground))] transition-all overflow-hidden"
                             >
-                                <div className="flex-shrink-0 w-12 h-14 sm:w-14 sm:h-16 border-2 border-foreground bg-foreground text-background flex items-center justify-center">
-                                    <span className="text-xl sm:text-2xl font-black font-mono">
-                                        {hack.rank}
-                                    </span>
-                                </div>
+                                <a
+                                    href={searchUrl(hack.search)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="group block"
+                                >
+                                    {hack.image ? (
+                                        <div className="relative aspect-[3/2] border-b-2 border-foreground bg-foreground/5 overflow-hidden">
+                                            <Image
+                                                src={hack.image}
+                                                alt={`${hack.title} title screen`}
+                                                fill
+                                                loading="lazy"
+                                                sizes="(max-width: 768px) 100vw, 768px"
+                                                className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+                                            />
+                                            <span className="absolute top-0 left-0 px-3 py-1.5 font-mono text-xs font-black bg-foreground text-background">
+                                                {hack.rank === "HM" ? "HONOURABLE MENTION" : `#${hack.rank}`}
+                                            </span>
+                                        </div>
+                                    ) : null}
 
-                                <div className="flex-grow min-w-0">
-                                    <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
-                                        <h3 className="font-bold text-base sm:text-lg font-display uppercase tracking-wide">
-                                            {hack.title}
-                                        </h3>
-                                        <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-foreground/50">
-                                            {hack.base}
-                                        </span>
+                                    <div className="p-4 sm:p-5">
+                                        <div className="flex flex-wrap items-baseline gap-x-3 gap-y-1 mb-2">
+                                            {!hack.image ? (
+                                                <span className="font-mono text-xs font-black bg-foreground text-background px-2 py-0.5">
+                                                    {hack.rank === "HM" ? "HONOURABLE MENTION" : `#${hack.rank}`}
+                                                </span>
+                                            ) : null}
+                                            <h3 className="font-bold text-base sm:text-lg font-display uppercase tracking-wide group-hover:underline decoration-2 underline-offset-4">
+                                                {hack.title}
+                                            </h3>
+                                            <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-foreground/50">
+                                                {hack.base}
+                                            </span>
+                                            <ExternalLink className="w-3 h-3 text-foreground/40 group-hover:text-foreground transition-colors" />
+                                        </div>
+                                        <p className="font-serif text-xs sm:text-sm leading-relaxed text-foreground/85">
+                                            {hack.body}
+                                        </p>
                                     </div>
-                                    <p className="font-serif text-xs sm:text-sm leading-relaxed text-foreground/85">
-                                        {hack.pitch}
-                                    </p>
-                                    <p className="mt-2 font-mono text-[11px] leading-relaxed text-foreground/55">
-                                        → {hack.note}
-                                    </p>
-                                </div>
+                                </a>
                             </li>
                         ))}
                     </ol>
@@ -216,43 +291,71 @@ export default function PokemonRomHacksPage() {
                 <section className="mb-14">
                     <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
                         <h2 className="text-2xl font-black font-display uppercase tracking-widest">
-                            How To Play One
+                            If You Want To Play
                         </h2>
                         <span className="font-mono text-xs font-bold">SETUP</span>
                     </div>
 
+                    <div className="grid gap-3 sm:grid-cols-3 mb-6">
+                        {EMULATORS.map((emu) => (
+                            <div
+                                key={emu.platform}
+                                className="border-2 border-foreground p-4 bg-background shadow-[3px_3px_0px_0px_hsl(var(--foreground))]"
+                            >
+                                <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-foreground/50 mb-1">
+                                    {emu.platform}
+                                </p>
+                                <p className="font-display font-black uppercase tracking-wide text-lg leading-none mb-2">
+                                    {emu.name}
+                                </p>
+                                <p className="font-serif text-xs leading-relaxed text-foreground/70">
+                                    {emu.note}
+                                </p>
+                            </div>
+                        ))}
+                    </div>
+
                     <div className="space-y-5 font-serif text-sm sm:text-base leading-relaxed text-foreground/85">
                         <p>
-                            Hacks are distributed as patches, not as games — usually an{" "}
+                            Hacks come as patches, not as games — usually an{" "}
                             <code className="font-mono text-xs">.ips</code>,{" "}
                             <code className="font-mono text-xs">.ups</code> or{" "}
-                            <code className="font-mono text-xs">.bps</code> file. You supply a
+                            <code className="font-mono text-xs">.bps</code> file. You bring a
                             clean copy of the original cartridge, run it and the patch through
-                            a patcher, and get a playable ROM out. That split is the whole
-                            legal arrangement the scene runs on: the creators wrote the changes,
-                            and the changes are all they hand you.
-                        </p>
-                        <p>
-                            After that it&apos;s any emulator — mGBA on a desktop, Delta on iOS,
-                            or the one a few clicks back on this page, which is mGBA compiled to
-                            WebAssembly and running in your browser tab. Same core, no install.
+                            a patcher, and get something playable out the other side. That
+                            split is the whole arrangement the scene runs on: the creators
+                            wrote the changes, and the changes are all they hand you.
                         </p>
                         <p className="text-foreground/60 text-xs sm:text-sm">
-                            Everything above is a link away from this site, not on it. I
-                            don&apos;t host ROMs or patches, and neither should you.
+                            Every title above links to a search, not to a download. I don't
+                            host ROMs or patches here, and neither should you.
                         </p>
                     </div>
                 </section>
 
                 <div className="border-2 border-foreground bg-foreground text-background p-6 sm:p-8 shadow-[6px_6px_0px_0px_hsl(var(--foreground))]">
-                    <p className="font-mono text-[11px] font-bold uppercase tracking-widest opacity-70 mb-2">
-                        Still here?
+                    <p className="font-mono text-[11px] font-bold uppercase tracking-widest opacity-70 mb-3">
+                        One Last Thing
                     </p>
-                    <p className="font-serif text-sm sm:text-base leading-relaxed">
-                        Go pat Garchomp again. The cartridge menu takes your own file — if
-                        you&apos;ve patched one of these, it&apos;ll boot in the browser
-                        without ever leaving your machine.
-                    </p>
+                    <div className="space-y-4 font-serif text-sm sm:text-base leading-relaxed">
+                        <p>
+                            This community is still growing. Honestly, 2026 has been the most
+                            productive year for it I've ever seen. And with how lazy Pokemon
+                            has gotten with its own IP, I think it's the fans who make this
+                            thing special and keep it alive every single year, however long it
+                            takes them.
+                        </p>
+                        <p>
+                            So I hope you have fun on my portfolio learning a bit more about
+                            them, and maybe you'll learn more about Pokemon ROM hacks by
+                            actually playing a few. Go pat Garchomp again — the cartridge menu
+                            takes your own file, so anything you've patched will boot right in
+                            the browser without ever leaving your machine.
+                        </p>
+                        <p className="font-mono text-xs uppercase tracking-widest pt-1">
+                            Look forward to seeing you on the leaderboard.
+                        </p>
+                    </div>
                 </div>
             </div>
         </article>
