@@ -64,9 +64,24 @@ export function pickBootKind(): BootKind {
     return BOOT_KINDS[Math.floor(Math.random() * BOOT_KINDS.length)];
 }
 
-export function BootAnimation({ kind, leaving }: { kind: BootKind; leaving: boolean }) {
+export function BootAnimation({
+    kind,
+    leaving,
+    download,
+}: {
+    kind: BootKind;
+    leaving: boolean;
+    /** Present only while the cartridge is streaming in. */
+    download?: { ratio: number | null; cached: boolean } | null;
+}) {
     const basePath = useMemo(getBasePath, []);
     const theme = THEMES[kind];
+
+    // While a cartridge is downloading the bar reports real progress; once it's
+    // in, it goes back to the scripted fill for the core's own start-up, which
+    // has nothing meaningful to measure.
+    const downloading = !!download && !download.cached;
+    const ratio = download?.ratio ?? null;
 
     return (
         <div className="sg-bootscreen" data-kind={kind} data-leaving={leaving} aria-hidden="true">
@@ -102,9 +117,23 @@ export function BootAnimation({ kind, leaving }: { kind: BootKind; leaving: bool
             </div>
 
             <div className="sg-boot-progress">
-                <span className="sg-boot-progress-fill" />
+                <span
+                    className="sg-boot-progress-fill"
+                    data-measured={downloading && ratio !== null}
+                    style={
+                        downloading && ratio !== null
+                            ? { width: `${Math.round(ratio * 100)}%` }
+                            : undefined
+                    }
+                />
             </div>
-            <p className="sg-boot-status">NOW LOADING</p>
+            <p className="sg-boot-status">
+                {downloading
+                    ? ratio !== null
+                        ? `DOWNLOADING ${Math.round(ratio * 100)}%`
+                        : "DOWNLOADING"
+                    : "NOW LOADING"}
+            </p>
         </div>
     );
 }

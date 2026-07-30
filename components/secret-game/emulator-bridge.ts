@@ -95,8 +95,15 @@ export function useEmulatorBridge() {
     // Memoised as one object: callers put this in effect dependency arrays, and a
     // fresh identity every render would re-send volume and fast-forward on every
     // single re-render of the overlay.
+    // Swapping cartridges puts the emulator back into loading, so the shell can
+    // reset the status it's showing without waiting for the new frame to report.
+    const reset = useCallback((next: EmulatorStatus) => {
+        setStatus(next);
+        setError(null);
+    }, []);
+
     return useMemo(
-        () => ({ frameRef, status, error, ...commands }),
-        [commands, error, status],
+        () => ({ frameRef, status, error, setStatus: reset, ...commands }),
+        [commands, error, reset, status],
     );
 }

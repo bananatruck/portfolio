@@ -172,9 +172,15 @@ export const SKINS: Record<SkinId, Skin> = {
     },
 };
 
-export const SKIN_ORDER: SkinId[] = ["itephra", "glacier"];
+export const SKIN_ORDER: SkinId[] = ["glacier", "itephra"];
 
-export const DEFAULT_SKIN: SkinId = "itephra";
+/**
+ * Glacier by default. The Game Boy is the nicer object, but it can only be
+ * portrait, and a tall console letterboxed into a wide desktop window wastes
+ * most of the screen. Glacier reshapes, so it's the one that looks right
+ * wherever it lands.
+ */
+export const DEFAULT_SKIN: SkinId = "glacier";
 
 const SKIN_KEY = "sg:skin";
 

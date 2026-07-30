@@ -4,6 +4,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { getBasePath } from "./base-path";
 import { BootAnimation, pickBootKind } from "./boot-animations";
+import { formatBytes, loadCartridge, type DownloadProgress } from "./cartridge-cache";
 import { DEFAULT_SKIN, loadSkin, saveSkin, SKIN_ORDER, SKINS, type SkinId } from "./controls";
 import { useEmulatorBridge } from "./emulator-bridge";
 import { GbaShell } from "./gba-shell";
@@ -22,7 +23,7 @@ const BOOT_EXIT_MS = 420;
 
 const DEFAULT_VOLUME = 0.5;
 
-type Rom = { file: string; label: string };
+type Rom = { file: string; label: string; bytes?: number };
 type Cartridge = { url: string; label: string; isObjectUrl: boolean };
 type Panel = "cartridges" | "leaderboard" | "share" | null;
 
@@ -43,12 +44,19 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     const [skin, setSkin] = useState<SkinId>(DEFAULT_SKIN);
     const [shot, setShot] = useState<string | null>(null);
     const [flash, setFlash] = useState<string | null>(null);
+    // Null until a cartridge is actually being fetched, so the boot screen knows
+    // whether to show a download bar or its own indeterminate one.
+    const [download, setDownload] = useState<DownloadProgress | null>(null);
+    const [loadError, setLoadError] = useState<string | null>(null);
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const backRef = useRef<HTMLButtonElement>(null);
     // Tracks the object URL currently handed to the iframe so it can be revoked
     // when it's replaced or the overlay closes.
     const objectUrlRef = useRef<string | null>(null);
+    // When the current boot started. Reset on every cartridge swap so the
+    // animation gets its full run each time, not just the first.
+    const openedAt = useRef(Date.now());
 
     const basePath = useMemo(getBasePath, []);
     // Chosen once, on mount: FireRed the first time anyone opens this, random
@@ -78,9 +86,42 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         setPanel(null);
     }, []);
 
-    // Load whichever ROMs were bundled at build time. In a public deploy the
-    // roms folder is empty, so this comes back empty and the visitor is asked
-    // for their own file instead.
+    /**
+     * Picking a cartridge is what starts the download — nothing is fetched
+     * before this. The boot screen comes back while it streams in, so the wait
+     * is the game booting rather than a spinner on a menu.
+     */
+    const selectRom = useCallback(
+        async (rom: Rom) => {
+            const url = `${basePath}/secret-game/roms/${rom.file}`;
+
+            setPanel(null);
+            setLoadError(null);
+            setBooting(true);
+            setBootLeaving(false);
+            openedAt.current = Date.now();
+            emulator.setStatus("loading");
+            setDownload({ ratio: null, receivedBytes: 0, totalBytes: rom.bytes ?? null, cached: false });
+
+            try {
+                const objectUrl = await loadCartridge(url, setDownload);
+                insertCartridge({ url: objectUrl, label: rom.label, isObjectUrl: true });
+            } catch (error) {
+                setLoadError(
+                    error instanceof Error ? error.message : "That cartridge wouldn't load.",
+                );
+                setBooting(false);
+            } finally {
+                setDownload(null);
+            }
+        },
+        [basePath, emulator, insertCartridge],
+    );
+
+    // Only the manifest is fetched up front — it's a couple of hundred bytes.
+    // No cartridge is chosen here: the games are ~17MB each, and downloading one
+    // because somebody opened the easter egg would be a poor trade. Picking one
+    // is what starts the download.
     useEffect(() => {
         let cancelled = false;
 
@@ -88,16 +129,7 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
             .then((response) => (response.ok ? response.json() : { roms: [] }))
             .then((data: { roms?: Rom[] }) => {
                 if (cancelled) return;
-                const available = Array.isArray(data.roms) ? data.roms : [];
-                setRoms(available);
-                // First entry in the manifest is the default cartridge.
-                if (available[0]) {
-                    setCartridge({
-                        url: `${basePath}/secret-game/roms/${available[0].file}`,
-                        label: available[0].label,
-                        isObjectUrl: false,
-                    });
-                }
+                setRoms(Array.isArray(data.roms) ? data.roms : []);
             })
             .catch(() => {
                 if (!cancelled) setRoms([]);
@@ -134,9 +166,12 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     // The boot screen clears once the core has reported in and the animation has
     // had its full run — whichever is later. The cap covers a core that never
     // starts at all, so the shell stays reachable.
-    const openedAt = useRef(Date.now());
-
+    //
+    // Nothing runs until a cartridge is in, because until then the screen is the
+    // cartridge picker rather than a boot sequence.
     useEffect(() => {
+        if (!cartridge) return;
+
         let exitTimer: number;
 
         const leave = () => {
@@ -144,7 +179,7 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
             exitTimer = window.setTimeout(() => setBooting(false), BOOT_EXIT_MS);
         };
 
-        // Measured from when the overlay opened, not from when this effect last
+        // Measured from when this boot started, not from when the effect last
         // ran — otherwise a core that reports in early would restart the clock
         // and hold the animation for another full BOOT_MIN_MS.
         const elapsed = Date.now() - openedAt.current;
@@ -161,7 +196,7 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
             window.clearTimeout(capTimer);
             window.clearTimeout(exitTimer);
         };
-    }, [status]);
+    }, [cartridge, status]);
 
     // Move focus onto the back button once the boot sequence clears, so keyboard
     // and screen-reader users land somewhere useful rather than back at the top
@@ -338,29 +373,69 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                 onMenu={() => setPanel((open) => (open === "cartridges" ? null : "cartridges"))}
                 screenOverlay={
                     <>
-                        {booting && frameSrc ? (
-                            <BootAnimation kind={bootKind} leaving={bootLeaving} />
+                        {/* `download` as well as `cartridge`: the cartridge isn't
+                            set until its bytes are in, and the wait between
+                            picking and that happening is exactly when the boot
+                            screen needs to be up. */}
+                        {booting && (cartridge || download) ? (
+                            <BootAnimation
+                                kind={bootKind}
+                                leaving={bootLeaving}
+                                download={download}
+                            />
                         ) : null}
+
+                        {/* Cartridge select lives on the console's own screen, so
+                            the thing you're choosing for is already in front of
+                            you while you choose. */}
+                        {!cartridge && !download && manifestLoaded ? (
+                            <div className="sg-select">
+                                <p className="sg-select-title">Select a cartridge</p>
+
+                                <div className="sg-select-list">
+                                    {roms.map((rom) => (
+                                        <button
+                                            key={rom.file}
+                                            type="button"
+                                            className="sg-select-item"
+                                            onClick={() => void selectRom(rom)}
+                                        >
+                                            <span className="sg-select-name">{rom.label}</span>
+                                            {rom.bytes ? (
+                                                <span className="sg-select-size">
+                                                    {formatBytes(rom.bytes)}
+                                                </span>
+                                            ) : null}
+                                        </button>
+                                    ))}
+
+                                    <button
+                                        type="button"
+                                        className="sg-select-item"
+                                        onClick={() => fileInputRef.current?.click()}
+                                    >
+                                        <span className="sg-select-name">Load your own file...</span>
+                                    </button>
+                                </div>
+
+                                <p className="sg-select-note">
+                                    {roms.length > 0
+                                        ? "Downloaded when you pick one, then kept for next time."
+                                        : "No cartridges bundled — bring your own .gba."}
+                                </p>
+
+                                {loadError ? (
+                                    <p className="sg-select-error" role="alert">
+                                        {loadError}
+                                    </p>
+                                ) : null}
+                            </div>
+                        ) : null}
+
                         {flash ? <p className="sg-flash">{flash}</p> : null}
                     </>
                 }
             />
-
-            {!frameSrc && manifestLoaded ? (
-                <div className="sg-empty">
-                    <PixelCartridge size={72} />
-                    <p className="sg-menu-title" style={{ margin: 0 }}>
-                        No cartridge inserted
-                    </p>
-                    <button
-                        type="button"
-                        className="sg-menu-item"
-                        onClick={() => fileInputRef.current?.click()}
-                    >
-                        Insert your own .gba
-                    </button>
-                </div>
-            ) : null}
 
             {status === "error" && emulator.error ? (
                 <p className="sg-error" role="alert">
@@ -446,22 +521,20 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
 
                     <p className="sg-menu-title">Select cartridge</p>
 
-                    {roms.map((rom) => {
-                        const url = `${basePath}/secret-game/roms/${rom.file}`;
-                        return (
-                            <button
-                                key={rom.file}
-                                type="button"
-                                className="sg-menu-item"
-                                aria-current={cartridge?.url === url}
-                                onClick={() =>
-                                    insertCartridge({ url, label: rom.label, isObjectUrl: false })
-                                }
-                            >
-                                {rom.label}
-                            </button>
-                        );
-                    })}
+                    {roms.map((rom) => (
+                        <button
+                            key={rom.file}
+                            type="button"
+                            className="sg-menu-item"
+                            aria-current={cartridge?.label === rom.label}
+                            onClick={() => void selectRom(rom)}
+                        >
+                            {rom.label}
+                            {rom.bytes ? (
+                                <span className="sg-menu-size">{formatBytes(rom.bytes)}</span>
+                            ) : null}
+                        </button>
+                    ))}
 
                     {roms.length > 0 ? <div className="sg-menu-sep" /> : null}
 
