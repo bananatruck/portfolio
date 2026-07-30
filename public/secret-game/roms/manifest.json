@@ -1,12 +1,29 @@
 {
   "roms": [
     {
+      "file": "pokemon-radical-red.zip",
+      "label": "Pokemon Radical Red",
+      "bytes": 17348645
+    },
+    {
+      "file": "pokemon-adventure-red-chapter.zip",
+      "label": "Pokemon Adventure Red Chapter",
+      "bytes": 13875796
+    },
+    {
       "file": "pokemon-unbound.zip",
-      "label": "Pokemon Unbound"
+      "label": "Pokemon Unbound",
+      "bytes": 19510876
+    },
+    {
+      "file": "pokemon-team-rocket-johto.zip",
+      "label": "Pokemon Team Rocket: Johto",
+      "bytes": 17133487
     },
     {
       "file": "pokemon-firered.zip",
-      "label": "Pokemon FireRed"
+      "label": "Pokemon FireRed",
+      "bytes": 5324377
     }
   ]
 }

@@ -9,7 +9,7 @@
  * Either way the manifest exists, so the client never fetches a 404.
  */
 
-import { mkdir, readdir, writeFile } from "node:fs/promises";
+import { mkdir, readdir, stat, writeFile } from "node:fs/promises";
 import path from "node:path";
 
 const ROMS_DIR = path.join(process.cwd(), "public", "secret-game", "roms");
@@ -21,7 +21,11 @@ const ROM_EXTENSIONS = new Set([".gba", ".zip", ".7z"]);
 const KNOWN = [
     // No accent on "Pokemon": the pixel font used in the menu has no é glyph,
     // so it would fall back to a different typeface mid-word.
+    // Order roughly follows the ranking in the blog post.
+    { file: "pokemon-radical-red.zip", label: "Pokemon Radical Red" },
+    { file: "pokemon-adventure-red-chapter.zip", label: "Pokemon Adventure Red Chapter" },
     { file: "pokemon-unbound.zip", label: "Pokemon Unbound" },
+    { file: "pokemon-team-rocket-johto.zip", label: "Pokemon Team Rocket: Johto" },
     { file: "pokemon-firered.zip", label: "Pokemon FireRed" },
 ];
 
@@ -55,8 +59,17 @@ const ordered = [
         .map((file) => ({ file, label: titleFromFilename(file) })),
 ];
 
+// Sizes go in the manifest so the picker can tell you what a cartridge costs
+// before you commit to downloading it — these run to 17MB each.
+const withSizes = await Promise.all(
+    ordered.map(async (rom) => ({
+        ...rom,
+        bytes: (await stat(path.join(ROMS_DIR, rom.file))).size,
+    })),
+);
+
 await mkdir(ROMS_DIR, { recursive: true });
-await writeFile(MANIFEST, `${JSON.stringify({ roms: ordered }, null, 2)}\n`);
+await writeFile(MANIFEST, `${JSON.stringify({ roms: withSizes }, null, 2)}\n`);
 
 console.log(
     ordered.length > 0
