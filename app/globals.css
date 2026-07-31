@@ -150,10 +150,8 @@
   /* Match paper bg */
 }
 
-@media (prefers-color-scheme: dark) {
-  .logoloop {
-    --logoloop-fadeColorAuto: #0d0d0d;
-  }
+.dark .logoloop {
+  --logoloop-fadeColorAuto: #0d0d0d;
 }
 
 .logoloop__track {
