@@ -60,9 +60,10 @@ export function Leaderboard({
             you: true,
         };
 
-        return [...RIVALS.map((rival) => ({ ...rival, you: false })), you].sort(
-            (a, b) => b.hours - a.hours,
-        );
+        return [
+            ...RIVALS.map((rival) => ({ ...rival, you: false, id: rival.name })),
+            { ...you, id: "you" },
+        ].sort((a, b) => b.hours - a.hours);
     }, [gameLabel, name, playtimeMs]);
 
     const commitName = () => {
@@ -90,7 +91,11 @@ export function Leaderboard({
             <ol className="sg-lb-rows">
                 {rows.map((row, index) => (
                     <li
-                        key={`${row.name}-${index}`}
+                        // Keyed on identity, never on the displayed name. Keying
+                        // on the name meant every keystroke in the trainer field
+                        // changed the key, so React tore down the row and took
+                        // the focused input with it — you got one character.
+                        key={row.id}
                         className="sg-lb-row"
                         data-you={row.you}
                         aria-current={row.you || undefined}

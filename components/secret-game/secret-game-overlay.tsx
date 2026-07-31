@@ -23,6 +23,9 @@ const BOOT_EXIT_MS = 420;
 
 const DEFAULT_VOLUME = 0.5;
 
+/** Boots on its own when the egg opens. Everything else is picked. */
+const DEFAULT_ROM = "pokemon-unbound.zip";
+
 type Rom = { file: string; label: string; bytes?: number };
 type Cartridge = { url: string; label: string; isObjectUrl: boolean };
 type Panel = "cartridges" | "leaderboard" | "share" | null;
@@ -57,6 +60,11 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     // When the current boot started. Reset on every cartridge swap so the
     // animation gets its full run each time, not just the first.
     const openedAt = useRef(Date.now());
+    // Guards the one automatic cartridge load against a second manifest pass.
+    const autoStarted = useRef(false);
+    // Which cartridge pick is currently the live one, and the download it owns.
+    const selectionToken = useRef(0);
+    const pendingLoad = useRef<AbortController | null>(null);
 
     const basePath = useMemo(getBasePath, []);
     // Chosen once, on mount: FireRed the first time anyone opens this, random
@@ -64,7 +72,9 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     const bootKind = useMemo(pickBootKind, []);
 
     const emulator = useEmulatorBridge();
-    const { frameRef, status } = emulator;
+    // Pulled out by name: the bridge object's identity changes whenever status
+    // does, and anything depending on the whole object would re-run with it.
+    const { frameRef, status, setStatus } = emulator;
     const live = !booting && status === "running";
     const playtimeMs = usePlaytime(live);
 
@@ -87,41 +97,71 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     }, []);
 
     /**
-     * Picking a cartridge is what starts the download — nothing is fetched
-     * before this. The boot screen comes back while it streams in, so the wait
-     * is the game booting rather than a spinner on a menu.
+     * Picking a cartridge is what starts the download. The boot screen comes
+     * back while it streams in, so the wait reads as the game booting rather
+     * than a spinner on a menu.
+     *
+     * Only the most recent pick is allowed to land. Two picks in flight would
+     * otherwise resolve in completion order rather than click order — choose a
+     * 17MB game and then a cached one, and the cached one boots first only to be
+     * replaced by the game you'd already changed your mind about.
      */
     const selectRom = useCallback(
         async (rom: Rom) => {
             const url = `${basePath}/secret-game/roms/${rom.file}`;
+
+            pendingLoad.current?.abort();
+            const controller = new AbortController();
+            pendingLoad.current = controller;
+
+            const token = ++selectionToken.current;
+            const isStale = () => token !== selectionToken.current;
 
             setPanel(null);
             setLoadError(null);
             setBooting(true);
             setBootLeaving(false);
             openedAt.current = Date.now();
-            emulator.setStatus("loading");
+            setStatus("loading");
             setDownload({ ratio: null, receivedBytes: 0, totalBytes: rom.bytes ?? null, cached: false });
 
             try {
-                const objectUrl = await loadCartridge(url, setDownload);
+                const objectUrl = await loadCartridge(
+                    url,
+                    (progress) => {
+                        if (!isStale()) setDownload(progress);
+                    },
+                    controller.signal,
+                );
+
+                if (isStale()) {
+                    // A newer pick won while this was downloading. The bytes are
+                    // still cached for next time; only this URL is surplus.
+                    URL.revokeObjectURL(objectUrl);
+                    return;
+                }
+
                 insertCartridge({ url: objectUrl, label: rom.label, isObjectUrl: true });
             } catch (error) {
+                // An abort is this function superseding itself, not a failure.
+                if (isStale() || (error instanceof DOMException && error.name === "AbortError")) {
+                    return;
+                }
                 setLoadError(
                     error instanceof Error ? error.message : "That cartridge wouldn't load.",
                 );
                 setBooting(false);
             } finally {
-                setDownload(null);
+                if (!isStale()) setDownload(null);
             }
         },
-        [basePath, emulator, insertCartridge],
+        [basePath, insertCartridge, setStatus],
     );
 
-    // Only the manifest is fetched up front — it's a couple of hundred bytes.
-    // No cartridge is chosen here: the games are ~17MB each, and downloading one
-    // because somebody opened the easter egg would be a poor trade. Picking one
-    // is what starts the download.
+    // The manifest is a couple of hundred bytes, so it's always fetched. Unbound
+    // then starts downloading on its own — it's the one the egg is built around,
+    // and landing on a menu instead of a game is a worse first impression. Every
+    // other cartridge stays on demand, through the menu.
     useEffect(() => {
         let cancelled = false;
 
@@ -129,7 +169,17 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
             .then((response) => (response.ok ? response.json() : { roms: [] }))
             .then((data: { roms?: Rom[] }) => {
                 if (cancelled) return;
-                setRoms(Array.isArray(data.roms) ? data.roms : []);
+                const available = Array.isArray(data.roms) ? data.roms : [];
+                setRoms(available);
+
+                const fallback =
+                    available.find((rom) => rom.file === DEFAULT_ROM) ?? available[0];
+                // The guard survives StrictMode's double-invoke, which would
+                // otherwise kick off two downloads of the same 19MB file.
+                if (fallback && !autoStarted.current) {
+                    autoStarted.current = true;
+                    void selectRom(fallback);
+                }
             })
             .catch(() => {
                 if (!cancelled) setRoms([]);
@@ -141,7 +191,7 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         return () => {
             cancelled = true;
         };
-    }, [basePath]);
+    }, [basePath, selectRom]);
 
     // Take over the page: lock scrolling, silence the music player, and undo the
     // site's global cursor hiding (handled by the .sg-open class in CSS).
@@ -232,11 +282,13 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         return () => window.removeEventListener("message", onMessage);
     }, [frameRef, onClose]);
 
-    // Release the picked file's object URL on unmount. Removing the iframe is
-    // what actually tears the emulator down.
+    // Release the picked file's object URL on unmount, and stop any download
+    // still in flight — closing the egg shouldn't keep pulling 17MB in the
+    // background. Removing the iframe is what tears the emulator down.
     useEffect(
         () => () => {
             if (objectUrlRef.current) URL.revokeObjectURL(objectUrlRef.current);
+            pendingLoad.current?.abort();
         },
         [],
     );
@@ -361,7 +413,13 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     );
 
     return createPortal(
-        <div className="sg-overlay" role="dialog" aria-modal="true" aria-label="Secret game">
+        <div
+            className="sg-overlay"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Secret game"
+            data-panel={panel ?? "none"}
+        >
             <GbaShell
                 frameRef={frameRef}
                 frameSrc={frameSrc}
