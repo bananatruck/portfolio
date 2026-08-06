@@ -31,6 +31,67 @@ This is Keshav Jindal's personal corner of the web: part engineering portfolio, 
 
 The main site presents projects, tools, writing, music, and personal history. Patient explorers can also wake a hidden, browser-native GBA console with responsive controls, swappable cartridges, boot sequences, saves, screenshots, skins, and a tiny local Hall of Fame.
 
+## A flagship project—not just a portfolio wrapper
+
+This website is one of the most important projects in the portfolio. It does not merely link to the work; it demonstrates the same product thinking, frontend engineering, systems design, and attention to detail that the rest of the portfolio describes.
+
+The public experience is a complete interactive application: a cinematic boot sequence leads into a responsive hero, a command-driven project explorer, a technical stack display, contact surfaces, and a deeply personal media-and-milestones archive. Underneath that is a second application—the secret GBA experience—with its own loading strategy, iframe protocol, cache, input system, persistent state, responsive shell, and sharing workflow.
+
+| Project concern | How the website handles it |
+| --- | --- |
+| **Professional storytelling** | Connects Kesh's engineering work, technical interests, résumé, and personal history into one continuous journey |
+| **Interaction design** | Uses a working project terminal, filterable cards, modals, hover targets, keyboard controls, motion, and responsive feedback |
+| **Visual system** | Combines monochrome manga framing, retro computer chrome, pixel typography, scanlines, and restrained emerald highlights |
+| **Frontend architecture** | Separates reusable portfolio sections from a lazy-loaded, same-origin emulator subsystem with a narrow message bridge |
+| **Performance** | Defers the emulator, ROM files, music, and expensive effects until they are actually needed; streams and caches selected cartridges |
+| **Accessibility** | Provides semantic controls, focus restoration, keyboard input, labeled console buttons, responsive layouts, and safe escape routes |
+| **Personality** | Treats Pokémon, manga, music, film, Linux, and ROM tinkering as part of the work's identity rather than decorative afterthoughts |
+
+### Website screenshots
+
+<div align="center">
+  <a href="public/readme/portfolio-home.png"><img src="public/readme/portfolio-home.png" alt="Kesh portfolio hero with terminal glitch field and monochrome project artwork" /></a>
+  <p><sub>The live hero: manga framing, terminal telemetry, responsive actions, and the PROJECT.EXE centerpiece.</sub></p>
+</div>
+
+<table>
+  <tr>
+    <td width="50%"><a href="public/readme/portfolio-projects.png"><img src="public/readme/portfolio-projects.png" alt="Interactive terminal-inspired project grid" /></a></td>
+    <td width="50%"><a href="public/readme/portfolio-gba.png"><img src="public/readme/portfolio-gba.png" alt="Secret Game Boy Advance emulator showing its FireRed-inspired boot screen" /></a></td>
+  </tr>
+  <tr>
+    <td align="center"><sub>The command-driven project explorer and current engineering work.</sub></td>
+    <td align="center"><sub>The hidden GBA shell running its real first-encounter boot sequence.</sub></td>
+  </tr>
+</table>
+
+## Pokémon inspiration
+
+The Pokémon influence arrives after the website has established itself as a serious project. Generation III's tiny sprites, cartridge menus, route language, trainer records, boot screens, and “reward curiosity” design become a second visual vocabulary layered underneath the manga-and-terminal surface.
+
+<div align="center">
+  <p><strong>SELECT YOUR PARTY</strong></p>
+  <p>
+    <a href="https://archives.bulbagarden.net/wiki/File:Spr_3f_001.png"><img src="public/readme/sprites/bulbasaur-frlg.png" width="64" height="64" alt="Bulbasaur's FireRed and LeafGreen sprite" title="Bulbasaur — FireRed / LeafGreen" /></a>
+    <a href="https://archives.bulbagarden.net/wiki/File:Spr_3f_004.png"><img src="public/readme/sprites/charmander-frlg.png" width="64" height="64" alt="Charmander's FireRed and LeafGreen sprite" title="Charmander — FireRed / LeafGreen" /></a>
+    <a href="https://archives.bulbagarden.net/wiki/File:Spr_3f_007.png"><img src="public/readme/sprites/squirtle-frlg.png" width="64" height="64" alt="Squirtle's FireRed and LeafGreen sprite" title="Squirtle — FireRed / LeafGreen" /></a>
+    <a href="https://archives.bulbagarden.net/wiki/File:Spr_3r_025.png"><img src="public/readme/sprites/pikachu-gen3.png" width="64" height="64" alt="Pikachu's Generation III sprite" title="Pikachu — Generation III" /></a>
+  </p>
+
+  <p><strong>EASTER-EGG BOOT ROTATION</strong></p>
+  <p>
+    <img src="public/secret-game/boot/firered.gif" height="90" alt="Animated FireRed-inspired boot sprite" title="FireRed" />
+    <img src="public/secret-game/boot/emerald.gif" height="90" alt="Animated Emerald-inspired boot sprite" title="Emerald" />
+    <img src="public/secret-game/boot/heartgold.gif" height="90" alt="Animated HeartGold-inspired boot sprite" title="HeartGold" />
+    <img src="public/secret-game/boot/platinum.gif" height="90" alt="Animated Platinum-inspired boot sprite" title="Platinum" />
+    <img src="public/secret-game/boot/black.gif" height="90" alt="Animated Black-inspired boot sprite" title="Black" />
+    <img src="public/secret-game/boot/white.gif" height="90" alt="Animated White-inspired boot sprite" title="White" />
+  </p>
+  <p><sub>These are the actual animated assets used by the easter egg's randomized boot system—not a separate README mockup.</sub></p>
+</div>
+
+The starter party establishes the GBA-era palette and pixel scale. Garchomp, hidden at the bottom of this README just as he is hidden in the About section, is the encounter that bridges inspiration into a playable feature.
+
 > [!NOTE]
 > Pokémon, Game Boy Advance, and related marks belong to their respective owners. This is an unofficial, non-commercial fan-inspired portfolio. Only use ROM files that you are legally allowed to use; for ROM hacks, obtain patches from their authors and apply them to a legitimately dumped base game.
 
@@ -171,6 +232,7 @@ portfolio--main/
 │       └── share-progress.tsx           # Screenshot and sharing handoff
 ├── public/
 │   ├── images/                          # Portfolio and article artwork
+│   ├── readme/                          # Current screenshots and README sprites
 │   └── secret-game/
 │       ├── index.html                   # Minimal EmulatorJS host document
 │       ├── boot/                        # Animated boot sprites
@@ -420,11 +482,16 @@ The `place()` helper converts the absolute design coordinates to percentages, so
 - Built with [Next.js](https://nextjs.org/), [React](https://react.dev/), and [Tailwind CSS](https://tailwindcss.com/).
 - GBA emulation is provided by [EmulatorJS](https://emulatorjs.org/) using its mGBA core.
 - The console workflow was inspired by Delta skins; original skin authors retain ownership of their artwork.
+- Inspiration party sprites: [Bulbasaur](https://archives.bulbagarden.net/wiki/File:Spr_3f_001.png), [Charmander](https://archives.bulbagarden.net/wiki/File:Spr_3f_004.png), [Squirtle](https://archives.bulbagarden.net/wiki/File:Spr_3f_007.png), and [Pikachu](https://archives.bulbagarden.net/wiki/File:Spr_3r_025.png) from Bulbagarden Archives.
+- Easter-egg sprite: [Garchomp from Pokémon Platinum](https://archives.bulbagarden.net/wiki/File:Spr_4p_445_m.png), also from Bulbagarden Archives. The sprite remains an animated PNG at its native resolution.
+- Bulbagarden identifies these files as game sprites used under a fair-use claim. They are mirrored locally only for this contextual, non-commercial README presentation; the links above lead to the original file and licensing pages.
 - Pokémon is a creative influence on the presentation and secret experience, not an affiliation or endorsement.
 
 ---
 
 <div align="center">
+
+<a href="https://archives.bulbagarden.net/wiki/File:Spr_4p_445_m.png"><img src="public/readme/sprites/garchomp-platinum.png" width="82" height="82" alt="Animated Garchomp sprite from Pokémon Platinum" title="A wild Garchomp appeared!" /></a>
 
 <h2>⚠️ SECRET AREA — EASTER EGG SPOILERS ⚠️</h2>
 
