@@ -31,6 +31,19 @@ This is Keshav Jindal's personal corner of the web: part engineering portfolio, 
 
 The main site presents projects, tools, writing, music, and personal history. Patient explorers can also wake a hidden, browser-native GBA console with responsive controls, swappable cartridges, boot sequences, saves, screenshots, skins, and a tiny local Hall of Fame.
 
+<table>
+  <tr>
+    <td width="86" align="center">
+      <a href="https://archives.bulbagarden.net/wiki/File:FRLG_Professor_Oak_Portrait.png"><img src="public/readme/sprites/professor-kesh-oak-frlg.png" width="55" height="86" alt="Professor Oak's FireRed and LeafGreen portrait, representing Professor Kesh" /></a><br />
+      <strong>PROF. KESH</strong>
+    </td>
+    <td>
+      <strong>“Hello there! Welcome to my portfolio.”</strong><br /><br />
+      My name is Kesh—but throughout this field guide, you can call me <strong>Professor Kesh</strong>. This website is one of my most important builds, so I am going to teach you how it works instead of only showing you the finished screen. We will begin with the public experience, study the systems underneath it, and then head into the tall grass where the stranger experiments live.
+    </td>
+  </tr>
+</table>
+
 ## A flagship project—not just a portfolio wrapper
 
 This website is one of the most important projects in the portfolio. It does not merely link to the work; it demonstrates the same product thinking, frontend engineering, systems design, and attention to detail that the rest of the portfolio describes.
@@ -46,6 +59,10 @@ The public experience is a complete interactive application: a cinematic boot se
 | **Performance** | Defers the emulator, ROM files, music, and expensive effects until they are actually needed; streams and caches selected cartridges |
 | **Accessibility** | Provides semantic controls, focus restoration, keyboard input, labeled console buttons, responsive layouts, and safe escape routes |
 | **Personality** | Treats Pokémon, manga, music, film, Linux, and ROM tinkering as part of the work's identity rather than decorative afterthoughts |
+
+> **PROF. KESH // FIELD NOTE 01 — SHOW THE WORK**
+>
+> A portfolio should be evidence of the craft it claims to represent. That is why the interface below is not a template wrapped around links: the terminal accepts commands, the sections form a narrative, and the hidden console is a real second application. Start by studying what the visitor sees; we will open the machinery afterward.
 
 ### Website screenshots
 
@@ -91,6 +108,10 @@ The Pokémon influence arrives after the website has established itself as a ser
 </div>
 
 The starter party establishes the GBA-era palette and pixel scale. Garchomp, hidden at the bottom of this README just as he is hidden in the About section, is the encounter that bridges inspiration into a playable feature.
+
+> **PROF. KESH // FIELD NOTE 02 — GIVE INSPIRATION A JOB**
+>
+> Nostalgia is most useful when it changes how a product behaves. Here, Pokémon does more than decorate the page: it teaches visitors to explore, turns downloads into cartridges, turns local state into a trainer record, and transforms technical loading time into a familiar boot ritual.
 
 > [!NOTE]
 > Pokémon, Game Boy Advance, and related marks belong to their respective owners. This is an unofficial, non-commercial fan-inspired portfolio. Only use ROM files that you are legally allowed to use; for ROM hacks, obtain patches from their authors and apply them to a legitimately dumped base game.
@@ -247,6 +268,10 @@ portfolio--main/
 
 The emulator is deliberately separated from the rest of the React app. The portfolio controls the experience; the iframe only runs the game core.
 
+> **PROF. KESH // FIELD NOTE 03 — USE A LINK CABLE**
+>
+> The important architectural lesson is separation. React owns the console, accessibility, downloads, and touch controls. The iframe owns EmulatorJS and mGBA. A narrow `postMessage` bridge acts like a link cable between them, so either side can evolve without tangling the whole project around emulator internals.
+
 ```text
 Garchomp hold
      │
@@ -348,6 +373,10 @@ The function strip also provides **SAVE**, **LOAD**, **RESET**, **SEND KESH**, a
 ## Build your own secret GBA
 
 The pieces under `components/secret-game` are intentionally modular, so the same pattern can be transplanted into another Next.js project.
+
+> **PROF. KESH // FIELD NOTE 04 — YOUR TURN, TRAINER**
+>
+> Build the smallest legal version first: one trigger, one homebrew cartridge, one iframe, and one input command. Once that loop works, add the shell art, caching, boot animation, persistence, and sharing one system at a time. A secret feature is still production software; make it private, recoverable, and accessible.
 
 ### Step 1 — copy the runtime pieces
 
@@ -482,6 +511,7 @@ The `place()` helper converts the absolute design coordinates to percentages, so
 - Built with [Next.js](https://nextjs.org/), [React](https://react.dev/), and [Tailwind CSS](https://tailwindcss.com/).
 - GBA emulation is provided by [EmulatorJS](https://emulatorjs.org/) using its mGBA core.
 - The console workflow was inspired by Delta skins; original skin authors retain ownership of their artwork.
+- Professor Kesh's guide portrait uses the [FireRed/LeafGreen Professor Oak portrait](https://archives.bulbagarden.net/wiki/File:FRLG_Professor_Oak_Portrait.png) from Bulbagarden Archives.
 - Inspiration party sprites: [Bulbasaur](https://archives.bulbagarden.net/wiki/File:Spr_3f_001.png), [Charmander](https://archives.bulbagarden.net/wiki/File:Spr_3f_004.png), [Squirtle](https://archives.bulbagarden.net/wiki/File:Spr_3f_007.png), and [Pikachu](https://archives.bulbagarden.net/wiki/File:Spr_3r_025.png) from Bulbagarden Archives.
 - Easter-egg sprite: [Garchomp from Pokémon Platinum](https://archives.bulbagarden.net/wiki/File:Spr_4p_445_m.png), also from Bulbagarden Archives. The sprite remains an animated PNG at its native resolution.
 - Bulbagarden identifies these files as game sprites used under a fair-use claim. They are mirrored locally only for this contextual, non-commercial README presentation; the links above lead to the original file and licensing pages.
@@ -495,7 +525,7 @@ The `place()` helper converts the absolute design coordinates to percentages, so
 
 <h2>⚠️ SECRET AREA — EASTER EGG SPOILERS ⚠️</h2>
 
-<p><em>Professor Oak would tell you to explore the site first.</em></p>
+<p><em>PROF. KESH: “A good trainer explores before opening the field guide.”</em></p>
 
 </div>
 
