@@ -16,6 +16,14 @@ export type Project = {
 
 const projects: Project[] = [
     {
+        title: "G.A.T.E.S.",
+        description: "Research: a portable validity layer for autonomous research agents. Traces every reported metric to a hashed execution run, raising unsupported claim detection 25-35% and cutting repeated undetected failures by over 98%. Paper pending peer review.",
+        tags: ["Python", "Research", "AI Agents", "LaTeX", "Validation"],
+        link: "/research",
+        github: "https://github.com/bananatruck/gates",
+        featured: true
+    },
+    {
         title: "LaunchGuard",
         description: "Local-first deployment intelligence platform. Audits security with Trivy/OSV-Scanner, simulates rootless Podman OCI sandboxes, and generates reviewable PRs. Verified 40/40 fixture suite.",
         tags: ["Rust", "Podman", "OCI", "Security", "Trivy", "Tauri"],

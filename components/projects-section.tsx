@@ -14,9 +14,23 @@ export interface Project {
     demo: string;
     github: string;
     image?: string;
+    /** Shown on the card as the external-link icon. */
+    link?: string;
+    /** Overrides the modal's "Live Demo" button label. */
+    demoLabel?: string;
 }
 
 const projects: Project[] = [
+    {
+        title: "G.A.T.E.S.",
+        description: "Research: a portable validity layer for autonomous research agents. Traces every reported metric to a hashed execution run, raising unsupported claim detection 25-35% and cutting repeated undetected failures by over 98%. Paper pending peer review.",
+        tags: ["Python", "Research", "AI Agents", "LaTeX", "Validation"],
+        demo: "/research",
+        demoLabel: "Read Research",
+        link: "/research",
+        github: "https://github.com/bananatruck/gates",
+        image: "https://picsum.photos/seed/gates/600/600?grayscale"
+    },
     {
         title: "LaunchGuard",
         description: "Local-first deployment intelligence platform. Audits security with Trivy/OSV-Scanner, simulates rootless Podman OCI sandboxes, & generates reviewable PRs. Verified 40/40 fixture suite.",
@@ -132,6 +146,7 @@ export function ProjectsSection() {
                             <div>  <span className="font-bold text-foreground">cat &lt;name&gt;</span>          - Inspect project details (e.g. cat launchguard)</div>
                             <div>  <span className="font-bold text-foreground">filter &lt;tag&gt;</span>       - Filter grid by tag (e.g. filter rust, filter python, filter all)</div>
                             <div>  <span className="font-bold text-foreground">arch | neofetch</span>     - Show Arch Linux system specs</div>
+                            <div>  <span className="font-bold text-foreground">research</span>            - Show current research role & paper status</div>
                             <div>  <span className="font-bold text-foreground">whoami</span>              - Show developer bio</div>
                             <div>  <span className="font-bold text-foreground">clear</span>               - Clear terminal history</div>
                         </div>
@@ -214,7 +229,24 @@ export function ProjectsSection() {
 
             case 'whoami':
                 newLogs.push({
-                    text: "Keshav Jindal // Full Stack & AI Systems Engineer // Long Beach, CA",
+                    text: "Keshav Jindal // Full Stack & AI Systems Engineer // Research Assistant @ CSULB // Long Beach, CA",
+                    type: 'output'
+                });
+                break;
+
+            case 'research':
+                newLogs.push({
+                    text: (
+                        <div className="p-2 border border-emerald-500/40 bg-emerald-500/10 text-emerald-300 font-mono text-xs space-y-1">
+                            <div className="font-bold uppercase text-emerald-400">=== RESEARCH ASSISTANT // JUN 2026 - PRESENT ===</div>
+                            <div>California State University, Long Beach — autonomous research agents.</div>
+                            <div>G.A.T.E.S.: every reported metric traced to a hashed execution run.</div>
+                            <div className="text-[11px] text-foreground/70">PAPER: coming soon, pending peer review.</div>
+                            <div className="text-[10px] font-bold pt-1">
+                                <a href="/research" className="text-emerald-400 underline underline-offset-2 hover:text-emerald-300">Open /research ↗</a>
+                            </div>
+                        </div>
+                    ),
                     type: 'output'
                 });
                 break;

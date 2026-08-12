@@ -77,6 +77,13 @@ const hobbies = [
 
 const milestones = [
     {
+        year: "2026",
+        title: "Research Assistant — Autonomous Research Agents",
+        rating: 5,
+        review: "Building execution-grounded pipelines at CSULB so research agents can only report numbers they actually measured. Paper pending peer review.",
+        loved: true
+    },
+    {
         year: "2025",
         title: "Founder and President of a Startup",
         rating: 5,

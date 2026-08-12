@@ -60,7 +60,7 @@ export function Hero() {
                     className="inline-flex items-center gap-1 px-2.5 py-0.5 bg-foreground text-background font-mono text-[10px] sm:text-[11px] uppercase tracking-wider border border-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))]"
                 >
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_8px_#10b981] animate-pulse" />
-                    <span>SYSTEM ONLINE // BOOTING ARCH...</span>
+                    <span>SYSTEM ONLINE // RESEARCH ASSISTANT @ CSULB</span>
                 </motion.div>
 
                 {/* Main Heading & Subtitle */}
@@ -82,6 +82,15 @@ export function Hero() {
                     <p className="text-xs sm:text-base text-foreground/80 font-mono font-medium max-w-md mx-auto mt-1 pt-0.5 leading-relaxed">
                         Full Stack & AI Systems Engineer
                     </p>
+
+                    <Link
+                        href="/research"
+                        className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-foreground/70 hover:text-foreground border-b border-dashed border-foreground/40 hover:border-foreground transition-colors cursor-target"
+                    >
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#10b981] animate-pulse" />
+                        Research Assistant — Autonomous Research Agents
+                        <ArrowUpRight className="w-3 h-3" />
+                    </Link>
                 </motion.div>
 
                 {/* Hero Showcase Row with 1 Small Square Box on Left & Right */}

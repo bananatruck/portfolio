@@ -84,7 +84,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                                             {demoUrl && (
                                                 <Button className="flex-1 gap-2 bg-foreground text-background font-bold shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-emerald-500 hover:text-black" asChild>
                                                     <a href={demoUrl} target="_blank" rel="noopener noreferrer">
-                                                        <ExternalLink className="w-4 h-4" /> Live Demo
+                                                        <ExternalLink className="w-4 h-4" /> {project.demoLabel ?? "Live Demo"}
                                                     </a>
                                                 </Button>
                                             )}
