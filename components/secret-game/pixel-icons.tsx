@@ -108,6 +108,44 @@ const CARTRIDGE = [
     "................",
 ] as const;
 
+const EXPAND = [
+    "................",
+    "..#####..#####..",
+    "..#####..#####..",
+    "..##........##..",
+    "..##........##..",
+    "................",
+    "................",
+    "................",
+    "................",
+    "................",
+    "..##........##..",
+    "..##........##..",
+    "..#####..#####..",
+    "..#####..#####..",
+    "................",
+    "................",
+] as const;
+
+const COLLAPSE = [
+    "................",
+    "................",
+    ".....##..##.....",
+    ".....##..##.....",
+    "..####....####..",
+    "..####....####..",
+    "................",
+    "................",
+    "................",
+    "................",
+    "..####....####..",
+    "..####....####..",
+    ".....##..##.....",
+    ".....##..##.....",
+    "................",
+    "................",
+] as const;
+
 // Solid upper half, hollow lower half, release button through the middle —
 // the silhouette has to carry it, since these render in a single colour.
 const POKEBALL = [
@@ -139,6 +177,14 @@ export const PixelSadFace = (props: Omit<PixelIconProps, "grid">) => (
 
 export const PixelCartridge = (props: Omit<PixelIconProps, "grid">) => (
     <PixelIcon grid={CARTRIDGE} {...props} />
+);
+
+export const PixelExpand = (props: Omit<PixelIconProps, "grid">) => (
+    <PixelIcon grid={EXPAND} {...props} />
+);
+
+export const PixelCollapse = (props: Omit<PixelIconProps, "grid">) => (
+    <PixelIcon grid={COLLAPSE} {...props} />
 );
 
 export const PixelPokeball = (props: Omit<PixelIconProps, "grid">) => (

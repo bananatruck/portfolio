@@ -9,7 +9,13 @@ import { DEFAULT_SKIN, loadSkin, saveSkin, SKIN_ORDER, SKINS, type SkinId } from
 import { useEmulatorBridge } from "./emulator-bridge";
 import { GbaShell } from "./gba-shell";
 import { Leaderboard } from "./leaderboard";
-import { PixelBackArrow, PixelCartridge, PixelSadFace } from "./pixel-icons";
+import {
+    PixelBackArrow,
+    PixelCartridge,
+    PixelCollapse,
+    PixelExpand,
+    PixelSadFace,
+} from "./pixel-icons";
 import { usePlaytime } from "./playtime";
 import { SaveStatePanel } from "./save-state-panel";
 import "./secret-game.css";
@@ -30,6 +36,27 @@ type Rom = { file: string; label: string; bytes?: number };
 type Cartridge = { id: string; url: string; label: string; isObjectUrl: boolean };
 type Panel = "cartridges" | "leaderboard" | "states" | null;
 
+function hasWebkitRequestFullscreen(
+    element: HTMLElement,
+): element is HTMLElement & { webkitRequestFullscreen: () => Promise<void> | void } {
+    return (
+        "webkitRequestFullscreen" in element &&
+        typeof element.webkitRequestFullscreen === "function"
+    );
+}
+
+function hasWebkitExitFullscreen(
+    value: Document,
+): value is Document & { webkitExitFullscreen: () => Promise<void> | void } {
+    return "webkitExitFullscreen" in value && typeof value.webkitExitFullscreen === "function";
+}
+
+function isFullscreen(): boolean {
+    if (document.fullscreenElement) return true;
+    if (!("webkitFullscreenElement" in document)) return false;
+    return document.webkitFullscreenElement instanceof Element;
+}
+
 export default function SecretGameOverlay({ onClose }: { onClose: () => void }) {
     const [booting, setBooting] = useState(true);
     const [bootLeaving, setBootLeaving] = useState(false);
@@ -43,6 +70,8 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     const [muted, setMuted] = useState(false);
     const [fastForwardLatched, setFastForwardLatched] = useState(false);
     const [fastForwardHeld, setFastForwardHeld] = useState(false);
+    const [fullscreenActive, setFullscreenActive] = useState(false);
+    const [focusMode, setFocusMode] = useState(false);
     // Starts on the default so the server and first client render agree, then
     // picks up a stored choice on mount.
     const [skin, setSkin] = useState<SkinId>(DEFAULT_SKIN);
@@ -54,6 +83,7 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
 
     const fileInputRef = useRef<HTMLInputElement>(null);
     const backRef = useRef<HTMLButtonElement>(null);
+    const overlayRef = useRef<HTMLDivElement>(null);
     // Tracks the object URL currently handed to the iframe so it can be revoked
     // when it's replaced or the overlay closes.
     const objectUrlRef = useRef<string | null>(null);
@@ -313,11 +343,57 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         emulator.fastForward(fastForwardActive);
     }, [emulator, fastForwardActive, live]);
 
+    useEffect(() => {
+        const sync = () => {
+            const active = isFullscreen();
+            setFullscreenActive(active);
+            if (!active) setFocusMode(false);
+        };
+
+        document.addEventListener("fullscreenchange", sync);
+        document.addEventListener("webkitfullscreenchange", sync);
+        return () => {
+            document.removeEventListener("fullscreenchange", sync);
+            document.removeEventListener("webkitfullscreenchange", sync);
+        };
+    }, []);
+
     // A short confirmation over the screen, the way the games acknowledge a save.
     const say = useCallback((message: string) => {
         setFlash(message);
         window.setTimeout(() => setFlash((current) => (current === message ? null : current)), 1600);
     }, []);
+
+    const toggleFullscreen = useCallback(async () => {
+        const element = overlayRef.current;
+        if (!element) return;
+
+        if (isFullscreen() || focusMode) {
+            setFocusMode(false);
+            if (document.fullscreenElement) {
+                await document.exitFullscreen().catch(() => {});
+            } else if (hasWebkitExitFullscreen(document)) {
+                await Promise.resolve(document.webkitExitFullscreen()).catch(() => {});
+            }
+            return;
+        }
+
+        // Focus mode is the fallback on browsers that do not expose fullscreen
+        // for normal page elements. The console still fills the available view.
+        setFocusMode(true);
+
+        try {
+            if (typeof element.requestFullscreen === "function") {
+                await element.requestFullscreen();
+            } else if (hasWebkitRequestFullscreen(element)) {
+                await Promise.resolve(element.webkitRequestFullscreen());
+            } else {
+                say("Focused view on. Use your browser controls to hide its toolbar.");
+            }
+        } catch {
+            say("Focused view on. Browser fullscreen was blocked.");
+        }
+    }, [focusMode, say]);
 
     const onFileChosen = (event: React.ChangeEvent<HTMLInputElement>) => {
         const file = event.target.files?.[0];
@@ -402,11 +478,13 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
 
     return createPortal(
         <div
+            ref={overlayRef}
             className="sg-overlay"
             role="dialog"
             aria-modal="true"
             aria-label="Secret game"
             data-panel={panel ?? "none"}
+            data-focus={focusMode}
         >
             <GbaShell
                 frameRef={frameRef}
@@ -514,6 +592,17 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                     aria-expanded={panel === "cartridges"}
                 >
                     <PixelCartridge size={24} />
+                </button>
+
+                <button
+                    type="button"
+                    className="sg-btn sg-btn-fullscreen"
+                    onClick={() => void toggleFullscreen()}
+                    aria-label={focusMode ? "Exit fullscreen" : "Enter fullscreen"}
+                    aria-pressed={fullscreenActive || focusMode}
+                    title={focusMode ? "Exit fullscreen" : "Enter fullscreen"}
+                >
+                    {focusMode ? <PixelCollapse size={24} /> : <PixelExpand size={24} />}
                 </button>
             </div>
 
