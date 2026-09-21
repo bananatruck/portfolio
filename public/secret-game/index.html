@@ -84,8 +84,8 @@
 
             var parentOrigin = window.location.origin;
 
-            function post(message) {
-                window.parent.postMessage(message, parentOrigin);
+            function post(message, transfer) {
+                window.parent.postMessage(message, parentOrigin, transfer || []);
             }
 
             function fail(message) {
@@ -184,16 +184,45 @@
                 reset: function () {
                     emulator().gameManager.restart();
                 },
-                saveState: function () {
-                    var ejs = emulator();
-                    // Writes to the same slot EmulatorJS's own quick-save uses, so a
-                    // state taken here is one its menu would find.
-                    ejs.gameManager.quickSave(1);
-                    post({ type: "sg:state-saved" });
+                captureState: function (data) {
+                    Promise.resolve(emulator().gameManager.getState())
+                        .then(function (state) {
+                            var bytes = state instanceof Uint8Array ? state : new Uint8Array(state);
+                            var copy = bytes.slice().buffer;
+                            post(
+                                { type: "sg:state-captured", requestId: data.requestId, state: copy },
+                                [copy]
+                            );
+                        })
+                        .catch(function (error) {
+                            post({
+                                type: "sg:state-error",
+                                requestId: data.requestId,
+                                message: String((error && error.message) || error),
+                            });
+                        });
                 },
-                loadState: function () {
-                    emulator().gameManager.quickLoad(1);
-                    post({ type: "sg:state-loaded" });
+                restoreState: function (data) {
+                    if (!(data.state instanceof ArrayBuffer)) {
+                        post({
+                            type: "sg:state-error",
+                            requestId: data.requestId,
+                            message: "That save state file is invalid.",
+                        });
+                        return;
+                    }
+
+                    Promise.resolve(emulator().gameManager.loadState(new Uint8Array(data.state)))
+                        .then(function () {
+                            post({ type: "sg:state-restored", requestId: data.requestId });
+                        })
+                        .catch(function (error) {
+                            post({
+                                type: "sg:state-error",
+                                requestId: data.requestId,
+                                message: String((error && error.message) || error),
+                            });
+                        });
                 },
                 screenshot: function (data) {
                     // Upscale 3x: a raw 240x160 grab is unreadably small once it

@@ -11,7 +11,7 @@ import { GbaShell } from "./gba-shell";
 import { Leaderboard } from "./leaderboard";
 import { PixelBackArrow, PixelCartridge, PixelSadFace } from "./pixel-icons";
 import { usePlaytime } from "./playtime";
-import { ShareProgress } from "./share-progress";
+import { SaveStatePanel } from "./save-state-panel";
 import "./secret-game.css";
 
 /** The boot animation always gets to play through, even on a fast core. */
@@ -28,7 +28,7 @@ const DEFAULT_ROM = "pokemon-unbound.zip";
 
 type Rom = { file: string; label: string; bytes?: number };
 type Cartridge = { id: string; url: string; label: string; isObjectUrl: boolean };
-type Panel = "cartridges" | "leaderboard" | "share" | null;
+type Panel = "cartridges" | "leaderboard" | "states" | null;
 
 export default function SecretGameOverlay({ onClose }: { onClose: () => void }) {
     const [booting, setBooting] = useState(true);
@@ -45,7 +45,6 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     // Starts on the default so the server and first client render agree, then
     // picks up a stored choice on mount.
     const [skin, setSkin] = useState<SkinId>(DEFAULT_SKIN);
-    const [shot, setShot] = useState<string | null>(null);
     const [flash, setFlash] = useState<string | null>(null);
     // Null until a cartridge is actually being fetched, so the boot screen knows
     // whether to show a download bar or its own indeterminate one.
@@ -329,12 +328,6 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         });
     };
 
-    const openShare = async () => {
-        setShot(null);
-        setPanel("share");
-        setShot(await emulator.screenshot());
-    };
-
     // Explicit /index.html rather than the directory form. `next dev` serves
     // files out of public/ without resolving a directory index, so the bare
     // folder 308s to a 404 and the emulator never loads locally. Static hosts
@@ -375,24 +368,11 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
             <button
                 type="button"
                 className="sg-fn"
-                disabled={!live}
-                onClick={() => {
-                    emulator.saveState();
-                    say("Progress saved.");
-                }}
+                disabled={!live || !cartridge}
+                onClick={() => setPanel((open) => (open === "states" ? null : "states"))}
+                aria-expanded={panel === "states"}
             >
-                SAVE
-            </button>
-            <button
-                type="button"
-                className="sg-fn"
-                disabled={!live}
-                onClick={() => {
-                    emulator.loadState();
-                    say("State loaded.");
-                }}
-            >
-                LOAD
+                STATES
             </button>
             <button
                 type="button"
@@ -404,9 +384,6 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                 }}
             >
                 RESET
-            </button>
-            <button type="button" className="sg-fn" disabled={!live} onClick={() => void openShare()}>
-                SEND KESH
             </button>
             <button
                 type="button"
@@ -624,12 +601,15 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                 />
             ) : null}
 
-            {panel === "share" ? (
-                <ShareProgress
-                    shot={shot}
+            {panel === "states" && cartridge ? (
+                <SaveStatePanel
+                    gameId={cartridge.id}
                     gameLabel={gameLabel}
                     playtimeMs={playtimeMs}
+                    captureState={emulator.captureState}
+                    restoreState={emulator.restoreState}
                     onClose={() => setPanel(null)}
+                    onFlash={say}
                 />
             ) : null}
 
