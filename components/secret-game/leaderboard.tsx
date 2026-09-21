@@ -66,6 +66,8 @@ export function Leaderboard({
         ].sort((a, b) => b.hours - a.hours);
     }, [gameLabel, name, playtimeMs]);
 
+    const yourRank = rows.findIndex((row) => row.you) + 1;
+
     const commitName = () => {
         const cleaned = name.trim().toUpperCase().slice(0, MAX_NAME_LENGTH);
         setName(cleaned);
@@ -117,6 +119,10 @@ export function Leaderboard({
                                     event.stopPropagation();
                                     if (event.key === "Enter") commitName();
                                 }}
+                                onKeyUp={(event) => event.stopPropagation()}
+                                enterKeyHint="done"
+                                autoCapitalize="characters"
+                                spellCheck={false}
                             />
                         ) : (
                             <span className="sg-lb-name">{row.name}</span>
@@ -138,8 +144,9 @@ export function Leaderboard({
                 </button>
             ) : null}
 
-            <p className="sg-panel-note">
-                Your hours are counted on this device only. Kesh&apos;s are, regrettably, real.
+            <p className="sg-panel-note" aria-live="polite">
+                You are #{yourRank} for {gameLabel}. Each cartridge keeps its own clock on this
+                device.
             </p>
         </div>
     );

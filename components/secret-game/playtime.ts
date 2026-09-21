@@ -8,7 +8,8 @@ import { useCallback, useEffect, useRef, useState } from "react";
  * anywhere.
  */
 
-const PLAYTIME_KEY = "sg:playtime-ms";
+const LEGACY_PLAYTIME_KEY = "sg:playtime-ms";
+const PLAYTIME_KEY = "sg:playtime-by-game-v1";
 const TRAINER_KEY = "sg:trainer-name";
 
 /** How often the clock is written back. Often enough that a hard close costs
@@ -31,9 +32,48 @@ function write(key: string, value: string) {
     }
 }
 
-export function loadPlaytimeMs(): number {
-    const stored = Number(read(PLAYTIME_KEY));
-    return Number.isFinite(stored) && stored > 0 ? stored : 0;
+function loadPlaytimes(): Record<string, number> {
+    const stored = read(PLAYTIME_KEY);
+    if (!stored) return {};
+
+    try {
+        const parsed: unknown = JSON.parse(stored);
+        if (!parsed || typeof parsed !== "object" || Array.isArray(parsed)) return {};
+
+        return Object.fromEntries(
+            Object.entries(parsed).filter(
+                (entry): entry is [string, number] =>
+                    typeof entry[1] === "number" &&
+                    Number.isFinite(entry[1]) &&
+                    entry[1] >= 0,
+            ),
+        );
+    } catch {
+        return {};
+    }
+}
+
+export function loadPlaytimeMs(gameId: string): number {
+    const stored = loadPlaytimes()[gameId];
+    if (stored !== undefined) return stored;
+
+    // Carry the old single clock into the first game opened after this update.
+    // Once the per-game map exists, other cartridges start from zero.
+    const hasPerGameData = read(PLAYTIME_KEY) !== null;
+    if (hasPerGameData) return 0;
+
+    const legacy = Number(read(LEGACY_PLAYTIME_KEY));
+    return Number.isFinite(legacy) && legacy > 0 ? legacy : 0;
+}
+
+function savePlaytimeMs(gameId: string, playtimeMs: number) {
+    write(
+        PLAYTIME_KEY,
+        JSON.stringify({
+            ...loadPlaytimes(),
+            [gameId]: Math.max(0, Math.round(playtimeMs)),
+        }),
+    );
 }
 
 export function loadTrainerName(): string {
@@ -59,15 +99,16 @@ export function formatPlaytime(ms: number): string {
  * total stays honest even if the tab is throttled in the background and the
  * interval fires late or not at all.
  */
-export function usePlaytime(running: boolean) {
+export function usePlaytime(running: boolean, gameId: string | null) {
     const [playtimeMs, setPlaytimeMs] = useState(0);
     const baseline = useRef(0);
     const startedAt = useRef<number | null>(null);
 
     useEffect(() => {
-        baseline.current = loadPlaytimeMs();
+        baseline.current = gameId ? loadPlaytimeMs(gameId) : 0;
+        startedAt.current = null;
         setPlaytimeMs(baseline.current);
-    }, []);
+    }, [gameId]);
 
     const total = useCallback(
         () => baseline.current + (startedAt.current === null ? 0 : Date.now() - startedAt.current),
@@ -75,19 +116,26 @@ export function usePlaytime(running: boolean) {
     );
 
     useEffect(() => {
-        if (!running) return;
+        if (!running || !gameId) return;
 
         startedAt.current = Date.now();
+        let lastFlush = startedAt.current;
 
-        const flush = () => {
+        const update = () => {
             const now = total();
             setPlaytimeMs(now);
-            write(PLAYTIME_KEY, String(Math.round(now)));
+            if (Date.now() - lastFlush >= FLUSH_INTERVAL_MS) {
+                savePlaytimeMs(gameId, now);
+                lastFlush = Date.now();
+            }
         };
 
-        const timer = window.setInterval(flush, FLUSH_INTERVAL_MS);
+        // The visible rank now moves every second instead of appearing frozen
+        // for up to 15 seconds. Storage writes keep their slower cadence.
+        const timer = window.setInterval(update, 1000);
         // A closed tab never runs cleanup, so the clock is also written on the
         // way out — this is the one that catches most sessions.
+        const flush = () => savePlaytimeMs(gameId, total());
         window.addEventListener("pagehide", flush);
 
         return () => {
@@ -97,7 +145,7 @@ export function usePlaytime(running: boolean) {
             baseline.current = total();
             startedAt.current = null;
         };
-    }, [running, total]);
+    }, [gameId, running, total]);
 
     return playtimeMs;
 }

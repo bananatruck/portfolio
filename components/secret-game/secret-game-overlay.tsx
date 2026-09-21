@@ -27,7 +27,7 @@ const DEFAULT_VOLUME = 0.5;
 const DEFAULT_ROM = "pokemon-unbound.zip";
 
 type Rom = { file: string; label: string; bytes?: number };
-type Cartridge = { url: string; label: string; isObjectUrl: boolean };
+type Cartridge = { id: string; url: string; label: string; isObjectUrl: boolean };
 type Panel = "cartridges" | "leaderboard" | "share" | null;
 
 export default function SecretGameOverlay({ onClose }: { onClose: () => void }) {
@@ -76,7 +76,7 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     // does, and anything depending on the whole object would re-run with it.
     const { frameRef, status, setStatus } = emulator;
     const live = !booting && status === "running";
-    const playtimeMs = usePlaytime(live);
+    const playtimeMs = usePlaytime(live, cartridge?.id ?? null);
 
     useEffect(() => setSkin(loadSkin()), []);
 
@@ -141,7 +141,12 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                     return;
                 }
 
-                insertCartridge({ url: objectUrl, label: rom.label, isObjectUrl: true });
+                insertCartridge({
+                    id: rom.file,
+                    url: objectUrl,
+                    label: rom.label,
+                    isObjectUrl: true,
+                });
             } catch (error) {
                 // An abort is this function superseding itself, not a failure.
                 if (isStale() || (error instanceof DOMException && error.name === "AbortError")) {
@@ -317,6 +322,7 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         if (!file) return;
 
         insertCartridge({
+            id: `local:${file.name}:${file.size}`,
             url: URL.createObjectURL(file),
             label: file.name.replace(/\.[^.]+$/, ""),
             isObjectUrl: true,
