@@ -13,8 +13,6 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 export type EmulatorStatus = "loading" | "running" | "error";
 
-/** A screenshot that hasn't come back within this long is treated as failed. */
-const SCREENSHOT_TIMEOUT_MS = 8000;
 const STATE_TIMEOUT_MS = 8000;
 
 function isMessageRecord(value: unknown): value is Record<string, unknown> {
@@ -26,16 +24,12 @@ export function useEmulatorBridge() {
     const [status, setStatus] = useState<EmulatorStatus>("loading");
     const [error, setError] = useState<string | null>(null);
 
-    // Screenshot requests are matched to their replies by id, so two taps in
-    // quick succession can't resolve each other's promise.
-    const pendingShots = useRef(new Map<number, (result: string | null) => void>());
     const pendingCaptures = useRef(
         new Map<number, { resolve: (state: ArrayBuffer) => void; reject: (error: Error) => void }>(),
     );
     const pendingRestores = useRef(
         new Map<number, { resolve: () => void; reject: (error: Error) => void }>(),
     );
-    const shotId = useRef(0);
     const stateId = useRef(0);
 
     const send = useCallback((command: string, data: Record<string, unknown> = {}) => {
@@ -58,12 +52,6 @@ export function useEmulatorBridge() {
             } else if (data.type === "sg:error") {
                 setStatus("error");
                 setError(typeof data.message === "string" ? data.message : "Something went wrong.");
-            } else if (data.type === "sg:screenshot") {
-                if (typeof data.requestId !== "number") return;
-                const resolve = pendingShots.current.get(data.requestId);
-                if (!resolve) return;
-                pendingShots.current.delete(data.requestId);
-                resolve(typeof data.dataUrl === "string" ? data.dataUrl : null);
             } else if (data.type === "sg:state-captured") {
                 if (typeof data.requestId !== "number") return;
                 const pending = pendingCaptures.current.get(data.requestId);
@@ -94,26 +82,6 @@ export function useEmulatorBridge() {
         window.addEventListener("message", onMessage);
         return () => window.removeEventListener("message", onMessage);
     }, []);
-
-    const screenshot = useCallback(
-        () =>
-            new Promise<string | null>((resolve) => {
-                const requestId = ++shotId.current;
-
-                const timer = window.setTimeout(() => {
-                    pendingShots.current.delete(requestId);
-                    resolve(null);
-                }, SCREENSHOT_TIMEOUT_MS);
-
-                pendingShots.current.set(requestId, (result) => {
-                    window.clearTimeout(timer);
-                    resolve(result);
-                });
-
-                send("screenshot", { requestId });
-            }),
-        [send],
-    );
 
     const captureState = useCallback(
         () =>
@@ -176,9 +144,8 @@ export function useEmulatorBridge() {
             reset: () => send("reset"),
             captureState,
             restoreState,
-            screenshot,
         }),
-        [captureState, restoreState, screenshot, send],
+        [captureState, restoreState, send],
     );
 
     // Memoised as one object: callers put this in effect dependency arrays, and a

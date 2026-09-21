@@ -224,44 +224,12 @@
                             });
                         });
                 },
-                screenshot: function (data) {
-                    // Upscale 3x: a raw 240x160 grab is unreadably small once it
-                    // lands in a DM or an email.
-                    emulator()
-                        .takeScreenshot("canvas", "png", 3)
-                        .then(function (shot) {
-                            return blobToDataUrl(shot.blob);
-                        })
-                        .then(function (dataUrl) {
-                            post({ type: "sg:screenshot", requestId: data.requestId, dataUrl: dataUrl });
-                        })
-                        .catch(function (error) {
-                            post({
-                                type: "sg:screenshot",
-                                requestId: data.requestId,
-                                error: String((error && error.message) || error),
-                            });
-                        });
-                },
             };
 
             function emulator() {
                 var ejs = window.EJS_emulator;
                 if (!ejs || !ejs.started) throw new Error("not started");
                 return ejs;
-            }
-
-            function blobToDataUrl(blob) {
-                return new Promise(function (resolve, reject) {
-                    var reader = new FileReader();
-                    reader.onload = function () {
-                        resolve(reader.result);
-                    };
-                    reader.onerror = function () {
-                        reject(reader.error);
-                    };
-                    reader.readAsDataURL(blob);
-                });
             }
 
             window.addEventListener("message", function (event) {

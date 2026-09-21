@@ -158,8 +158,8 @@ That separation is the heart of the build: professional information first, perso
 - FireRed-first boot animation, followed by randomized FireRed, Emerald, HeartGold, Platinum, Black, and White-inspired boots.
 - On-demand cartridge downloads with progress feedback and Cache Storage support.
 - User-supplied `.gba`, `.zip`, and `.7z` files that stay entirely in the browser.
-- Fast-forward, mute, save state, load state, reset, cartridge switching, and screenshots.
-- Per-device playtime, trainer naming, a tongue-in-cheek Hall of Fame, and progress sharing.
+- Fast-forward, mute, reset, fullscreen, cartridge switching, and six save-state slots.
+- Per-cartridge playtime, trainer naming, a local Hall of Fame, and portable state files.
 
 ## Region map
 
@@ -249,8 +249,9 @@ portfolio--main/
 │       ├── cartridge-cache.ts           # Streaming download + browser cache
 │       ├── boot-animations.tsx          # Generation-inspired boot screens
 │       ├── leaderboard.tsx              # Local Hall of Fame
-│       ├── playtime.ts                  # On-device play clock
-│       └── share-progress.tsx           # Screenshot and sharing handoff
+│       ├── playtime.ts                  # Per-cartridge play clocks
+│       ├── save-state-panel.tsx         # Six-slot save manager
+│       └── save-state-storage.ts        # IndexedDB save persistence
 ├── public/
 │   ├── images/                          # Portfolio and article artwork
 │   ├── readme/                          # Current screenshots and README sprites
@@ -347,13 +348,15 @@ Glacier switches between portrait and landscape artwork with device orientation.
 - The site music pauses while the emulator owns the screen and resumes after leaving.
 - Playtime advances only while the game is running and is flushed locally every 15 seconds.
 - Each ROM gets a stable game ID so its saves do not collide with another cartridge.
-- Screenshots are captured at 3× the native GBA resolution for readable sharing.
+- Six state slots store progress per cartridge in IndexedDB.
+- State files can be shared, exported, and imported on another device.
 - Pointer capture, blur cleanup, a small D-pad dead zone, and diagonal input keep touch controls from feeling sticky.
 - Focus restoration, keyboard controls, button labels, and `Escape` support keep the secret usable without a mouse.
 
 ## Controls
 
-On touch screens, press the controls drawn on the console. Desktop keycaps are printed over those same controls.
+On touch screens, press the controls drawn on the console.
+Desktop keycaps are printed over those same controls.
 
 | GBA input | Keyboard | Notes |
 | --- | --- | --- |
@@ -368,7 +371,9 @@ On touch screens, press the controls drawn on the console. Desktop keycaps are p
 | Mute | `M` | Toggle |
 | Leave emulator | `Escape` | Closes an open panel first, then the overlay |
 
-The function strip also provides **SAVE**, **LOAD**, **RESET**, **SEND KESH**, and **RANKS**. The cartridge icon opens the shell and cartridge menu.
+The function strip also provides **STATES**, **RESET**, and **RANKS**.
+The fullscreen icon expands the overlay on supported browsers and uses a focused view elsewhere.
+The cartridge icon opens the shell and cartridge menu.
 
 ## Build your own secret GBA
 
@@ -547,9 +552,10 @@ The `place()` helper converts the absolute design coordinates to percentages, so
 - Your first-ever encounter plays the FireRed-inspired boot sequence. Later visits randomly choose among six generations.
 - Pokémon Unbound auto-boots when that cartridge is available; otherwise the first cartridge is selected.
 - Open the cartridge menu to swap games, load a local file, or switch between the clear Glacier GBA and upright DMG shell.
-- Your chosen skin, trainer name, previous-visit flag, saves, cached cartridges, and playtime persist locally in the browser.
+- Your chosen skin, trainer name, previous-visit flag, save states, cached cartridges, and per-cartridge playtime persist locally in the browser.
 - **RANKS** opens a local Hall of Fame. Kesh's 8,214-hour score is, according to the interface, “regrettably, real.”
-- **SEND KESH** captures a 3× screenshot and offers the native share sheet, LinkedIn/email handoff, clipboard copy where supported, or a direct download.
+- **STATES** opens six save slots. Each slot can load, delete, import, or share a portable state file.
+- The fullscreen icon uses the browser Fullscreen API when available. Its focused-view fallback works on browsers that block page-element fullscreen.
 - **THERE'S MORE!** opens the full Pokémon ROM-hack essay and recommendations.
 - Press `Escape` or the pixel back button to leave. The portfolio's music resumes and focus returns to the element you came from.
 
