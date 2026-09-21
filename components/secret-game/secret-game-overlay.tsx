@@ -343,6 +343,17 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         emulator.fastForward(fastForwardActive);
     }, [emulator, fastForwardActive, live]);
 
+    // Stop CPU and audio work while a menu covers the game or the tab is hidden.
+    // The same sync resumes the core as soon as both conditions clear.
+    useEffect(() => {
+        if (!live) return;
+
+        const sync = () => emulator.pause(panel !== null || document.hidden);
+        sync();
+        document.addEventListener("visibilitychange", sync);
+        return () => document.removeEventListener("visibilitychange", sync);
+    }, [emulator, live, panel]);
+
     useEffect(() => {
         const sync = () => {
             const active = isFullscreen();
