@@ -38,7 +38,7 @@ type ShellProps = {
     /** True once the core is running; controls stay inert before that. */
     live: boolean;
     press: (index: number, pressed: boolean) => void;
-    onFastForward: (on: boolean) => void;
+    onFastForwardHold: (on: boolean) => void;
     onToggleMute: () => void;
     onMenu: () => void;
     skin: SkinId;
@@ -100,7 +100,7 @@ export function GbaShell({
     frameSrc,
     live,
     press,
-    onFastForward,
+    onFastForwardHold,
     onToggleMute,
     onMenu,
     skin,
@@ -158,7 +158,7 @@ export function GbaShell({
 
             if (key === FAST_FORWARD_KEY) {
                 event.preventDefault();
-                if (!event.repeat) onFastForward(true);
+                if (!event.repeat) onFastForwardHold(true);
                 return;
             }
             if (key === MUTE_KEY) {
@@ -180,7 +180,7 @@ export function GbaShell({
             const key = event.key.toLowerCase();
 
             if (key === FAST_FORWARD_KEY) {
-                onFastForward(false);
+                onFastForwardHold(false);
                 return;
             }
 
@@ -190,14 +190,19 @@ export function GbaShell({
 
         window.addEventListener("keydown", onKeyDown);
         window.addEventListener("keyup", onKeyUp);
-        window.addEventListener("blur", releaseAll);
+        const releaseInputs = () => {
+            releaseAll();
+            onFastForwardHold(false);
+        };
+
+        window.addEventListener("blur", releaseInputs);
         return () => {
             window.removeEventListener("keydown", onKeyDown);
             window.removeEventListener("keyup", onKeyUp);
-            window.removeEventListener("blur", releaseAll);
-            releaseAll();
+            window.removeEventListener("blur", releaseInputs);
+            releaseInputs();
         };
-    }, [live, onFastForward, onToggleMute, releaseAll, set]);
+    }, [live, onFastForwardHold, onToggleMute, releaseAll, set]);
 
     const basePath = useMemo(getBasePath, []);
     const { mapping } = layout;

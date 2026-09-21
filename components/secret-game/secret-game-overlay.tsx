@@ -41,7 +41,8 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     const [manifestLoaded, setManifestLoaded] = useState(false);
 
     const [muted, setMuted] = useState(false);
-    const [fastForward, setFastForward] = useState(false);
+    const [fastForwardLatched, setFastForwardLatched] = useState(false);
+    const [fastForwardHeld, setFastForwardHeld] = useState(false);
     // Starts on the default so the server and first client render agree, then
     // picks up a stored choice on mount.
     const [skin, setSkin] = useState<SkinId>(DEFAULT_SKIN);
@@ -75,6 +76,7 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
     // does, and anything depending on the whole object would re-run with it.
     const { frameRef, status, setStatus } = emulator;
     const live = !booting && status === "running";
+    const fastForwardActive = fastForwardLatched || fastForwardHeld;
     const playtimeMs = usePlaytime(live, cartridge?.id ?? null);
 
     useEffect(() => setSkin(loadSkin()), []);
@@ -83,6 +85,8 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
         setSkin(next);
         saveSkin(next);
     }, []);
+
+    const toggleMute = useCallback(() => setMuted((on) => !on), []);
 
     const insertCartridge = useCallback((next: Cartridge) => {
         // Revoking outside the state updater keeps the updater pure — React
@@ -306,8 +310,8 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
 
     useEffect(() => {
         if (!live) return;
-        emulator.fastForward(fastForward);
-    }, [emulator, fastForward, live]);
+        emulator.fastForward(fastForwardActive);
+    }, [emulator, fastForwardActive, live]);
 
     // A short confirmation over the screen, the way the games acknowledge a save.
     const say = useCallback((message: string) => {
@@ -349,11 +353,12 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
             <button
                 type="button"
                 className="sg-fn"
-                data-on={fastForward}
+                data-on={fastForwardActive}
                 disabled={!live}
-                onClick={() => setFastForward((on) => !on)}
+                onClick={() => setFastForwardLatched((on) => !on)}
+                aria-pressed={fastForwardLatched}
             >
-                FF<span className="sg-fn-key">SPACE</span>
+                FF 3X<span className="sg-fn-key">HOLD SPACE</span>
             </button>
             <button
                 type="button"
@@ -408,8 +413,8 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                 frameSrc={frameSrc}
                 live={live}
                 press={emulator.press}
-                onFastForward={setFastForward}
-                onToggleMute={() => setMuted((on) => !on)}
+                onFastForwardHold={setFastForwardHeld}
+                onToggleMute={toggleMute}
                 skin={skin}
                 onMenu={() => setPanel((open) => (open === "cartridges" ? null : "cartridges"))}
                 screenOverlay={
@@ -511,6 +516,18 @@ export default function SecretGameOverlay({ onClose }: { onClose: () => void }) 
                     <PixelCartridge size={24} />
                 </button>
             </div>
+
+            <button
+                type="button"
+                className="sg-mobile-ff sg-fn"
+                data-on={fastForwardActive}
+                disabled={!live}
+                onClick={() => setFastForwardLatched((on) => !on)}
+                aria-label="Toggle 3x fast-forward"
+                aria-pressed={fastForwardLatched}
+            >
+                FF 3X
+            </button>
 
             <div className="sg-functions" role="group" aria-label="Emulator functions">
                 {functionButtons}
