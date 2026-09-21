@@ -51,9 +51,14 @@ export function MusicPlayer({ songIndex }: MusicPlayerProps) {
         }
     }, [songIndex]);
 
+    const handleNext = useCallback(() => {
+        setCurrentIndex((prev) => (prev + 1) % SONG_LIBRARY.length);
+    }, []);
+
     useEffect(() => {
         const audio = audioRef.current;
         if (!audio) return;
+        const shouldResume = !audio.paused;
 
         const updateTime = () => setCurrentTime(audio.currentTime);
         const updateDuration = () => {
@@ -77,7 +82,7 @@ export function MusicPlayer({ songIndex }: MusicPlayerProps) {
         audio.addEventListener('canplay', handleCanPlay);
 
         audio.load();
-        if (isPlaying) {
+        if (shouldResume) {
             audio.play().catch(() => setIsPlaying(false));
         }
 
@@ -88,7 +93,7 @@ export function MusicPlayer({ songIndex }: MusicPlayerProps) {
             audio.removeEventListener('error', handleError);
             audio.removeEventListener('canplay', handleCanPlay);
         };
-    }, [currentIndex]);
+    }, [currentIndex, handleNext]);
 
     const togglePlay = async () => {
         if (audioRef.current && !hasError) {
@@ -105,10 +110,6 @@ export function MusicPlayer({ songIndex }: MusicPlayerProps) {
             }
         }
     };
-
-    const handleNext = useCallback(() => {
-        setCurrentIndex((prev) => (prev + 1) % SONG_LIBRARY.length);
-    }, []);
 
     const handlePrev = useCallback(() => {
         setCurrentIndex((prev) => (prev - 1 + SONG_LIBRARY.length) % SONG_LIBRARY.length);
@@ -236,5 +237,4 @@ export function MusicPlayer({ songIndex }: MusicPlayerProps) {
         </div>
     );
 }
-
 
