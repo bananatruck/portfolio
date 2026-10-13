@@ -29,15 +29,16 @@ const projects: Project[] = [
         demoLabel: "Read Research",
         link: "/research",
         github: "https://github.com/bananatruck/gates",
-        image: "https://picsum.photos/seed/gates/600/600?grayscale"
+        image: "/project-previews/gates.webp"
     },
     {
         title: "LaunchGuard",
         description: "Local-first deployment intelligence platform. Audits security with Trivy/OSV-Scanner, simulates rootless Podman OCI sandboxes, & generates reviewable PRs. Verified 40/40 fixture suite.",
         tags: ["Rust", "Podman", "OCI", "Security", "Trivy", "Tauri"],
-        demo: "https://github.com/bananatruck/launchguard",
+        demo: "https://bananatruck.github.io/launchguard/",
+        demoLabel: "Visit Site",
         github: "https://github.com/bananatruck/launchguard",
-        image: "https://picsum.photos/seed/launchguard/600/600?grayscale"
+        image: "/project-previews/launchguard.webp"
     },
     {
         title: "DevFlow Agent",
@@ -45,7 +46,7 @@ const projects: Project[] = [
         tags: ["Python", "FastAPI", "Next.js", "LangGraph", "DeepSeek", "Docker"],
         demo: "https://github.com/bananatruck/devflow-agent",
         github: "https://github.com/bananatruck/devflow-agent",
-        image: "https://picsum.photos/seed/devflow/600/600?grayscale"
+        image: undefined
     },
     {
         title: "DocWeave",
@@ -53,7 +54,7 @@ const projects: Project[] = [
         tags: ["Go", "PostgreSQL", "Prometheus", "Grafana", "Docker", "SSE"],
         demo: "https://github.com/bananatruck/docweave",
         github: "https://github.com/bananatruck/docweave",
-        image: "https://picsum.photos/seed/docweave/600/600?grayscale"
+        image: "/project-previews/docweave.webp"
     },
     {
         title: "Employmentmaxxing",
@@ -61,7 +62,7 @@ const projects: Project[] = [
         tags: ["Python", "FastAPI", "Gemini AI", "SQLite", "BeautifulSoup4"],
         demo: "https://github.com/bananatruck/employmentmaxxing",
         github: "https://github.com/bananatruck/employmentmaxxing",
-        image: "https://picsum.photos/seed/employmentmaxxing/600/600?grayscale"
+        image: undefined
     },
     {
         title: "Hubris",
@@ -69,7 +70,7 @@ const projects: Project[] = [
         tags: ["React Native", "Expo", "TypeScript", "SQLite", "Turborepo"],
         demo: "https://github.com/bananatruck/hubris",
         github: "https://github.com/bananatruck/hubris",
-        image: "https://picsum.photos/seed/hubris/600/600?grayscale"
+        image: "/project-previews/hubris.webp"
     },
     {
         title: "JM Global Logistics",
@@ -77,7 +78,7 @@ const projects: Project[] = [
         tags: ["Next.js", "TypeScript", "Tailwind CSS", "Vite"],
         demo: "https://jmgloballogistics.com",
         github: "https://github.com/bananatruck/jmgloballogistics",
-        image: "https://picsum.photos/seed/jmgloballogistics/600/600?grayscale"
+        image: "/project-previews/jm-global-logistics.webp"
     },
     {
         title: "Barter",
@@ -85,7 +86,7 @@ const projects: Project[] = [
         tags: ["React", "Flask", "Firebase", "SocketIO", "AR"],
         demo: "https://devpost.com",
         github: "https://github.com/bananatruck/Barter",
-        image: "https://picsum.photos/seed/barter/600/600?grayscale"
+        image: "/project-previews/barter.webp"
     },
     {
         title: "FableFrog",
@@ -93,7 +94,7 @@ const projects: Project[] = [
         tags: ["Python", "React Native", "OpenAI", "ElevenLabs"],
         demo: "https://devpost.com",
         github: "https://github.com/bananatruck/FableFrog",
-        image: "https://picsum.photos/seed/fablefrog/600/600?grayscale"
+        image: undefined
     },
     {
         title: "Cyno (Sitara)",
@@ -101,7 +102,7 @@ const projects: Project[] = [
         tags: ["Python", "OpenAI", "React", "Astronomy API"],
         demo: "https://github.com/bananatruck/Cyno",
         github: "https://github.com/bananatruck/Cyno",
-        image: "https://picsum.photos/seed/cyno/600/600?grayscale"
+        image: undefined
     }
 ];
 
