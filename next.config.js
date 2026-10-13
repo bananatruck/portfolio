@@ -29,6 +29,10 @@ const nextConfig = {
         deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048, 3840],
         imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     },
+    // KESH_OS, the desktop version of the site, is a static app in public/os.
+    async rewrites() {
+        return [{ source: '/os', destination: '/os/index.html' }];
+    },
     // Optimize for production
     poweredByHeader: false,
     compress: true,

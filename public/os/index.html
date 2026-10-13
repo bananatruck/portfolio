@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <!-- Served at /os, so relative URLs (modules, wallpapers) resolve inside this folder. -->
+  <base href="/os/">
+  <title>KESH_OS</title>
+  <meta name="description" content="Keshav Jindal's portfolio as a desktop: projects, research, interests, music and KESH_BOY in windows.">
+  <link rel="icon" href="/favicon.png" type="image/png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;500;700;800&family=Press+Start+2P&family=Space+Grotesk:wght@400;500;700&display=swap">
+  <link rel="stylesheet" href="./os.css">
+  <link rel="stylesheet" href="./shared.css">
+  <link rel="stylesheet" href="./desktop.css">
+  <style>html, body { height: 100%; overflow: hidden; background: #000; }</style>
+  <script src="/kesh-cursor.js" defer></script>
+  <script type="module">
+    import { initDesktop } from './desktop.js';
+    initDesktop(document.querySelector('.stage-desktop'));
+    // "Log out to website" returns to the site's home page.
+    addEventListener('kesh:os-exit', () => { location.href = '/'; });
+  </script>
+</head>
+<body>
+  <main class="stage stage-desktop" data-stage="desktop" aria-label="KESH_OS desktop"></main>
+  <noscript><p style="padding:24px;color:#f1f0e9;font-family:monospace">KESH_OS needs JavaScript. The regular site is at <a href="/" style="color:#15ca91">/</a>.</p></noscript>
+</body>
+</html>
