@@ -245,31 +245,104 @@ export function monitorWidget(onOpen) {
 
 /* ---------- Camera: asks for the camera only when it opens, never before ---------- */
 const SHOT_W = 1200, SHOT_H = 900;
-const FRAMES = ['None', 'Polaroid', 'Film', 'Terminal', 'Manga'];
+const FRAMES = ['None', 'Polaroid', 'Film', 'Terminal', 'Manga', 'Dune', 'Riso'];
 const MONO = '"JetBrains Mono", monospace';
+const BW = 'grayscale(1) contrast(1.12)';
+// Static textures (grain, scanlines, halftone, speed lines, vignette) are drawn once and reused, so a
+// frame of the live preview costs a few drawImage calls rather than thousands of shapes.
+const textures = new Map();
+function texture(key, draw) {
+  if (!textures.has(key)) {
+    const c = document.createElement('canvas'); c.width = SHOT_W; c.height = SHOT_H;
+    draw(c.getContext('2d'), SHOT_W, SHOT_H);
+    textures.set(key, c);
+  }
+  return textures.get(key);
+}
+const grain = () => texture('grain', (g, W, H) => {
+  const img = g.createImageData(W, H), d = img.data;
+  for (let i = 0; i < d.length; i += 4) { const v = 128 + (Math.random() - .5) * 150; d[i] = d[i + 1] = d[i + 2] = v; d[i + 3] = 255; }
+  g.putImageData(img, 0, 0);
+});
+const vignette = () => texture('vignette', (g, W, H) => {
+  const r = g.createRadialGradient(W / 2, H / 2, H * .35, W / 2, H / 2, H * .85);
+  r.addColorStop(0, 'rgba(0,0,0,0)'); r.addColorStop(1, 'rgba(0,0,0,.6)');
+  g.fillStyle = r; g.fillRect(0, 0, W, H);
+});
+const scanlines = () => texture('scan', (g, W, H) => { g.fillStyle = 'rgba(0,0,0,.28)'; for (let y = 0; y < H; y += 4) g.fillRect(0, y, W, 2); });
+// Screentone dots that thicken toward the lower right, and speed lines bursting from behind the bubble.
+const halftone = () => texture('halftone', (g, W, H) => {
+  g.fillStyle = '#111';
+  for (let y = 0; y < H; y += 12) for (let x = (y / 12) % 2 ? 6 : 0; x < W; x += 12) {
+    const t = Math.max(0, (x / W + y / H - 1.05) / .95);
+    if (t > 0) { g.beginPath(); g.arc(x, y, t * 5.5, 0, Math.PI * 2); g.fill(); }
+  }
+});
+const speedLines = () => texture('speed', (g, W, H) => {
+  const cx = W * .22, cy = H * .2, rnd = (a, b) => a + Math.random() * (b - a);
+  g.fillStyle = '#0a0a0a';
+  for (let i = 0; i < 70; i++) {
+    const a = (i / 70) * Math.PI * 2 + rnd(-.03, .03), w = rnd(.004, .012), r0 = rnd(H * .62, H * .8), r1 = Math.hypot(W, H);
+    g.beginPath();
+    g.moveTo(cx + Math.cos(a) * r0, cy + Math.sin(a) * r0);
+    g.lineTo(cx + Math.cos(a - w) * r1, cy + Math.sin(a - w) * r1);
+    g.lineTo(cx + Math.cos(a + w) * r1, cy + Math.sin(a + w) * r1);
+    g.fill();
+  }
+});
+// A manga speech bubble that sizes itself to the text, with the tail merged into the outline.
+function bubble(g, text, x, y, tipX, tipY) {
+  g.save();
+  g.translate(x, y); g.rotate(-.05);
+  g.font = '56px "Archivo Black", sans-serif';
+  const rx = g.measureText(text).width / 2 + 70, ry = 74;
+  const tail = () => { g.beginPath(); g.moveTo(rx * .25, ry * .55); g.quadraticCurveTo(rx * .45, ry * 1.1, tipX - x, tipY - y); g.quadraticCurveTo(rx * .2, ry * 1.05, -rx * .05, ry * .8); g.closePath(); };
+  const oval = () => { g.beginPath(); g.ellipse(0, 0, rx, ry, 0, 0, Math.PI * 2); };
+  // Stroke both shapes thick, then fill both white: the fill covers the inner seam, leaving one outline.
+  g.lineWidth = 12; g.lineJoin = 'round'; g.strokeStyle = '#0a0a0a';
+  tail(); g.stroke(); oval(); g.stroke();
+  g.fillStyle = '#fff'; tail(); g.fill(); oval(); g.fill();
+  g.fillStyle = '#0a0a0a'; g.textAlign = 'center'; g.textBaseline = 'middle';
+  g.fillText(text, 0, 4);
+  g.restore();
+}
 // Draws the mirrored camera image and the chosen frame. The live preview and the saved photo both
 // come from this one function, so what you see is what you save.
 function drawShot(g, video, { frame, bw, accent }) {
   const W = SHOT_W, H = SHOT_H, date = new Date().toLocaleDateString([], { day: 'numeric', month: 'short', year: 'numeric' });
-  const photo = (x, y, w, hh, mono = bw) => {
+  // grade: the frame's colour treatment; B&W replaces it.
+  const photo = (x, y, w, hh, grade = 'none') => {
     g.save(); g.beginPath(); g.rect(x, y, w, hh); g.clip();
-    if (mono) g.filter = 'grayscale(1) contrast(1.12)';
+    g.filter = bw ? BW : grade;
     const vw = video.videoWidth || 4, vh = video.videoHeight || 3, s = Math.max(w / vw, hh / vh);
     g.translate(x + w / 2, y + hh / 2); g.scale(-1, 1);
     g.drawImage(video, -vw * s / 2, -vh * s / 2, vw * s, vh * s);
     g.restore();
   };
+  const layer = (tex, alpha, mode = 'source-over', clip) => {
+    g.save(); if (clip) { g.beginPath(); g.rect(...clip); g.clip(); }
+    g.globalAlpha = alpha; g.globalCompositeOperation = mode; g.drawImage(tex, 0, 0); g.restore();
+  };
+  const tint = (color, mode, alpha, rect) => { g.save(); g.globalAlpha = alpha; g.globalCompositeOperation = mode; g.fillStyle = color; g.fillRect(...rect); g.restore(); };
   const text = (str, x, y, font, color, align = 'left') => { g.font = font; g.fillStyle = color; g.textAlign = align; g.fillText(str, x, y); };
   g.clearRect(0, 0, W, H);
   if (frame === 'Polaroid') {
     g.fillStyle = '#f3f0e6'; g.fillRect(0, 0, W, H);
-    photo(48, 44, W - 96, H - 210);
+    const r = [48, 44, W - 96, H - 210];
+    photo(...r, 'sepia(.22) saturate(.85) contrast(.92) brightness(1.08)');
+    if (!bw) tint('#ffe2b8', 'soft-light', .35, r);
+    layer(vignette(), .5, 'source-over', r);
     text(`kesh_os // ${date}`, 56, H - 92, `700 30px ${MONO}`, '#1a1a17');
     text('a memory, saved', 56, H - 52, `500 22px ${MONO}`, '#77746a');
     text('K.', W - 56, H - 56, `800 54px ${MONO}`, '#1a1a17', 'right');
   } else if (frame === 'Film') {
     g.fillStyle = '#0d0d0c'; g.fillRect(0, 0, W, H);
-    photo(0, 96, W, H - 192);
+    const r = [0, 96, W, H - 192];
+    photo(...r, 'sepia(.3) saturate(1.35) contrast(1.12) hue-rotate(-6deg)');
+    // A light leak bleeding in from the left edge.
+    if (!bw) { const leak = g.createLinearGradient(0, 0, W * .45, 0); leak.addColorStop(0, 'rgba(255,110,40,.55)'); leak.addColorStop(1, 'rgba(255,110,40,0)'); g.save(); g.globalCompositeOperation = 'screen'; g.fillStyle = leak; g.fillRect(...r); g.restore(); }
+    layer(grain(), .16, 'overlay', r);
+    layer(vignette(), .7, 'source-over', r);
     g.fillStyle = '#e9e5d8';
     for (let x = 18; x < W; x += 62) { g.beginPath(); g.roundRect(x, 16, 30, 36, 6); g.roundRect(x, H - 52, 30, 36, 6); g.fill(); }
     text(`KESH 400   ▸ 14A   ${date.toUpperCase()}`, 20, 84, `700 18px ${MONO}`, '#e0a43c');
@@ -277,26 +350,41 @@ function drawShot(g, video, { frame, bw, accent }) {
   } else if (frame === 'Terminal') {
     g.fillStyle = '#0a0e0c'; g.fillRect(0, 0, W, H);
     g.fillStyle = '#1a1f1c'; g.fillRect(0, 0, W, 56);
-    ['#ff5f57', '#febc2e', '#28c840'].forEach((c, i) => { g.fillStyle = c; g.beginPath(); g.arc(30 + i * 26, 28, 8, 0, Math.PI * 2); g.fill(); });
+    ['#b5655d', '#b99c5e', '#4e9a78'].forEach((c, i) => { g.fillStyle = c; g.beginPath(); g.arc(30 + i * 26, 28, 8, 0, Math.PI * 2); g.fill(); });
     text(`~/memories/${date.replace(/[ ,]+/g, '-').toLowerCase()}.png`, W / 2, 36, `600 20px ${MONO}`, '#cfd8d0', 'center');
-    photo(16, 72, W - 32, H - 72 - 64);
-    g.strokeStyle = accent; g.lineWidth = 3; g.strokeRect(16, 72, W - 32, H - 72 - 64);
+    const r = [16, 72, W - 32, H - 72 - 64];
+    photo(...r, 'grayscale(1) contrast(1.3) brightness(1.1)');
+    if (!bw) tint(accent, 'color', 1, r);
+    layer(scanlines(), 1, 'source-over', r);
+    layer(vignette(), .6, 'source-over', r);
+    g.strokeStyle = accent; g.lineWidth = 2; g.strokeRect(...r);
     text('❯ snap --frame terminal', 18, H - 22, `700 20px ${MONO}`, accent);
     text(`[ OK ] saved ${date}`, W - 18, H - 22, `500 20px ${MONO}`, '#6f8475', 'right');
   } else if (frame === 'Manga') {
     g.fillStyle = '#f6f4ee'; g.fillRect(0, 0, W, H);
-    photo(36, 36, W - 72, H - 72, true);
-    // Halftone dots that thicken toward the lower right corner.
-    g.fillStyle = '#111';
-    for (let y = 36; y < H - 36; y += 14) for (let x = 36; x < W - 36; x += 14) {
-      const t = Math.max(0, (x / W + y / H - 1.15) / .85);
-      if (t > 0) { g.globalAlpha = .55; g.beginPath(); g.arc(x, y, t * 6, 0, Math.PI * 2); g.fill(); }
-    }
-    g.globalAlpha = 1;
-    g.strokeStyle = '#0a0a0a'; g.lineWidth = 12; g.strokeRect(36, 36, W - 72, H - 72);
-    g.fillStyle = '#fff'; g.strokeStyle = '#0a0a0a'; g.lineWidth = 5;
-    g.beginPath(); g.ellipse(250, 150, 170, 78, 0, 0, Math.PI * 2); g.moveTo(300, 222); g.lineTo(350, 290); g.lineTo(220, 226); g.fill(); g.stroke();
-    text('a memory!', 250, 162, '34px "Archivo Black", sans-serif', '#0a0a0a', 'center');
+    const r = [36, 36, W - 72, H - 72];
+    photo(...r, 'grayscale(1) contrast(1.9) brightness(1.08)');
+    layer(halftone(), .6, 'multiply', r);
+    layer(speedLines(), .38, 'source-over', r);
+    g.strokeStyle = '#0a0a0a'; g.lineWidth = 10; g.strokeRect(...r);
+    bubble(g, 'L3 Cache', 300, 180, 470, 330);
+  } else if (frame === 'Dune') {
+    // Cinemascope bars, a spice-orange grade and a subtitle, after Dune: Part Two.
+    g.fillStyle = '#000'; g.fillRect(0, 0, W, H);
+    const bar = Math.round(H * .13), r = [0, bar, W, H - bar * 2];
+    photo(...r, 'sepia(.65) saturate(1.7) hue-rotate(-14deg) contrast(1.15) brightness(.92)');
+    if (!bw) tint('#ff8a2a', 'soft-light', .45, r);
+    layer(grain(), .12, 'overlay', r);
+    layer(vignette(), .8, 'source-over', r);
+    text('ARRAKIS', W / 2, H - bar / 2 + 4, `600 26px ${MONO}`, '#e9e1d2', 'center');
+    text(date.toUpperCase(), W - 28, bar / 2 + 6, `500 16px ${MONO}`, '#8a7f6e', 'right');
+  } else if (frame === 'Riso') {
+    // Two-ink risograph: shadows print blue, highlights pink, on grainy paper.
+    const r = [0, 0, W, H];
+    photo(...r, 'grayscale(1) contrast(1.35)');
+    if (!bw) { tint('#ff5c8a', 'multiply', 1, r); tint('#2c3fd1', 'screen', 1, r); }
+    layer(grain(), .22, 'overlay', r);
+    text('RISO / KESH_OS', 28, H - 30, `700 22px ${MONO}`, '#f6f1e7');
   } else photo(0, 0, W, H);
 }
 
