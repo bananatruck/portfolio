@@ -219,6 +219,12 @@
 }
 
 /* The site cursor lives in public/kesh-cursor.js (idle, hover, press and loading states). */
+
+/* The page colour, captured before .elsewhere overrides --background. */
+:root { --page-bg: hsl(var(--background)); }
+/* Elsewhere inverts the site theme: dark on the light site, light paper on the dark site. */
+.elsewhere { --el-ink: 238 234 226; --el-paper: 15 17 16; --el-card: 26 30 28; --el-cap: 20 24 22; --background: 150 6% 7%; --foreground: 60 10% 96%; }
+.dark .elsewhere { --el-ink: 8 10 8; --el-paper: 238 234 226; --el-card: 255 255 255; --el-cap: 244 241 232; --background: 60 10% 96%; --foreground: 0 0% 3%; }
 /* The blinking dot in the K. mark, like a terminal cursor. */
 @keyframes k-blink { 50% { opacity: 0; } }
 @media (prefers-reduced-motion: reduce) { [class*="k-blink"] { animation: none !important; } }
