@@ -269,7 +269,7 @@ export function ProjectsSection() {
     };
 
     return (
-        <div className="relative py-12 bg-background">
+        <div className="relative py-20 sm:py-24 bg-background">
             {/* Background image layer */}
             <div
                 className="absolute inset-0 z-0 opacity-20 dark:opacity-10 grayscale dark:invert"
@@ -283,12 +283,12 @@ export function ProjectsSection() {
             <div className="absolute inset-0 z-1 opacity-10 pointer-events-none dark:hidden" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
             <div className="absolute inset-0 z-1 opacity-10 pointer-events-none hidden dark:block" style={{ backgroundImage: 'radial-gradient(#f5f5f0 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
 
-            <div className="max-w-4xl relative z-10 mx-auto px-4 sm:px-6">
+            <div className="max-w-7xl relative z-10 mx-auto px-4 sm:px-8">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="mb-8 flex flex-col md:flex-row md:items-end justify-between gap-4"
+                    className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6"
                 >
                     <div>
                         <Badge variant="default" className="mb-3 bg-foreground text-white border-foreground font-mono uppercase">
@@ -333,8 +333,8 @@ export function ProjectsSection() {
                         {/* Command Input Prompt Form - Clean Terminal Prompt */}
                         <form onSubmit={handleCommand} className="mb-4 flex items-center gap-2 font-mono text-xs sm:text-sm">
                             <span className="text-emerald-500 font-bold">user@portfolio</span>
-                            <span className="text-foreground">:</span>
-                            <span className="text-foreground/70">~/all-projects</span>
+                            <span className="hidden sm:inline text-foreground">:</span>
+                            <span className="hidden sm:inline text-foreground/70">~/all-projects</span>
                             <span className="text-emerald-500 font-bold">❯</span>
                             
                             <div className="flex-1 flex items-center">
@@ -356,10 +356,10 @@ export function ProjectsSection() {
                             {logs.map((entry, idx) => (
                                 <div key={idx} className="space-y-1">
                                     {entry.cmd && (
-                                        <div className="flex items-center gap-2 font-bold">
+                                        <div className="flex items-center gap-2 font-bold min-w-0 flex-wrap">
                                             <span className="text-emerald-500">user@portfolio</span>
-                                            <span className="text-foreground">:</span>
-                                            <span className="text-foreground/70">~/all-projects</span>
+                                            <span className="hidden sm:inline text-foreground">:</span>
+                                            <span className="hidden sm:inline text-foreground/70">~/all-projects</span>
                                             <span className="text-emerald-500 font-bold">❯</span>
                                             <span className="text-foreground">{entry.cmd}</span>
                                         </div>
@@ -377,18 +377,18 @@ export function ProjectsSection() {
                         </div>
 
                         {/* Interactive Grid Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 my-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mt-8">
                             {filteredProjects.map((project, index) => (
                                 <motion.div
                                     key={project.title}
                                     initial={{ opacity: 0, y: 20 }}
                                     whileInView={{ opacity: 1, y: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ duration: 0.5, delay: index * 0.08 }}
+                                    transition={{ duration: 0.6, delay: Math.min(index, 5) * 0.06, ease: [0.22, 1, 0.36, 1] }}
                                     onClick={() => setSelectedProject(project)}
                                     className="cursor-pointer"
                                 >
-                                    <ProjectCard project={project} />
+                                    <ProjectCard project={project} slug={project.github.split('/').pop()?.toLowerCase()} />
                                 </motion.div>
                             ))}
                         </div>

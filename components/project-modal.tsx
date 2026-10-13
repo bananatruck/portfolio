@@ -32,9 +32,10 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
 
                     {/* Modal Dialog Container */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                        initial={{ opacity: 0, scale: 0.97, y: 16 }}
                         animate={{ opacity: 1, scale: 1, y: 0 }}
-                        exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                        exit={{ opacity: 0, scale: 0.97, y: 12 }}
+                        transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                         className="fixed inset-0 z-[9999] flex items-center justify-center p-4 pointer-events-none"
                     >
                         <div className="w-full max-w-3xl bg-background border-4 border-foreground overflow-hidden shadow-[12px_12px_0px_0px_hsl(var(--foreground))] pointer-events-auto relative flex flex-col max-h-[90vh] text-foreground">
@@ -54,7 +55,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                             </div>
 
                             {/* Modal Body */}
-                            <div className="p-6 overflow-y-auto custom-scrollbar space-y-6">
+                            <div className="p-5 sm:p-6 overflow-y-auto overflow-x-hidden custom-scrollbar space-y-6">
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
                                     {/* Left: Image & Quick Action Links */}
@@ -67,13 +68,15 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                                                     className="w-full h-full object-cover grayscale contrast-125 hover:grayscale-0 transition-all duration-300"
                                                 />
                                             ) : (
-                                                <div className="text-4xl font-mono font-bold text-foreground/40 group-hover:text-emerald-500 transition-colors">
-                                                    {project.title.substring(0, 2)}
+                                                <div className="w-full h-full p-5 font-mono text-xs text-left text-emerald-400/90 bg-[radial-gradient(#ffffff10_1px,transparent_1.2px)] [background-size:6px_6px]">
+                                                    <p className="text-foreground/50">❯ cat README.md</p>
+                                                    <p className="mt-2 text-lg font-bold text-foreground"># {project.title}</p>
+                                                    <p className="mt-2 text-foreground/70 font-read text-sm leading-relaxed line-clamp-4">{project.description}</p>
                                                 </div>
                                             )}
                                         </div>
 
-                                        <div className="flex gap-3 font-mono">
+                                        <div className="flex flex-wrap gap-3 font-mono">
                                             {project.github && (
                                                 <Button variant="outline" className="flex-1 gap-2 border-2 border-foreground font-bold shadow-[2px_2px_0px_0px_hsl(var(--foreground))]" asChild>
                                                     <a href={project.github} target="_blank" rel="noopener noreferrer">
@@ -117,10 +120,9 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                                         </div>
 
                                         <div className="p-3 bg-foreground/5 border border-foreground/30 font-mono text-xs text-foreground/80 space-y-1">
-                                            <p className="font-bold text-emerald-500">❯ status check --verbose</p>
-                                            <p>● Architecture: Verified Production Build</p>
-                                            <p>● Security Audit: 0 High Vulnerabilities</p>
-                                            <p>● Status: Active Repository</p>
+                                            <p className="font-bold text-emerald-500">❯ git remote -v</p>
+                                            <p className="break-all">origin  {project.github}</p>
+                                            {demoUrl && demoUrl !== project.github && <p className="break-all">site    {demoUrl}</p>}
                                         </div>
                                     </div>
                                 </div>

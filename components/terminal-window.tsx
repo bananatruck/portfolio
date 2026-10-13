@@ -35,7 +35,7 @@ export function TerminalWindow({ children, className, title = "zsh" }: TerminalW
             </div>
 
             {/* Terminal Content */}
-            <div className="p-6 font-mono text-sm md:text-base text-foreground bg-background">
+            <div className="p-6 sm:p-8 font-mono text-sm md:text-base text-foreground bg-background">
                 {children}
             </div>
         </div>
