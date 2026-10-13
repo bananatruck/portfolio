@@ -27,7 +27,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={onClose}
-                        className="fixed inset-0 z-[9999] bg-black/85 backdrop-blur-md"
+                        className="fixed inset-0 z-[9999] bg-black/85"
                     />
 
                     {/* Modal Dialog Container */}

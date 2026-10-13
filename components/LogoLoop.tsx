@@ -169,14 +169,28 @@ const useAnimationLoop = (
             rafRef.current = requestAnimationFrame(animate);
         };
 
-        rafRef.current = requestAnimationFrame(animate);
+        // Animate only while the strip is on screen and the tab is visible; stay still for reduced motion.
+        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let onScreen = true;
+        const stop = () => {
+            if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+            rafRef.current = null;
+            lastTimestampRef.current = null;
+        };
+        const sync = () => {
+            const run = onScreen && !document.hidden && !reduce;
+            if (run && rafRef.current === null) rafRef.current = requestAnimationFrame(animate);
+            if (!run) stop();
+        };
+        const io = new IntersectionObserver(([entry]) => { onScreen = entry.isIntersecting; sync(); });
+        io.observe(track);
+        document.addEventListener('visibilitychange', sync);
+        sync();
 
         return () => {
-            if (rafRef.current !== null) {
-                cancelAnimationFrame(rafRef.current);
-                rafRef.current = null;
-            }
-            lastTimestampRef.current = null;
+            stop();
+            io.disconnect();
+            document.removeEventListener('visibilitychange', sync);
         };
     }, [trackRef, targetVelocity, seqWidth, seqHeight, isHovered, hoverSpeed, isVertical]);
 };

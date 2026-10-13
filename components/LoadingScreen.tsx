@@ -4,25 +4,26 @@ import { useState, useEffect } from "react";
 
 export default function LoadingScreen() {
     const [phase, setPhase] = useState<"loading" | "exit" | "done">("loading");
-    const [shouldShow, setShouldShow] = useState(true);
+    // Off until the client decides, so the server HTML never contains a full-screen overlay
+    // that flashes on every reload.
+    const [shouldShow, setShouldShow] = useState(false);
 
     useEffect(() => {
-        // If loading screen already played this session, skip entirely
-        if (sessionStorage.getItem("loadingDone")) {
-            setShouldShow(false);
+        let seen = false;
+        try { seen = !!sessionStorage.getItem("loadingDone"); } catch { /* storage is optional */ }
+        if (seen || window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
             window.dispatchEvent(new CustomEvent("loadingComplete"));
             return;
         }
-
-        // Start exit after 2.4s
-        const exitTimer = setTimeout(() => setPhase("exit"), 2400);
+        setShouldShow(true);
+        const exitTimer = setTimeout(() => setPhase("exit"), 1600);
         return () => clearTimeout(exitTimer);
     }, []);
 
     useEffect(() => {
         if (phase === "done") {
             // Mark as played and dispatch event
-            sessionStorage.setItem("loadingDone", "1");
+            try { sessionStorage.setItem("loadingDone", "1"); } catch { /* storage is optional */ }
             window.dispatchEvent(new CustomEvent("loadingComplete"));
         }
     }, [phase]);

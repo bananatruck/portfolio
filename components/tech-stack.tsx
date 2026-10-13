@@ -149,10 +149,10 @@ export function TechStack() {
     return (
         <section className="w-full max-w-4xl mx-auto px-4 sm:px-6 py-6 bg-background relative overflow-hidden">
             {/* Left Edge Disappearing Blur Fade */}
-            <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-background via-background/80 to-transparent z-20 pointer-events-none backdrop-blur-[1px]" />
+            <div className="absolute top-0 bottom-0 left-0 w-12 sm:w-24 bg-gradient-to-r from-background via-background/80 to-transparent z-20 pointer-events-none" />
             
             {/* Right Edge Disappearing Blur Fade */}
-            <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-background via-background/80 to-transparent z-20 pointer-events-none backdrop-blur-[1px]" />
+            <div className="absolute top-0 bottom-0 right-0 w-12 sm:w-24 bg-gradient-to-l from-background via-background/80 to-transparent z-20 pointer-events-none" />
 
             <div className="mb-6 text-center">
                 <h2 className="text-xl md:text-2xl font-black mb-2 font-mono uppercase tracking-widest">
