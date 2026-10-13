@@ -39,9 +39,9 @@ export function OsSwitch() {
             onClick={enter}
             title="Switch to KESH_OS"
             aria-label="K. Switch to KESH_OS, the desktop version of this site"
-            className="group shrink-0 inline-flex items-end font-mono text-base sm:text-lg font-black leading-none text-foreground border-2 border-border px-2 py-1 bg-background shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:-translate-y-0.5 transition-all"
+            className="group shrink-0 inline-flex items-end py-1 font-display text-xl sm:text-2xl font-bold tracking-tight leading-none text-foreground"
         >
-            K<span aria-hidden className="ml-[2px] mb-[1px] w-[5px] h-[5px] bg-emerald-500 animate-[k-blink_1s_steps(1)_infinite] group-hover:animate-none" />
+            K<span aria-hidden className="ml-[3px] mb-[3px] w-[6px] h-[6px] rounded-full bg-emerald-500 animate-[k-blink_1s_steps(1)_infinite] transition-transform duration-300 group-hover:animate-none group-hover:scale-125" />
         </button>
     );
 }

@@ -7,7 +7,6 @@ import ThemeToggle from "./ThemeToggle";
 import { OsSwitch } from "./os-switch";
 
 const navItems = [
-    { name: 'home', href: '#hero', isDownload: false },
     { name: 'projects', href: '#projects', isDownload: false },
     { name: 'research', href: '/research', isDownload: false },
     { name: 'resume', href: '/keshav-jindal-resume.pdf', isDownload: true },
