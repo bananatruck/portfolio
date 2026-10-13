@@ -30,7 +30,7 @@ export function ProjectCard({ project }: { project: Project }) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={(e) => e.stopPropagation()}
-                                className="text-foreground hover:scale-110 transition-transform cursor-target"
+                                className="text-foreground hover:scale-110 transition-transform"
                             >
                                 <Github className="w-4 h-4" />
                             </Link>
@@ -41,7 +41,7 @@ export function ProjectCard({ project }: { project: Project }) {
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={(e) => e.stopPropagation()}
-                                className="text-foreground hover:scale-110 transition-transform cursor-target"
+                                className="text-foreground hover:scale-110 transition-transform"
                             >
                                 <ExternalLink className="w-4 h-4" />
                             </Link>

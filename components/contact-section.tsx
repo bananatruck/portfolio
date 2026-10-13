@@ -77,7 +77,7 @@ export function ContactSection() {
                                 whileHover={{ scale: 1.03, y: -4 }}
                                 whileTap={{ scale: 0.97 }}
                                 transition={{ duration: 0.3, delay: index * 0.08 }}
-                                className="group relative p-4 sm:p-5 manga-panel hover:bg-foreground transition-all duration-300 overflow-hidden cursor-target flex flex-col items-center text-center gap-3 shadow-[4px_4px_0px_0px_hsl(var(--foreground))]"
+                                className="group relative p-4 sm:p-5 manga-panel hover:bg-foreground transition-all duration-300 overflow-hidden flex flex-col items-center text-center gap-3 shadow-[4px_4px_0px_0px_hsl(var(--foreground))]"
                             >
                                 <div className="p-2.5 border-2 border-foreground rounded-full group-hover:border-background group-hover:bg-background/10 transition-colors">
                                     <Icon className="w-5 h-5 text-foreground group-hover:text-background" />

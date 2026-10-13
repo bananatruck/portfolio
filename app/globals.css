@@ -97,8 +97,6 @@
 
   * {
     @apply border-border;
-    cursor: none !important;
-    /* Hide default cursor, use custom cursor only */
   }
 
   body {
@@ -219,3 +217,5 @@
   right: 0;
   background: linear-gradient(to left, var(--logoloop-fadeColorAuto) 0%, rgba(0, 0, 0, 0) 100%);
 }
+
+/* The site cursor lives in public/kesh-cursor.js (idle, hover, press and loading states). */

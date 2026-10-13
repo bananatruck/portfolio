@@ -1,15 +1,11 @@
 import type { Metadata } from "next";
 import { Inter, JetBrains_Mono, Press_Start_2P, Space_Grotesk } from "next/font/google";
 import { Providers } from "./providers";
-import dynamic from "next/dynamic";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import LoadingScreen from "@/components/LoadingScreen";
+import Script from "next/script";
 import "./globals.css";
-
-const TargetCursor = dynamic(() => import("@/components/TargetCursor"), {
-    ssr: false,
-});
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
 const jetbrainsMono = JetBrains_Mono({
@@ -53,11 +49,7 @@ export default function RootLayout({
         <html lang="en" className="dark" suppressHydrationWarning>
             <body className={`${inter.variable} ${jetbrainsMono.variable} ${spaceGrotesk.variable} ${pressStart.variable} font-sans antialiased bg-background text-foreground selection:bg-primary/20`}>
                 <LoadingScreen />
-                <TargetCursor
-                    spinDuration={2}
-                    hideDefaultCursor={true}
-                    parallaxOn={true}
-                />
+                <Script src="/kesh-cursor.js" strategy="afterInteractive" />
                 <Providers>
                     <div className="relative flex min-h-screen flex-col bg-background">
                         <Header />

@@ -16,15 +16,15 @@ export function Footer() {
                     © {new Date().getFullYear()} <span className="text-foreground border-b-2 border-foreground">KESH</span>. All rights reserved.
                 </p>
                 <div className="flex gap-6 items-center">
-                    <a href="https://github.com/bananatruck" target="_blank" rel="noreferrer" className="text-foreground hover:underline decoration-2 underline-offset-4 cursor-target flex items-center gap-1 font-bold uppercase text-xs">
+                    <a href="https://github.com/bananatruck" target="_blank" rel="noreferrer" className="text-foreground hover:underline decoration-2 underline-offset-4 flex items-center gap-1 font-bold uppercase text-xs">
                         <Github className="h-4 w-4" />
                         GitHub
                     </a>
-                    <a href="https://www.linkedin.com/in/keshavjindal04/" target="_blank" rel="noreferrer" className="text-foreground hover:underline decoration-2 underline-offset-4 cursor-target flex items-center gap-1 font-bold uppercase text-xs">
+                    <a href="https://www.linkedin.com/in/keshavjindal04/" target="_blank" rel="noreferrer" className="text-foreground hover:underline decoration-2 underline-offset-4 flex items-center gap-1 font-bold uppercase text-xs">
                         <Linkedin className="h-4 w-4" />
                         LinkedIn
                     </a>
-                    <a href="mailto:keshav.jmgl@gmail.com" className="text-foreground hover:underline decoration-2 underline-offset-4 cursor-target flex items-center gap-1 font-bold uppercase text-xs">
+                    <a href="mailto:keshav.jmgl@gmail.com" className="text-foreground hover:underline decoration-2 underline-offset-4 flex items-center gap-1 font-bold uppercase text-xs">
                         <Mail className="h-4 w-4" />
                         Email
                     </a>

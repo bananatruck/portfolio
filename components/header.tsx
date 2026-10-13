@@ -38,7 +38,7 @@ export function Header() {
                                     key={item.name}
                                     href={item.href}
                                     download
-                                    className="relative font-bold transition-colors text-foreground hover:underline decoration-2 underline-offset-4 cursor-target flex items-center gap-1 uppercase"
+                                    className="relative font-bold transition-colors text-foreground hover:underline decoration-2 underline-offset-4 flex items-center gap-1 uppercase"
                                 >
                                     {item.name}
                                     <Download className="w-3 h-3" />

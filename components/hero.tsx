@@ -85,7 +85,7 @@ export function Hero() {
 
                     <Link
                         href="/research"
-                        className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-foreground/70 hover:text-foreground border-b border-dashed border-foreground/40 hover:border-foreground transition-colors cursor-target"
+                        className="inline-flex items-center gap-1.5 text-[10px] sm:text-xs font-mono font-bold uppercase tracking-wider text-foreground/70 hover:text-foreground border-b border-dashed border-foreground/40 hover:border-foreground transition-colors"
                     >
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 shadow-[0_0_6px_#10b981] animate-pulse" />
                         Research Assistant — Autonomous Research Agents
