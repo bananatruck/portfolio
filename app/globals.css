@@ -218,6 +218,8 @@
   background: linear-gradient(to left, var(--logoloop-fadeColorAuto) 0%, rgba(0, 0, 0, 0) 100%);
 }
 
+@keyframes eq { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
+
 /* The site cursor lives in public/kesh-cursor.js (idle, hover, press and loading states). */
 
 /* The page colour, captured before .elsewhere overrides --background. */
