@@ -6,7 +6,7 @@ import { Check, X } from "lucide-react";
 // Small, honest illustrations of what the research page describes. None of them run G.A.T.E.S.;
 // each says so, and each only acts out a rule the page states in words.
 
-const panel = "border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))]";
+const panel = "border border-foreground bg-background shadow-[3px_3px_0px_0px_hsl(var(--foreground))]";
 const label = "font-mono text-[10px] font-bold uppercase tracking-widest text-foreground/50";
 
 /* ---------- Section index with the current section lit ---------- */
@@ -77,7 +77,7 @@ export function TruncationDemo() {
             />
 
             {/* The run's text as a bar: output, then the marker, against the 1,000 character cut. */}
-            <div className="relative h-9 border-2 border-foreground bg-foreground/5" aria-hidden>
+            <div className="relative h-9 border border-foreground bg-foreground/5" aria-hidden>
                 <div className="absolute inset-y-0 left-0 bg-foreground/25" style={{ width: `${(out / scale) * 100}%` }} />
                 <div
                     className={`absolute inset-y-0 transition-colors ${seen ? "bg-emerald-500" : "bg-red-500"}`}
@@ -93,7 +93,7 @@ export function TruncationDemo() {
                 <span>agents read only the left of the cut</span>
             </div>
 
-            <pre className="mt-4 border-2 border-foreground bg-foreground/5 p-3 font-mono text-[11px] sm:text-xs overflow-x-auto">
+            <pre className="mt-4 border border-foreground bg-foreground/5 p-3 font-mono text-[11px] sm:text-xs overflow-x-auto">
                 <span className="text-emerald-500">❯ </span>
                 {`visible = (stdout + "${MARKER}")[:${LIMIT}]   # ${total.toLocaleString()} chars in, ${Math.min(total, LIMIT).toLocaleString()} read`}
             </pre>
@@ -167,7 +167,7 @@ export function GateCheck() {
                     </button>
                 ))}
             </div>
-            <div className="flex items-center gap-2 border-2 border-foreground bg-foreground/5 px-3 py-2.5 font-mono text-xs sm:text-sm">
+            <div className="flex items-center gap-2 border border-foreground bg-foreground/5 px-3 py-2.5 font-mono text-xs sm:text-sm">
                 <span className="text-emerald-500 shrink-0">❯</span>
                 <input
                     value={src}
@@ -204,7 +204,7 @@ export function GatePipeline({ gates }: { gates: Gate[] }) {
                         role="tab"
                         aria-selected={open === i}
                         onClick={() => setOpen(i)}
-                        className={`relative text-left p-3 sm:p-4 border-2 border-foreground transition-all ${open === i ? "bg-foreground text-background shadow-[4px_4px_0px_0px_hsl(var(--foreground)/.5)] -translate-y-0.5" : "bg-background hover:shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:-translate-y-0.5"}`}
+                        className={`relative text-left p-3 sm:p-4 border border-foreground transition-all ${open === i ? "bg-foreground text-background shadow-[3px_3px_0px_0px_hsl(var(--foreground)/.5)] -translate-y-0.5" : "bg-background hover:shadow-[3px_3px_0px_0px_hsl(var(--foreground))] hover:-translate-y-0.5"}`}
                     >
                         <span className="flex items-center gap-1.5 font-mono text-[10px] font-black uppercase tracking-widest">
                             <span className={`w-1.5 h-1.5 rounded-full ${gate.status === "implemented" ? "bg-emerald-400 shadow-[0_0_8px_#10b981] animate-pulse" : "border border-current opacity-60"}`} />
@@ -254,7 +254,7 @@ export function CausalChain() {
                                 type="button"
                                 onClick={() => setBroken(bad ? null : i)}
                                 aria-pressed={bad}
-                                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 border-2 transition-colors ${bad ? "border-red-500 text-red-500 bg-red-500/10" : "border-foreground hover:bg-foreground hover:text-background"}`}
+                                className={`inline-flex items-center gap-1.5 px-2.5 py-1.5 border transition-colors ${bad ? "border-red-500 text-red-500 bg-red-500/10" : "border-foreground hover:bg-foreground hover:text-background"}`}
                             >
                                 {bad ? <X className="w-3.5 h-3.5" /> : <Check className="w-3.5 h-3.5 text-emerald-500" />}
                                 {name}

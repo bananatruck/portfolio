@@ -79,7 +79,7 @@ export function FeaturedProjects() {
                     <div className="space-y-8">
                         <div className="mb-8">
                             <h2 className="text-3xl md:text-4xl font-black mb-2 font-mono uppercase tracking-wider">
-                                <span className="text-foreground border-b-4 border-foreground">
+                                <span className="text-foreground border-b-2 border-foreground">
                                     <DecryptedText
                                         text="Built Apps"
                                         animateOn="view"

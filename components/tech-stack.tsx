@@ -156,7 +156,7 @@ export function TechStack() {
 
             <div className="mb-6 text-center">
                 <h2 className="text-xl md:text-2xl font-black mb-2 font-mono uppercase tracking-widest">
-                    <span className="text-foreground border-b-2 border-foreground">Stack</span>
+                    <span className="text-foreground border-b border-foreground">Stack</span>
                 </h2>
             </div>
 

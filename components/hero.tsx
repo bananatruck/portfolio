@@ -74,7 +74,7 @@ export function Hero() {
                         <span className="block text-foreground/60 text-[11px] sm:text-sm font-mono tracking-wider font-medium mb-0.5">
                             Hi, I&apos;m
                         </span>
-                        <span className="text-foreground border-b-2 sm:border-b-3 border-foreground pb-0.5 inline-block font-display">
+                        <span className="text-foreground border-b sm:border-b-3 border-foreground pb-0.5 inline-block font-display">
                             {ready ? <TypingEffect text="Keshav Jindal" /> : "Keshav Jindal"}
                         </span>
                     </h1>
@@ -101,7 +101,7 @@ export function Hero() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={ready ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.5, delay: 0.25 }}
-                        className="hidden xl:flex flex-col justify-between w-32 h-32 p-2 border-2 border-foreground bg-background shadow-[3px_3px_0px_0px_hsl(var(--foreground))] text-left font-mono text-[9px] select-none flex-shrink-0"
+                        className="hidden xl:flex flex-col justify-between w-32 h-32 p-2 border border-foreground bg-background shadow-[2px_2px_0px_0px_hsl(var(--foreground))] text-left font-mono text-[9px] select-none flex-shrink-0"
                     >
                         <div className="flex items-center justify-between border-b border-foreground/30 pb-0.5 font-bold uppercase">
                             <span className="flex items-center gap-1 text-foreground">
@@ -129,9 +129,9 @@ export function Hero() {
                         transition={{ duration: 0.6, delay: 0.2 }}
                         className="w-full max-w-lg flex-1"
                     >
-                        <div className="border-2 sm:border-3 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))] sm:shadow-[6px_6px_0px_0px_hsl(var(--foreground))] transition-all duration-300 hover:shadow-[10px_10px_0px_0px_hsl(var(--foreground))]">
+                        <div className="border sm:border-3 border-foreground bg-background shadow-[3px_3px_0px_0px_hsl(var(--foreground))] sm:shadow-[4px_4px_0px_0px_hsl(var(--foreground))] transition-all duration-300 hover:shadow-[10px_10px_0px_0px_hsl(var(--foreground))]">
                             {/* Retro Window Header */}
-                            <div className="bg-foreground text-background px-2.5 py-1 flex items-center justify-between font-mono text-[10px] font-bold uppercase tracking-wider border-b-2 border-foreground select-none">
+                            <div className="bg-foreground text-background px-2.5 py-1 flex items-center justify-between font-mono text-[10px] font-bold uppercase tracking-wider border-b border-foreground select-none">
                                 <div className="flex items-center gap-1">
                                     <Terminal className="w-3 h-3 text-emerald-400" />
                                     <span>PROJECT .EXE</span>
@@ -168,7 +168,7 @@ export function Hero() {
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={ready ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.9 }}
                         transition={{ duration: 0.5, delay: 0.3 }}
-                        className="hidden xl:flex flex-col justify-between w-32 h-32 p-2 border-2 border-foreground bg-background shadow-[3px_3px_0px_0px_hsl(var(--foreground))] text-right font-mono text-[9px] select-none flex-shrink-0"
+                        className="hidden xl:flex flex-col justify-between w-32 h-32 p-2 border border-foreground bg-background shadow-[2px_2px_0px_0px_hsl(var(--foreground))] text-right font-mono text-[9px] select-none flex-shrink-0"
                     >
                         <div className="flex items-center justify-between border-b border-foreground/30 pb-0.5 font-bold uppercase">
                             <span className="text-foreground/60 text-[8px]">LINKS</span>
@@ -216,7 +216,7 @@ export function Hero() {
                     <a
                         href="/keshav-jindal-resume.pdf"
                         download
-                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-foreground text-background font-mono text-xs font-bold uppercase tracking-wider border-2 border-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))] hover:bg-emerald-500 hover:text-black transition-all"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-foreground text-background font-mono text-xs font-bold uppercase tracking-wider border border-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:bg-emerald-500 hover:text-black transition-all"
                     >
                         <Download className="w-3.5 h-3.5" />
                         <span>Metadata</span>
@@ -225,7 +225,7 @@ export function Hero() {
                     <Link
                         href="https://www.linkedin.com/in/keshavjindal04/"
                         target="_blank"
-                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-background text-foreground font-mono text-xs font-bold uppercase tracking-wider border-2 border-foreground shadow-[3px_3px_0px_0px_hsl(var(--foreground))] hover:border-emerald-500 hover:text-emerald-500 transition-all"
+                        className="inline-flex items-center gap-1.5 px-4 py-2 bg-background text-foreground font-mono text-xs font-bold uppercase tracking-wider border border-foreground shadow-[2px_2px_0px_0px_hsl(var(--foreground))] hover:border-emerald-500 hover:text-emerald-500 transition-all"
                     >
                         <Linkedin className="w-3.5 h-3.5" />
                         <span>LinkedIn</span>

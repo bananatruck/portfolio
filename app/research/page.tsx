@@ -50,11 +50,11 @@ const GATES: Gate[] = [
 
 const SECTIONS: [string, string][] = [["problem", "The problem"], ["gates", "G.A.T.E.S."], ["results", "Results"], ["how", "How it works"]];
 
-const panel = "border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))]";
+const panel = "border border-foreground bg-background shadow-[3px_3px_0px_0px_hsl(var(--foreground))]";
 
 function SectionHead({ title, tag }: { title: string; tag: string }) {
     return (
-        <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
+        <div className="flex items-center justify-between mb-6 border-b-2 border-foreground pb-2">
             <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                 <span className="text-emerald-500 mr-2">❯</span>
                 {title}
@@ -110,7 +110,7 @@ export default function ResearchPage() {
                     </header>
 
                     {/* Publication status, the thing people come here for */}
-                    <div className="border-2 border-foreground bg-foreground text-background p-6 sm:p-7 shadow-[6px_6px_0px_0px_hsl(var(--foreground)/.35)] mb-14">
+                    <div className="border border-foreground bg-foreground text-background p-6 sm:p-7 shadow-[4px_4px_0px_0px_hsl(var(--foreground)/.35)] mb-14">
                         <p className="font-mono text-[11px] font-bold uppercase tracking-widest opacity-70 mb-3">
                             <span className="text-emerald-400">❯</span> cat publication.status
                         </p>
@@ -126,7 +126,7 @@ export default function ResearchPage() {
                             href="https://github.com/bananatruck/gates"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="inline-flex items-center gap-2 mt-5 px-4 py-2 bg-background text-foreground font-mono text-xs font-bold uppercase tracking-widest border-2 border-background hover:bg-emerald-500 hover:text-black hover:border-emerald-500 transition-colors"
+                            className="inline-flex items-center gap-2 mt-5 px-4 py-2 bg-background text-foreground font-mono text-xs font-bold uppercase tracking-widest border border-background hover:bg-emerald-500 hover:text-black hover:border-emerald-500 transition-colors"
                         >
                             <Github className="w-3.5 h-3.5" />
                             github.com/bananatruck/gates
@@ -220,7 +220,7 @@ export default function ResearchPage() {
                                 Experiments declare their results through an API injected straight into
                                 the namespace, so there is nothing to import and nothing for the agent to get wrong:
                             </p>
-                            <pre className="border-2 border-foreground bg-foreground/5 p-4 overflow-x-auto font-mono text-xs sm:text-sm">
+                            <pre className="border border-foreground bg-foreground/5 p-4 overflow-x-auto font-mono text-xs sm:text-sm">
 <span className="text-emerald-500">❯ </span>{`record_result("exp1.K2.test_acc", test_acc, unit="ratio")`}
                             </pre>
                             <p>

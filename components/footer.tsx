@@ -6,14 +6,14 @@ import Link from "next/link";
 
 export function Footer() {
     return (
-        <footer className="w-full pt-12 pb-28 sm:pb-12 border-t-2 border-foreground bg-background relative overflow-hidden">
+        <footer className="w-full pt-12 pb-28 sm:pb-12 border-t border-foreground bg-background relative overflow-hidden">
             {/* Decorative manga mountain background */}
             <div className="absolute inset-0 opacity-10 dark:opacity-5 pointer-events-none dark:invert">
                 <Image src="/manga-mountains.webp" alt="" fill sizes="100vw" className="object-cover object-bottom" />
             </div>
             <div className="max-w-4xl mx-auto px-4 sm:px-6 flex flex-col md:flex-row items-center justify-between gap-4 relative z-10">
                 <p className="text-sm text-foreground font-mono font-bold">
-                    © {new Date().getFullYear()} <span className="text-foreground border-b-2 border-foreground">KESH</span>. All rights reserved.
+                    © {new Date().getFullYear()} <span className="text-foreground border-b border-foreground">KESH</span>. All rights reserved.
                 </p>
                 <div className="flex gap-6 items-center">
                     <a href="https://github.com/bananatruck" target="_blank" rel="noreferrer" className="text-foreground hover:underline decoration-2 underline-offset-4 flex items-center gap-1 font-bold uppercase text-xs">

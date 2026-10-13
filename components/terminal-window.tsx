@@ -11,14 +11,14 @@ interface TerminalWindowProps {
 
 export function TerminalWindow({ children, className, title = "zsh" }: TerminalWindowProps) {
     return (
-        <div className={cn("rounded-none overflow-hidden border-2 border-foreground bg-background shadow-[8px_8px_0px_0px_hsl(var(--foreground))]", className)}>
+        <div className={cn("rounded-none overflow-hidden border border-foreground bg-background shadow-[5px_5px_0px_0px_hsl(var(--foreground))]", className)}>
             {/* Terminal Header - Manga Style with Green Accents */}
-            <div className="bg-background px-4 py-3 flex items-center justify-between border-b-2 border-foreground select-none">
+            <div className="bg-background px-4 py-3 flex items-center justify-between border-b border-foreground select-none">
                 {/* Window Controls */}
                 <div className="flex items-center gap-2">
-                    <div className="w-3 h-3 rounded-full border-2 border-foreground bg-transparent" />
-                    <div className="w-3 h-3 rounded-full border-2 border-foreground bg-foreground" />
-                    <div className="w-3 h-3 rounded-full border-2 border-foreground bg-transparent" />
+                    <div className="w-3 h-3 rounded-full border border-foreground bg-transparent" />
+                    <div className="w-3 h-3 rounded-full border border-foreground bg-foreground" />
+                    <div className="w-3 h-3 rounded-full border border-foreground bg-transparent" />
                     <span className="w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_8px_#10b981] animate-pulse ml-2" />
                 </div>
 

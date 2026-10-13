@@ -38,10 +38,10 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                         className="fixed inset-0 z-[9999] flex items-center justify-center p-4 pointer-events-none"
                     >
-                        <div className="w-full max-w-3xl bg-background border-4 border-foreground overflow-hidden shadow-[12px_12px_0px_0px_hsl(var(--foreground))] pointer-events-auto relative flex flex-col max-h-[90vh] text-foreground">
+                        <div className="w-full max-w-3xl bg-background border-2 border-foreground overflow-hidden shadow-[8px_8px_0px_0px_hsl(var(--foreground))] pointer-events-auto relative flex flex-col max-h-[90vh] text-foreground">
 
                             {/* Header Bar */}
-                            <div className="flex items-center justify-between px-5 py-3 border-b-4 border-foreground bg-foreground text-background font-mono font-bold uppercase tracking-wider select-none">
+                            <div className="flex items-center justify-between px-5 py-3 border-b-2 border-foreground bg-foreground text-background font-mono font-bold uppercase tracking-wider select-none">
                                 <div className="flex items-center gap-2">
                                     <Terminal className="w-4 h-4 text-emerald-400" />
                                     <span className="text-xs sm:text-sm">PROJECT_DETAILS.EXE // {project.title}</span>
@@ -60,7 +60,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
 
                                     {/* Left: Image & Quick Action Links */}
                                     <div className="space-y-4">
-                                        <div className="aspect-video bg-black rounded border-2 border-foreground flex items-center justify-center relative overflow-hidden group">
+                                        <div className="aspect-video bg-black rounded border border-foreground flex items-center justify-center relative overflow-hidden group">
                                             {project.image ? (
                                                 <img
                                                     src={project.image}
@@ -78,7 +78,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
 
                                         <div className="flex flex-wrap gap-3 font-mono">
                                             {project.github && (
-                                                <Button variant="outline" className="flex-1 gap-2 border-2 border-foreground font-bold shadow-[2px_2px_0px_0px_hsl(var(--foreground))]" asChild>
+                                                <Button variant="outline" className="flex-1 gap-2 border border-foreground font-bold shadow-[2px_2px_0px_0px_hsl(var(--foreground))]" asChild>
                                                     <a href={project.github} target="_blank" rel="noopener noreferrer">
                                                         <Github className="w-4 h-4" /> Source Code
                                                     </a>
@@ -97,7 +97,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                                     {/* Right: Details & Tech Stack */}
                                     <div className="space-y-4">
                                         <div>
-                                            <h2 className="text-2xl font-black font-display uppercase tracking-wider mb-2 text-foreground border-b-2 border-foreground/30 pb-1">
+                                            <h2 className="text-2xl font-black font-display uppercase tracking-wider mb-2 text-foreground border-b border-foreground/30 pb-1">
                                                 {project.title}
                                             </h2>
                                             <p className="text-sm font-read leading-relaxed text-foreground/80">

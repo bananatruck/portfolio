@@ -134,13 +134,13 @@ export function AboutSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true, margin: "-80px" }}
                             transition={{ duration: 0.7, ease: EASE }}
-                            className="flex flex-col sm:flex-row gap-5 items-start border-2 border-[rgb(var(--el-ink))] p-5 bg-[rgb(var(--el-card)/0.80)] shadow-[6px_6px_0px_0px_rgb(var(--el-ink))]"
+                            className="flex flex-col sm:flex-row gap-5 items-start border border-[rgb(var(--el-ink))] p-5 bg-[rgb(var(--el-card)/0.80)] shadow-[4px_4px_0px_0px_rgb(var(--el-ink))]"
                         >
-                            <div className="w-24 h-24 flex-shrink-0 border-2 border-[rgb(var(--el-ink))] overflow-hidden relative grayscale contrast-125 shadow-[3px_3px_0px_0px_rgb(var(--el-ink))]">
+                            <div className="w-24 h-24 flex-shrink-0 border border-[rgb(var(--el-ink))] overflow-hidden relative grayscale contrast-125 shadow-[2px_2px_0px_0px_rgb(var(--el-ink))]">
                                 <Image src="/images/Mori-pfp.webp" alt="Kesh" fill sizes="96px" className="object-cover" />
                             </div>
                             <div className="min-w-0 w-full">
-                                <div className="flex items-end gap-3 mb-2 border-b-2 border-[rgb(var(--el-ink))] pb-2">
+                                <div className="flex items-end gap-3 mb-2 border-b border-[rgb(var(--el-ink))] pb-2">
                                     <h3 className="text-3xl font-black font-display tracking-tighter uppercase">Kesh</h3>
                                     <GarchompTrigger />
                                 </div>
@@ -170,7 +170,7 @@ export function AboutSection() {
                                         aria-label={s.label}
                                         title={s.label}
                                         onClick={() => setShelf(s.key)}
-                                        className={`relative w-11 h-11 grid place-items-center border-2 border-[rgb(var(--el-ink))] transition-[background-color,color,transform,box-shadow] duration-300 ease-out ${on ? "bg-[rgb(var(--el-ink))] text-[rgb(var(--el-paper))] shadow-[3px_3px_0px_0px_#15ca91]" : "bg-[rgb(var(--el-card)/0.60)] hover:-translate-y-0.5 hover:shadow-[3px_3px_0px_0px_rgb(var(--el-ink))]"}`}
+                                        className={`relative w-11 h-11 grid place-items-center border border-[rgb(var(--el-ink))] transition-[background-color,color,transform,box-shadow] duration-300 ease-out ${on ? "bg-[rgb(var(--el-ink))] text-[rgb(var(--el-paper))] shadow-[2px_2px_0px_0px_#15ca91]" : "bg-[rgb(var(--el-card)/0.60)] hover:-translate-y-0.5 hover:shadow-[2px_2px_0px_0px_rgb(var(--el-ink))]"}`}
                                     >
                                         <Icon className="w-[18px] h-[18px]" strokeWidth={1.6} />
                                     </button>
@@ -193,7 +193,7 @@ export function AboutSection() {
                                             className="group relative m-0 aspect-[2/3] overflow-hidden border-[3px] border-[rgb(var(--el-ink))] bg-[rgb(var(--el-card))]"
                                         >
                                             <Image src={item.image} alt={item.title} fill sizes="(max-width: 768px) 50vw, 30vw" style={item.pos ? { objectPosition: item.pos } : undefined} className="object-cover grayscale contrast-[1.08] group-hover:grayscale-0 group-hover:scale-[1.02] transition-transform duration-500 ease-out" />
-                                            <figcaption className="absolute left-2 bottom-2 max-w-[calc(100%-1rem)] px-2 py-1 bg-[rgb(var(--el-cap)/0.95)] border-2 border-[rgb(var(--el-ink))] font-mono text-[10px] leading-tight">
+                                            <figcaption className="absolute left-2 bottom-2 max-w-[calc(100%-1rem)] px-2 py-1 bg-[rgb(var(--el-cap)/0.95)] border border-[rgb(var(--el-ink))] font-mono text-[10px] leading-tight">
                                                 <b className="block text-[11px] truncate">{item.title}</b>
                                                 <span className="text-[rgb(var(--el-ink)/0.70)]">{item.sub}</span>
                                             </figcaption>
@@ -203,7 +203,7 @@ export function AboutSection() {
                             </AnimatePresence>
                         </div>
                         {shelf === "games" && (
-                            <Link href="/blog/pokemon-rom-hacks" className="inline-flex items-center gap-1.5 mt-3 font-mono text-[11px] font-bold uppercase tracking-wider border-b-2 border-[rgb(var(--el-ink))] hover:text-[#0a8c5b] hover:border-[#0a8c5b] transition-colors">
+                            <Link href="/blog/pokemon-rom-hacks" className="inline-flex items-center gap-1.5 mt-3 font-mono text-[11px] font-bold uppercase tracking-wider border-b border-[rgb(var(--el-ink))] hover:text-[#0a8c5b] hover:border-[#0a8c5b] transition-colors">
                                 The full ranking <ArrowUpRight className="w-3.5 h-3.5" />
                             </Link>
                         )}
@@ -219,7 +219,7 @@ export function AboutSection() {
                         style={GLASS}
                     >
                         {/* Top edge lines up with the profile card; the track list fills down to the shelf's bottom edge. */}
-                        <div className="flex flex-col lg:h-full border-2 border-[rgb(var(--el-ink))] bg-[#0b0f0d]/90 backdrop-blur-md shadow-[6px_6px_0px_0px_rgb(var(--el-ink))] overflow-hidden">
+                        <div className="flex flex-col lg:h-full border border-[rgb(var(--el-ink))] bg-[#0b0f0d]/90 backdrop-blur-md shadow-[4px_4px_0px_0px_rgb(var(--el-ink))] overflow-hidden">
                             <p className="px-3 pt-3 font-mono text-[10px] font-bold uppercase tracking-[0.2em] text-[#f4f1e8]/50">On repeat</p>
                             <MusicPlayer />
                         </div>
@@ -235,15 +235,15 @@ export function AboutSection() {
                     className="mt-20"
                     aria-labelledby="path-title"
                 >
-                    <div className="flex items-end justify-between mb-6 border-b-2 border-[rgb(var(--el-ink))] pb-2">
+                    <div className="flex items-end justify-between mb-6 border-b border-[rgb(var(--el-ink))] pb-2">
                         <h3 id="path-title" className="font-display font-black lowercase tracking-[-0.04em] text-4xl text-[rgb(var(--el-ink)/0.18)]">path</h3>
                         <span className="font-mono text-[10px] text-[rgb(var(--el-ink)/0.50)]">2012 to now</span>
                     </div>
-                    <ol className="relative border-l-2 border-[rgb(var(--el-ink))] ml-2 space-y-3">
+                    <ol className="relative border-l border-[rgb(var(--el-ink))] ml-2 space-y-3">
                         {visibleMilestones.map(item => (
                             <li key={item.year + item.title} className="relative pl-6">
-                                <span aria-hidden className={`absolute -left-[9px] top-4 w-4 h-4 border-2 border-[rgb(var(--el-ink))] ${item.year === "2026" ? "bg-[#15ca91]" : "bg-[rgb(var(--el-paper))]"}`} />
-                                <div className="flex gap-4 p-4 border-2 border-[rgb(var(--el-ink))] bg-[rgb(var(--el-card)/0.80)] shadow-[4px_4px_0px_0px_rgb(var(--el-ink))] hover:shadow-[6px_6px_0px_0px_rgb(var(--el-ink))] hover:-translate-y-0.5 transition-[transform,box-shadow] duration-300">
+                                <span aria-hidden className={`absolute -left-[9px] top-4 w-4 h-4 border border-[rgb(var(--el-ink))] ${item.year === "2026" ? "bg-[#15ca91]" : "bg-[rgb(var(--el-paper))]"}`} />
+                                <div className="flex gap-4 p-4 border border-[rgb(var(--el-ink))] bg-[rgb(var(--el-card)/0.80)] shadow-[3px_3px_0px_0px_rgb(var(--el-ink))] hover:shadow-[4px_4px_0px_0px_rgb(var(--el-ink))] hover:-translate-y-0.5 transition-[transform,box-shadow] duration-300">
                                     <span className="font-mono font-bold text-sm w-12 flex-shrink-0">{item.year}</span>
                                     <div className="min-w-0">
                                         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mb-1">
@@ -259,7 +259,7 @@ export function AboutSection() {
                     </ol>
                     <button
                         onClick={() => setShowAll(v => !v)}
-                        className="mt-6 w-full py-3 border-2 border-[rgb(var(--el-ink))] font-bold font-mono text-xs uppercase tracking-widest hover:bg-[rgb(var(--el-ink))] hover:text-[rgb(var(--el-paper))] transition-colors duration-300 flex items-center justify-center gap-2"
+                        className="mt-6 w-full py-3 border border-[rgb(var(--el-ink))] font-bold font-mono text-xs uppercase tracking-widest hover:bg-[rgb(var(--el-ink))] hover:text-[rgb(var(--el-paper))] transition-colors duration-300 flex items-center justify-center gap-2"
                     >
                         {showAll ? <>Show less <ChevronUp className="w-4 h-4" /></> : <>All of it <ChevronDown className="w-4 h-4" /></>}
                     </button>

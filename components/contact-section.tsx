@@ -73,9 +73,9 @@ export function ContactSection() {
                                 whileHover={{ scale: 1.03, y: -4 }}
                                 whileTap={{ scale: 0.97 }}
                                 transition={{ duration: 0.3, delay: index * 0.08 }}
-                                className="group relative p-4 sm:p-5 manga-panel hover:bg-foreground transition-all duration-300 overflow-hidden flex flex-col items-center text-center gap-3 shadow-[4px_4px_0px_0px_hsl(var(--foreground))]"
+                                className="group relative p-4 sm:p-5 manga-panel hover:bg-foreground transition-all duration-300 overflow-hidden flex flex-col items-center text-center gap-3 shadow-[3px_3px_0px_0px_hsl(var(--foreground))]"
                             >
-                                <div className="p-2.5 border-2 border-foreground rounded-full group-hover:border-background group-hover:bg-background/10 transition-colors">
+                                <div className="p-2.5 border border-foreground rounded-full group-hover:border-background group-hover:bg-background/10 transition-colors">
                                     <Icon className="w-5 h-5 text-foreground group-hover:text-background" />
                                 </div>
                                 <div>
@@ -100,9 +100,9 @@ export function ContactSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5 }}
-                        className="p-4 sm:p-5 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))] space-y-3"
+                        className="p-4 sm:p-5 border border-foreground bg-background shadow-[3px_3px_0px_0px_hsl(var(--foreground))] space-y-3"
                     >
-                        <div className="flex items-center justify-between border-b-2 border-foreground/30 pb-2.5">
+                        <div className="flex items-center justify-between border-b border-foreground/30 pb-2.5">
                             <div className="flex items-center gap-1.5 font-bold uppercase tracking-wider text-xs">
                                 <Smartphone className="w-3.5 h-3.5 text-emerald-500" />
                                 <span>Custom Android OS & ROM Tuning</span>
@@ -129,9 +129,9 @@ export function ContactSection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ duration: 0.5, delay: 0.1 }}
-                        className="p-4 sm:p-5 border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))] space-y-3 flex flex-col justify-between"
+                        className="p-4 sm:p-5 border border-foreground bg-background shadow-[3px_3px_0px_0px_hsl(var(--foreground))] space-y-3 flex flex-col justify-between"
                     >
-                        <div className="flex items-center justify-between border-b-2 border-foreground/30 pb-3">
+                        <div className="flex items-center justify-between border-b border-foreground/30 pb-3">
                             <div className="flex items-center gap-2 font-bold uppercase tracking-wider text-xs sm:text-sm">
                                 <Radio className="w-4 h-4 text-emerald-500 animate-pulse" />
                                 <span>Direct Telemetry</span>

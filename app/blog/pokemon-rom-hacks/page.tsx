@@ -168,7 +168,7 @@ export default function PokemonRomHacksPage() {
                     <ArrowLeft className="w-3.5 h-3.5" /> Back
                 </Link>
 
-                <header className="border-2 border-foreground bg-background p-6 sm:p-8 shadow-[6px_6px_0px_0px_hsl(var(--foreground))] mb-12">
+                <header className="border border-foreground bg-background p-6 sm:p-8 shadow-[4px_4px_0px_0px_hsl(var(--foreground))] mb-12">
                     <p className="font-mono text-[11px] font-bold uppercase tracking-widest text-foreground/60 mb-3">
                         Field Notes
                     </p>
@@ -182,7 +182,7 @@ export default function PokemonRomHacksPage() {
                 </header>
 
                 <section className="mb-14">
-                    <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
+                    <div className="flex items-center justify-between mb-6 border-b-2 border-foreground pb-2">
                         <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                             How I Got Here
                         </h2>
@@ -228,7 +228,7 @@ export default function PokemonRomHacksPage() {
                 </section>
 
                 <section className="mb-14">
-                    <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
+                    <div className="flex items-center justify-between mb-6 border-b-2 border-foreground pb-2">
                         <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                             The List
                         </h2>
@@ -239,7 +239,7 @@ export default function PokemonRomHacksPage() {
                         {HACKS.map((hack) => (
                             <li
                                 key={hack.title}
-                                className="border-2 border-foreground bg-background shadow-[4px_4px_0px_0px_hsl(var(--foreground))] hover:shadow-[6px_6px_0px_0px_hsl(var(--foreground))] transition-all overflow-hidden"
+                                className="border border-foreground bg-background shadow-[3px_3px_0px_0px_hsl(var(--foreground))] hover:shadow-[4px_4px_0px_0px_hsl(var(--foreground))] transition-all overflow-hidden"
                             >
                                 <a
                                     href={searchUrl(hack.search)}
@@ -248,7 +248,7 @@ export default function PokemonRomHacksPage() {
                                     className="group block"
                                 >
                                     {hack.image ? (
-                                        <div className="relative aspect-[3/2] border-b-2 border-foreground bg-foreground/5 overflow-hidden">
+                                        <div className="relative aspect-[3/2] border-b border-foreground bg-foreground/5 overflow-hidden">
                                             <Image
                                                 src={hack.image}
                                                 alt={`${hack.title} title screen`}
@@ -289,7 +289,7 @@ export default function PokemonRomHacksPage() {
                 </section>
 
                 <section className="mb-14">
-                    <div className="flex items-center justify-between mb-6 border-b-4 border-foreground pb-2">
+                    <div className="flex items-center justify-between mb-6 border-b-2 border-foreground pb-2">
                         <h2 className="text-2xl font-black font-display uppercase tracking-widest">
                             If You Want To Play
                         </h2>
@@ -300,7 +300,7 @@ export default function PokemonRomHacksPage() {
                         {EMULATORS.map((emu) => (
                             <div
                                 key={emu.platform}
-                                className="border-2 border-foreground p-4 bg-background shadow-[3px_3px_0px_0px_hsl(var(--foreground))]"
+                                className="border border-foreground p-4 bg-background shadow-[2px_2px_0px_0px_hsl(var(--foreground))]"
                             >
                                 <p className="font-mono text-[10px] font-bold uppercase tracking-widest text-foreground/50 mb-1">
                                     {emu.platform}
@@ -333,7 +333,7 @@ export default function PokemonRomHacksPage() {
                     </div>
                 </section>
 
-                <div className="border-2 border-foreground bg-foreground text-background p-6 sm:p-8 shadow-[6px_6px_0px_0px_hsl(var(--foreground))]">
+                <div className="border border-foreground bg-foreground text-background p-6 sm:p-8 shadow-[4px_4px_0px_0px_hsl(var(--foreground))]">
                     <p className="font-mono text-[11px] font-bold uppercase tracking-widest opacity-70 mb-3">
                         One Last Thing
                     </p>
