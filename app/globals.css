@@ -219,3 +219,6 @@
 }
 
 /* The site cursor lives in public/kesh-cursor.js (idle, hover, press and loading states). */
+/* The blinking dot in the K. mark, like a terminal cursor. */
+@keyframes k-blink { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { [class*="k-blink"] { animation: none !important; } }
