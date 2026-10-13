@@ -96,7 +96,8 @@ button.widget:hover { transform:translate(-1px,-2px); box-shadow:4px 4px 0 0 var
 .os-window.is-focused .win-bar { background:#232a26; color:var(--paper); }
 .win-lights { position:relative; z-index:1; display:flex; gap:8px; }
 .tl { width:12px; height:12px; padding:0; border:1px solid #0006; border-radius:50%; background:#5c625c; }
-.os-window.is-focused .tl-close { background:#ff5f57; } .os-window.is-focused .tl-min { background:#febc2e; } .os-window.is-focused .tl-max { background:#28c840; }
+/* Muted, like the site's paper-and-ink palette: a dusty red, ochre and the site's green. */
+.os-window.is-focused .tl-close { background:#b5655d; } .os-window.is-focused .tl-min { background:#b99c5e; } .os-window.is-focused .tl-max { background:#4e9a78; }
 .win-lights:hover .tl { filter:brightness(1.1); }
 .win-title { position:absolute; left:80px; right:80px; text-align:center; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; pointer-events:none; }
 .win-body { flex:1; min-height:0; overflow:auto; user-select:text; container-type:size; }
