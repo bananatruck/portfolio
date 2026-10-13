@@ -20,14 +20,19 @@ html.kc-on :is(${TEXT}) { cursor: text !important; }
 .kc.is-on { opacity: 1; }
 .kc-arrow { position: absolute; left: -3px; top: -2px; width: 22px; height: 22px; transform-origin: 3px 2px; transition: opacity .14s, transform .18s cubic-bezier(.3,1.4,.5,1); }
 .kc-arrow rect { fill: var(--c); }
-.kc-dot { position: absolute; left: -9px; top: -9px; width: 18px; height: 18px; border-radius: 50%; background: color-mix(in srgb, var(--c) 45%, transparent); box-shadow: 0 0 0 1.5px color-mix(in srgb, var(--c) 75%, transparent), 0 0 14px color-mix(in srgb, var(--c) 40%, transparent); opacity: 0; transform: scale(.25); transition: opacity .14s, transform .2s cubic-bezier(.3,1.5,.5,1), background .12s; }
+/* A glass ball: a tinted body, a specular highlight top left, light pooling at the bottom, no outline. */
+.kc-dot { position: absolute; left: -10px; top: -10px; width: 20px; height: 20px; border-radius: 50%;
+  background: radial-gradient(circle at 34% 28%, rgba(255,255,255,.9) 0 7%, rgba(255,255,255,.28) 16%, transparent 38%),
+    radial-gradient(circle at 50% 58%, color-mix(in srgb, var(--c) 30%, transparent) 0 55%, color-mix(in srgb, var(--c) 62%, transparent) 100%);
+  box-shadow: inset 0 -3px 5px color-mix(in srgb, var(--c) 55%, transparent), inset 0 1px 1px rgba(255,255,255,.35), 0 3px 12px color-mix(in srgb, var(--c) 35%, transparent);
+  opacity: 0; transform: scale(.25); transition: opacity .14s, transform .2s cubic-bezier(.3,1.5,.5,1), filter .12s; }
 /* Over anything clickable, the arrow shrinks into its tip and the ball takes its place. */
 .kc:is([data-s="hover"], [data-s="press"], [data-s="loading"]) .kc-arrow { opacity: 0; transform: scale(.3); }
 .kc[data-s="hover"] .kc-dot { opacity: 1; transform: scale(1); }
-.kc[data-s="press"] .kc-dot { opacity: 1; transform: scale(.75); background: var(--c); }
+.kc[data-s="press"] .kc-dot { opacity: 1; transform: scale(.78); filter: saturate(1.6) brightness(1.15); }
 .kc[data-s="loading"] .kc-dot { opacity: 1; transform: scale(1); animation: kc-breathe 1s ease-in-out infinite; }
 .kc.is-text { opacity: 0; }
-@keyframes kc-breathe { 50% { transform: scale(1.45); background: color-mix(in srgb, var(--c) 18%, transparent); } }
+@keyframes kc-breathe { 50% { transform: scale(1.4); opacity: .55; } }
 @media (prefers-reduced-motion: reduce) { .kc-dot { animation: none !important; } }`;
   document.head.append(style);
 
