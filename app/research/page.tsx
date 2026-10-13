@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { CausalChain, GateCheck, GatePipeline, ResearchToc, TruncationDemo, type Gate } from "@/components/research-demos";
 
 export const metadata: Metadata = {
-    title: "Research — Kesh",
+    title: "Research - Kesh",
     description:
         "Research Assistant at California State University, Long Beach. Execution-grounded validation for autonomous research agents, and G.A.T.E.S., the validity layer that came out of it.",
 };

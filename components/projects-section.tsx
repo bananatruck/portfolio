@@ -288,7 +288,7 @@ export function ProjectsSection() {
                     className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6"
                 >
                     <div>
-                        <Badge variant="default" className="mb-3 bg-foreground text-white border-foreground font-mono uppercase">
+                        <Badge variant="default" className="mb-3 bg-foreground text-background hover:bg-foreground border-foreground font-mono uppercase">
                             <span className="mr-2 text-emerald-400">●</span>
                             PROJECTS
                         </Badge>

@@ -220,6 +220,10 @@
 
 @keyframes eq { 0%, 100% { transform: scaleY(0.3); } 50% { transform: scaleY(1); } }
 
+/* No visible scrollbars anywhere; scrolling still works by wheel, touch and keyboard. */
+* { scrollbar-width: none; -ms-overflow-style: none; }
+*::-webkit-scrollbar { display: none; width: 0; height: 0; }
+
 /* The site cursor lives in public/kesh-cursor.js (idle, hover, press and loading states). */
 
 /* The page colour, captured before .elsewhere overrides --background. */

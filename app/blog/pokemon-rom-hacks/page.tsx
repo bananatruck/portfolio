@@ -4,7 +4,7 @@ import Image from "next/image";
 import { ArrowLeft, ExternalLink } from "lucide-react";
 
 export const metadata: Metadata = {
-    title: "Pokemon ROM Hacks — Kesh",
+    title: "Pokemon ROM Hacks - Kesh",
     description:
         "How a five-year-old with no console and a decrepit Android phone found Pokemon ROM hacks, and the thirteen that are still my favourites.",
 };
