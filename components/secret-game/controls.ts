@@ -137,6 +137,42 @@ export const LANDSCAPE: Layout = {
 };
 
 /**
+ * KESH_BOY: the site's own console, drawn as SVG in the portfolio's paper and
+ * ink. Frames are the SVG's own coordinates, so hit areas land on the drawing.
+ */
+export const KESH_LANDSCAPE: Layout = {
+    mapping: { width: 2340, height: 1080 },
+    screen: { x: 615, y: 165, width: 1110, height: 740 },
+    dpad: { x: 140, y: 370, width: 360, height: 360 },
+    buttons: {
+        A: { x: 2025, y: 345, width: 190, height: 190 },
+        B: { x: 1855, y: 495, width: 190, height: 190 },
+        START: { x: 2010, y: 860, width: 220, height: 84 },
+        SELECT: { x: 110, y: 860, width: 220, height: 84 },
+        L: { x: 90, y: 60, width: 330, height: 92 },
+        R: { x: 1920, y: 60, width: 330, height: 92 },
+    },
+    menu: { x: 380, y: 860, width: 140, height: 84 },
+    skin: "/secret-game/skin/kesh-boy-landscape.svg",
+};
+
+export const KESH_PORTRAIT: Layout = {
+    mapping: { width: 1080, height: 2340 },
+    screen: { x: 90, y: 190, width: 900, height: 600 },
+    dpad: { x: 80, y: 1150, width: 420, height: 420 },
+    buttons: {
+        A: { x: 800, y: 1150, width: 210, height: 210 },
+        B: { x: 590, y: 1330, width: 210, height: 210 },
+        START: { x: 590, y: 1800, width: 240, height: 90 },
+        SELECT: { x: 250, y: 1800, width: 240, height: 90 },
+        L: { x: 60, y: 960, width: 300, height: 96 },
+        R: { x: 720, y: 960, width: 300, height: 96 },
+    },
+    menu: { x: 440, y: 1990, width: 200, height: 84 },
+    skin: "/secret-game/skin/kesh-boy-portrait.svg",
+};
+
+/**
  * The shells you can pick between.
  *
  * A skin either reshapes itself to the window or it doesn't. Glacier ships
@@ -145,7 +181,7 @@ export const LANDSCAPE: Layout = {
  * it stays upright and letterboxes on a wide screen, which is how holding one
  * actually looks.
  */
-export type SkinId = "itephra" | "glacier";
+export type SkinId = "kesh" | "itephra" | "glacier";
 
 export type Skin = {
     id: SkinId;
@@ -156,6 +192,13 @@ export type Skin = {
 };
 
 export const SKINS: Record<SkinId, Skin> = {
+    kesh: {
+        id: "kesh",
+        label: "KESH_BOY",
+        blurb: "Paper and ink",
+        portrait: KESH_PORTRAIT,
+        landscape: KESH_LANDSCAPE,
+    },
     itephra: {
         id: "itephra",
         label: "Game Boy",
@@ -172,15 +215,13 @@ export const SKINS: Record<SkinId, Skin> = {
     },
 };
 
-export const SKIN_ORDER: SkinId[] = ["glacier", "itephra"];
+export const SKIN_ORDER: SkinId[] = ["kesh", "glacier", "itephra"];
 
 /**
- * Glacier by default. The Game Boy is the nicer object, but it can only be
- * portrait, and a tall console letterboxed into a wide desktop window wastes
- * most of the screen. Glacier reshapes, so it's the one that looks right
- * wherever it lands.
+ * KESH_BOY by default: it matches the site and, like Glacier, has portrait and
+ * landscape art, so it fills a desktop window as well as a phone.
  */
-export const DEFAULT_SKIN: SkinId = "glacier";
+export const DEFAULT_SKIN: SkinId = "kesh";
 
 const SKIN_KEY = "sg:skin";
 
