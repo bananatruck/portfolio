@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, Radio, ShieldCheck, MapPin, Smartphone } from 'lucide-react';
 import { FaDiscord } from 'react-icons/fa';
@@ -35,14 +36,9 @@ export function ContactSection() {
     return (
         <div className="py-12 sm:py-16 relative overflow-hidden bg-background">
             {/* Background image layer cropped from bottom */}
-            <div
-                className="absolute inset-0 z-0 opacity-15 dark:opacity-10 grayscale dark:invert"
-                style={{
-                    backgroundImage: 'url("/images/contact.webp")',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'top center'
-                }}
-            ></div>
+            <div className="absolute inset-0 z-0 opacity-15 dark:opacity-10 grayscale dark:invert pointer-events-none">
+                <Image src="/images/contact.webp" alt="" fill sizes="100vw" className="object-cover object-top" />
+            </div>
             {/* Subtle manga grid background */}
             <div className="absolute inset-0 z-1 opacity-10 pointer-events-none dark:hidden" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
             <div className="absolute inset-0 z-1 opacity-10 pointer-events-none hidden dark:block" style={{ backgroundImage: 'radial-gradient(#f5f5f0 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>

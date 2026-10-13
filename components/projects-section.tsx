@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useState, useRef } from "react";
 import { motion } from 'framer-motion';
 import { Badge } from '@/components/ui/badge';
@@ -272,14 +273,9 @@ export function ProjectsSection() {
     return (
         <div className="relative py-20 sm:py-24 bg-background">
             {/* Background image layer */}
-            <div
-                className="absolute inset-0 z-0 opacity-20 dark:opacity-10 grayscale dark:invert"
-                style={{
-                    backgroundImage: 'url("/images/projects.webp")',
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center'
-                }}
-            ></div>
+            <div className="absolute inset-0 z-0 opacity-20 dark:opacity-10 grayscale dark:invert pointer-events-none">
+                <Image src="/images/projects.webp" alt="" fill sizes="100vw" className="object-cover" />
+            </div>
             {/* Subtle manga grid background */}
             <div className="absolute inset-0 z-1 opacity-10 pointer-events-none dark:hidden" style={{ backgroundImage: 'radial-gradient(#000 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
             <div className="absolute inset-0 z-1 opacity-10 pointer-events-none hidden dark:block" style={{ backgroundImage: 'radial-gradient(#f5f5f0 1px, transparent 1px)', backgroundSize: '20px 20px' }}></div>
