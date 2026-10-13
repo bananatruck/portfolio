@@ -384,12 +384,13 @@ export function initDesktop(stage) {
       const [cmd, arg = ''] = raw.split(/\s+/, 2);
       const target = names[arg.replace(/\/$/, '')] || names[cmd];
       if (cmd === 'clear') out.replaceChildren();
-      else if (cmd === 'help') say(`open <name> | ls | whoami | play | next | email | clear. names: ${Object.keys(names).join(' ')}`, 'ok');
+      else if (cmd === 'help') say(`open <name> | ls | whoami | play | next | email | clear | shutdown. names: ${Object.keys(names).join(' ')}`, 'ok');
       else if (cmd === 'ls') say(Object.keys(PROJECTS).map(k => `${k}/`).join('  '), 'ok');
       else if (cmd === 'whoami') say('keshav jindal / full stack + ai systems engineer / research assistant @ csulb', 'ok');
       else if (cmd === 'play' || cmd === 'pause') { player.toggle(); say(player.playing ? `now playing: ${player.track.title} / ${player.track.artist}` : 'paused', 'ok'); }
       else if (cmd === 'next') { player.next(); say(`next: ${player.track.title}`, 'ok'); }
       else if (cmd === 'email') { copyEmail(); say('email copied', 'ok'); }
+      else if (cmd === 'shutdown' || cmd === 'exit' || cmd === 'poweroff') { say('Shutting down...', 'ok'); setTimeout(shutdown, 300); }
       else if (target && (['open', 'cd', 'cat', 'run'].includes(cmd) || !arg)) { openApp(target); say(`opened ${APPS[target].title}`, 'ok'); }
       else say(`zsh: command not found: ${raw}. Type help.`);
       out.scrollTop = out.scrollHeight;
@@ -553,7 +554,7 @@ export function initDesktop(stage) {
   // whichever button summoned it (top-left logo or the dock's grid button).
   const COMMANDS = [
     ...THEMES.map(([name]) => [`Theme: ${name}`, 'gear', () => applyTheme(name)]),
-    ['Lock screen', 'lock', () => lock()], ['Restart', 'gear', () => reboot()], ['Log out to website', 'exe', () => logout()],
+    ['Lock screen', 'lock', () => lock()], ['Restart', 'gear', () => reboot()], ['Shut down (back to the website)', 'exe', () => shutdown()],
     ['Toggle widgets', 'gear', () => setSetting('widgets', !settings.widgets)], ['Toggle night light', 'gear', () => setSetting('night', !settings.night)],
     ['Do not disturb', 'gear', () => setSetting('dnd', !settings.dnd)]
   ];
@@ -580,8 +581,8 @@ export function initDesktop(stage) {
       h('div', { class: 'start-foot' },
         h('button', { type: 'button', onclick: () => openApp('settings') }, '⚙ Settings'),
         h('button', { type: 'button', onclick: lock }, '⊟ Lock'),
-        h('button', { type: 'button', onclick: () => { closeMenus(); reboot(); } }, '⏻ Restart'),
-        h('button', { type: 'button', onclick: () => { closeMenus(); logout(); } }, '↩ Website')));
+        h('button', { type: 'button', onclick: () => { closeMenus(); reboot(); } }, '↻ Restart'),
+        h('button', { type: 'button', onclick: shutdown }, '⏻ Shut down')));
     appGrid.dataset.from = from;
     appGrid.hidden = false;
     if (from === 'top') launcherBtn.classList.add('is-on');
@@ -612,7 +613,8 @@ export function initDesktop(stage) {
           h('button', { type: 'button', onclick: () => { player.analyser(); player.toggle(); closeMenus(); } }, player.playing ? '❚❚ Pause music' : '▶ Play music'),
           h('button', { type: 'button', onclick: () => openApp('settings') }, '⚙ Settings'),
           h('button', { type: 'button', onclick: lock }, '⊟ Lock'),
-          h('button', { type: 'button', onclick: () => { closeMenus(); reboot(); } }, '⏻ Restart'))
+          h('button', { type: 'button', onclick: () => { closeMenus(); reboot(); } }, '↻ Restart'),
+          h('button', { type: 'button', onclick: shutdown }, '⏻ Shut down'))
       ];
     });
   });
@@ -685,6 +687,25 @@ export function initDesktop(stage) {
 
   // Leaving the desktop hands control back to the host page (the review shell, or the site).
   function logout() { closeMenus(); dispatchEvent(new CustomEvent('kesh:os-exit')); }
+  // Shut down: close every window, collapse the screen like a CRT switching off (the reverse of the
+  // site's K. switch), then go back to the website. The desktop is restored for the next visit.
+  let shuttingDown = false;
+  function shutdown() {
+    if (shuttingDown) return;
+    closeMenus();
+    for (const k of [...wins.keys()]) closeApp(k);
+    if (reduceMotion) { logout(); return; }
+    shuttingDown = true;
+    const anim = stage.animate([
+      { transform: 'none', filter: 'none' },
+      { transform: 'scale(1, .004)', filter: 'brightness(3)', offset: .55 },
+      { transform: 'scale(.004, .004)', filter: 'brightness(6)' }
+    ], { duration: 700, easing: 'cubic-bezier(.6,0,.4,1)', fill: 'forwards' });
+    anim.finished.then(() => {
+      logout();
+      setTimeout(() => { anim.cancel(); shuttingDown = false; }, 900);
+    });
+  }
   // Arriving from the site's K. button replays the boot, so the switch reads as one transformation.
   addEventListener('kesh:os-boot', () => { if (!boot.hidden) return; runBoot(); });
   addEventListener('review:view', e => {
