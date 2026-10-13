@@ -53,7 +53,7 @@ export function ProjectCard({ project, slug }: { project: Project; slug?: string
                     <span className="text-emerald-500 transition-transform duration-300 group-hover:translate-x-0.5">❯</span>
                     <span className="group-hover:underline decoration-2 underline-offset-4">{project.title}</span>
                 </h3>
-                <p className="text-xs text-foreground/80 mb-3 line-clamp-3 font-serif leading-relaxed font-medium">
+                <p className="text-xs text-foreground/80 mb-3 line-clamp-3 font-read leading-relaxed font-medium">
                     {project.description}
                 </p>
             </div>

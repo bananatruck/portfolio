@@ -86,7 +86,7 @@ export function ContactSection() {
                                     <h3 className="text-sm sm:text-base font-mono font-bold text-foreground group-hover:text-background transition-colors uppercase">
                                         {link.name}
                                     </h3>
-                                    <p className="text-[11px] text-foreground/60 mt-0.5 group-hover:text-background/80 font-serif">
+                                    <p className="text-[11px] text-foreground/60 mt-0.5 group-hover:text-background/80 font-read">
                                         {link.description}
                                     </p>
                                 </div>
@@ -116,7 +116,7 @@ export function ContactSection() {
                             </span>
                         </div>
 
-                        <p className="text-xs font-serif leading-relaxed text-foreground/80">
+                        <p className="text-xs font-read leading-relaxed text-foreground/80">
                             Building custom Android OS configurations, kernel tuning, and LineageOS / Magisk setups for ultra-low latency mobile performance.
                         </p>
 

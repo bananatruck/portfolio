@@ -175,7 +175,7 @@ export default function PokemonRomHacksPage() {
                     <h1 className="text-3xl sm:text-5xl font-black font-display uppercase tracking-tighter leading-none mb-4">
                         Pokemon ROM Hacks
                     </h1>
-                    <p className="font-serif text-sm sm:text-base leading-relaxed text-foreground/85">
+                    <p className="font-read text-sm sm:text-base leading-relaxed text-foreground/85">
                         You found the emulator. This is the rest of it — how I got here, and
                         the thirteen hacks that are still my favourites.
                     </p>
@@ -189,7 +189,7 @@ export default function PokemonRomHacksPage() {
                         <span className="font-mono text-xs font-bold">ORIGIN</span>
                     </div>
 
-                    <div className="space-y-5 font-serif text-sm sm:text-base leading-relaxed text-foreground/85">
+                    <div className="space-y-5 font-read text-sm sm:text-base leading-relaxed text-foreground/85">
                         <p>
                             Growing up in an Asian household meant there was never really a
                             place or a budget for buying games, or Game Boys, or any consoles
@@ -278,7 +278,7 @@ export default function PokemonRomHacksPage() {
                                             </span>
                                             <ExternalLink className="w-3 h-3 text-foreground/40 group-hover:text-foreground transition-colors" />
                                         </div>
-                                        <p className="font-serif text-xs sm:text-sm leading-relaxed text-foreground/85">
+                                        <p className="font-read text-xs sm:text-sm leading-relaxed text-foreground/85">
                                             {hack.body}
                                         </p>
                                     </div>
@@ -308,14 +308,14 @@ export default function PokemonRomHacksPage() {
                                 <p className="font-display font-black uppercase tracking-wide text-lg leading-none mb-2">
                                     {emu.name}
                                 </p>
-                                <p className="font-serif text-xs leading-relaxed text-foreground/70">
+                                <p className="font-read text-xs leading-relaxed text-foreground/70">
                                     {emu.note}
                                 </p>
                             </div>
                         ))}
                     </div>
 
-                    <div className="space-y-5 font-serif text-sm sm:text-base leading-relaxed text-foreground/85">
+                    <div className="space-y-5 font-read text-sm sm:text-base leading-relaxed text-foreground/85">
                         <p>
                             Hacks come as patches, not as games — usually an{" "}
                             <code className="font-mono text-xs">.ips</code>,{" "}
@@ -337,7 +337,7 @@ export default function PokemonRomHacksPage() {
                     <p className="font-mono text-[11px] font-bold uppercase tracking-widest opacity-70 mb-3">
                         One Last Thing
                     </p>
-                    <div className="space-y-4 font-serif text-sm sm:text-base leading-relaxed">
+                    <div className="space-y-4 font-read text-sm sm:text-base leading-relaxed">
                         <p>
                             This community is still growing. Honestly, 2026 has been the most
                             productive year for it I've ever seen. And with how lazy Pokemon

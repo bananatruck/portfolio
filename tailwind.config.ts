@@ -50,6 +50,8 @@ const config: Config = {
                 sans: ["var(--font-sans)"],
                 mono: ["var(--font-mono)"],
                 display: ["var(--font-display)", "var(--font-mono)", "ui-monospace", "monospace"],
+                // Reading text: paragraphs, one-liners and the blog. Same family as the display headings.
+                read: ["var(--font-display)", "ui-sans-serif", "system-ui", "sans-serif"],
             },
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",

@@ -100,7 +100,7 @@ export function ProjectModal({ project, isOpen, onClose }: ProjectModalProps) {
                                             <h2 className="text-2xl font-black font-display uppercase tracking-wider mb-2 text-foreground border-b-2 border-foreground/30 pb-1">
                                                 {project.title}
                                             </h2>
-                                            <p className="text-sm font-serif leading-relaxed text-foreground/80">
+                                            <p className="text-sm font-read leading-relaxed text-foreground/80">
                                                 {project.description}
                                             </p>
                                         </div>
